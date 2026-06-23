@@ -42,7 +42,7 @@ jobs:
           NEW_MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -20)
           NEW_ROUTES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | sort -u)
 
-          MSG="**GTA VI site just updated!**\n\nDetected at: $TIME\n"
+          MSG="@everyone **GTA VI site just updated!**\n\nDetected at: $TIME\n"
 
           if [ -n "$NEW_MEDIA" ]; then
             MSG="${MSG}\nNew media files:\n\`\`\`\n${NEW_MEDIA}\n\`\`\`"
