@@ -35,16 +35,22 @@ jobs:
           NEW_ETAG: ${{ steps.fetch.outputs.etag }}
         run: |
           curl -sL https://www.rockstargames.com/VI/ > /tmp/page.html
-          MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -5 | awk '{print "\u2022 " $0}')
-          PAGES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | grep -v "_next" | sort -u | awk '{print "\u2022 " $0}')
+          MEDIA_FILES=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png)' /tmp/page.html | sort -u | head -5)
+          PAGES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | grep -v "_next" | sort -u)
           TIME=$(date -u '+%d %b %Y at %H:%M UTC')
-          MEDIA_STR="${MEDIA:-No new media detected}"
-          PAGES_STR="${PAGES:-No new page routes detected}"
+          BASE="https://www.rockstargames.com/_next/static/media/"
+          THUMBNAIL=$(echo "$MEDIA_FILES" | head -1)
+          MEDIA_LINKS=$(echo "$MEDIA_FILES" | awk -v base="$BASE" '{printf "[%s](%s%s)\n", $0, base, $0}')
+          MEDIA_STR="${MEDIA_LINKS:-No media detected}"
+          PAGES_STR=$(echo "$PAGES" | awk '{print "• " $0}' | head -5)
+          PAGES_STR="${PAGES_STR:-No new routes}"
+          THUMB_URL="${BASE}${THUMBNAIL}"
           PAYLOAD=$(jq -n \
             --arg time "$TIME" \
             --arg media "$MEDIA_STR" \
             --arg routes "$PAGES_STR" \
-            '{content: "@everyone", embeds: [{title: "GTA VI Site Updated", url: "https://www.rockstargames.com/VI/", color: 16711680, fields: [{name: "Detected at", value: $time, inline: false}, {name: "Media files on page", value: $media, inline: false}, {name: "Page routes", value: $routes, inline: false}], footer: {text: "GTA VI Monitor"}}], allowed_mentions: {parse: ["everyone"]}}')
+            --arg thumb "$THUMB_URL" \
+            '{content: "@everyone", embeds: [{title: "GTA VI Site Updated", url: "https://www.rockstargames.com/VI/", color: 16711680, thumbnail: {url: $thumb}, fields: [{name: "Detected at", value: $time, inline: false}, {name: "Media files", value: $media, inline: false}, {name: "Page routes", value: $routes, inline: false}], footer: {text: "GTA VI Monitor"}}], allowed_mentions: {parse: ["everyone"]}}')
           curl -s -H "Content-Type: application/json" -d "$PAYLOAD" "$DISCORD_WEBHOOK"
           echo "$NEW_ETAG" > etag.txt
           git config user.name "github-actions[bot]"
