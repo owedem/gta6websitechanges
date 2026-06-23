@@ -42,7 +42,7 @@ jobs:
           NEW_MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -20 | tr '\n' ' ')
           NEW_ROUTES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | sort -u | tr '\n' ' ')
 
-          PAYLOAD="{\"content\": \"@everyone **GTA VI site just updated!** Detected at: $TIME | Media: $NEW_MEDIA | Routes: $NEW_ROUTES | https://www.rockstargames.com/VI/\"}"
+          PAYLOAD='{"content": "@everyone **GTA VI site just updated!** Detected at: '"$TIME"' | Media: '"$NEW_MEDIA"' | Routes: '"$NEW_ROUTES"' | https://www.rockstargames.com/VI/"}'
 
           curl -s -X POST "$DISCORD_WEBHOOK" \
             -H "Content-Type: application/json" \
