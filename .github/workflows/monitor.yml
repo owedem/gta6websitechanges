@@ -35,40 +35,17 @@ jobs:
           NEW_ETAG: ${{ steps.fetch.outputs.etag }}
         run: |
           curl -sL https://www.rockstargames.com/VI/ > /tmp/page.html
-          NEW_MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -10)
-          MEDIA_COUNT=$(echo "$NEW_MEDIA" | grep -c '.')
-          MEDIA_LIST=$(echo "$NEW_MEDIA" | head -5 | sed 's/^/• /' | tr '\n' '\n')
-          NEW_PAGES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | grep -v "_next" | sort -u)
+          MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -5 | awk '{print "• " $0}' | tr '\n' '\n')
+          PAGES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | grep -v "_next" | sort -u | awk '{print "• " $0}' | tr '\n' '\n')
           TIME=$(date -u '+%d %b %Y at %H:%M UTC')
-          cat > /tmp/build_payload.py << 'PYEOF'
-import json, os, sys
-time = os.environ.get("TIME", "")
-media = os.environ.get("NEW_MEDIA", "").strip()
-media_count = os.environ.get("MEDIA_COUNT", "0").strip()
-pages = os.environ.get("NEW_PAGES", "").strip()
-media_lines = ["• " + m for m in media.splitlines() if m][:5]
-media_str = "\n".join(media_lines) if media_lines else "No new media detected"
-if len(media.splitlines()) > 5:
-    media_str += f"\n... and {int(media_count)-5} more"
-pages_list = ["• " + p for p in pages.splitlines() if p]
-pages_str = "\n".join(pages_list) if pages_list else "No new pages detected"
-embed = {
-    "title": "GTA VI Site Updated",
-    "url": "https://www.rockstargames.com/VI/",
-    "color": 16711680,
-    "fields": [
-        {"name": "Detected at", "value": time, "inline": False},
-        {"name": "Media files on page", "value": media_str, "inline": False},
-        {"name": "Page routes", "value": pages_str, "inline": False}
-    ],
-    "footer": {"text": "GTA VI Monitor"}
-}
-payload = {"content": "@everyone", "embeds": [embed], "allowed_mentions": {"parse": ["everyone"]}}
-print(json.dumps(payload))
-PYEOF
-          export TIME NEW_MEDIA MEDIA_COUNT NEW_PAGES
-          python3 /tmp/build_payload.py > /tmp/payload.json
-          curl -s -H "Content-Type: application/json" -d @/tmp/payload.json "$DISCORD_WEBHOOK"
+          MEDIA_STR="${MEDIA:-No new media detected}"
+          PAGES_STR="${PAGES:-No new page routes detected}"
+          PAYLOAD=$(jq -n \
+            --arg time "$TIME" \
+            --arg media "$MEDIA_STR" \
+            --arg routes "$PAGES_STR" \
+            '{content: "@everyone", embeds: [{title: "GTA VI Site Updated", url: "https://www.rockstargames.com/VI/", color: 16711680, fields: [{name: "Detected at", value: $time, inline: false}, {name: "Media files on page", value: $media, inline: false}, {name: "Page routes", value: $routes, inline: false}], footer: {text: "GTA VI Monitor • rockstargames.com"}}], allowed_mentions: {parse: ["everyone"]}}')
+          curl -s -H "Content-Type: application/json" -d "$PAYLOAD" "$DISCORD_WEBHOOK"
           echo "$NEW_ETAG" > etag.txt
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
