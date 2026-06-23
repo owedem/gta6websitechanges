@@ -8,48 +8,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Fetch page and chunk files
+      - name: Scan chunks and notify Discord
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
           curl -sL https://www.rockstargames.com/VI/ > /tmp/page.html
-
-          # Extract all chunk JS URLs
           grep -oP '_next/static/chunks/[^"]+\.js' /tmp/page.html | sort -u | head -30 | while read chunk; do
             curl -sL "https://www.rockstargames.com/VI/${chunk}" >> /tmp/allchunks.js
-            echo "" >> /tmp/allchunks.js
           done
-
-          echo "=== HIDDEN ROUTES (not in nav) ===" > /tmp/findings.txt
+          echo "=== HIDDEN ROUTES ===" > /tmp/findings.txt
           grep -oP '"/VI/[a-zA-Z0-9_\-/]+"' /tmp/allchunks.js | sort -u | grep -v "_next" >> /tmp/findings.txt || true
-
           echo "" >> /tmp/findings.txt
           echo "=== DATES ===" >> /tmp/findings.txt
-          grep -oP '.{20}(202[456789]|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec).{20}' /tmp/allchunks.js -i | sort -u | head -20 >> /tmp/findings.txt || true
-
+          grep -oP '.{20}(202[456789]).{20}' /tmp/allchunks.js | sort -u | head -20 >> /tmp/findings.txt || true
           echo "" >> /tmp/findings.txt
           echo "=== PREORDER / UNLOCK / LAUNCH ===" >> /tmp/findings.txt
-          grep -oP '.{0,40}(preorder|pre.order|unlock|launch|go.live|available|release).{0,40}' /tmp/allchunks.js -i | sort -u | head -20 >> /tmp/findings.txt || true
-
+          grep -oiP '.{0,40}(preorder|pre.order|unlock|launch|go.live|release).{0,40}' /tmp/allchunks.js | sort -u | head -20 >> /tmp/findings.txt || true
           echo "" >> /tmp/findings.txt
           echo "=== API ENDPOINTS ===" >> /tmp/findings.txt
           grep -oP 'https?://[^"\x27\s]+rockstar[^"\x27\s]+' /tmp/allchunks.js | sort -u | head -20 >> /tmp/findings.txt || true
-
           echo "" >> /tmp/findings.txt
-          echo "=== FEATURE FLAGS / SECRETS ===" >> /tmp/findings.txt
-          grep -oP '.{0,30}(feature|flag|secret|password|token|key|enabled|disabled).{0,30}' /tmp/allchunks.js -i | sort -u | head -20 >> /tmp/findings.txt || true
-
-          cat /tmp/findings.txt
-
-          # Send to Discord in chunks (2000 char limit per message)
-          CONTENT=$(cat /tmp/findings.txt)
+          echo "=== FEATURE FLAGS ===" >> /tmp/findings.txt
+          grep -oiP '.{0,30}(featureFlag|feature_flag|isEnabled|isDisabled|secret).{0,30}' /tmp/allchunks.js | sort -u | head -20 >> /tmp/findings.txt || true
           python3 -c "
 import os, json, urllib.request
 content = open('/tmp/findings.txt').read()
-chunks = [content[i:i+1900] for i in range(0, len(content), 1900)]
+chunks = [content[i:i+1800] for i in range(0, min(len(content),9000), 1800)]
 webhook = os.environ['DISCORD_WEBHOOK']
-for i, chunk in enumerate(chunks[:5]):
-    msg = '**GTA VI Deep Scan** (part ' + str(i+1) + '/' + str(len(chunks)) + ')\n```' + chunk + '```'
+for i, chunk in enumerate(chunks):
+    msg = '**GTA VI Deep Scan (part ' + str(i+1) + '/' + str(len(chunks)) + '):**\n```\n' + chunk + '\n```'
     data = json.dumps({'content': msg}).encode()
     req = urllib.request.Request(webhook, data=data, headers={'Content-Type': 'application/json'})
     urllib.request.urlopen(req)
