@@ -1,12 +1,9 @@
 name: GTA VI Site Monitor
 
-
 on:
   schedule:
-    - cron: '*/10 * * * *'→ Runs every 10 minutes
-
+    - cron: '*/10 * * * *'
   workflow_dispatch:
-
 
 jobs:
   check:
@@ -14,10 +11,8 @@ jobs:
     permissions:
       contents: write
 
-
     steps:
       - uses: actions/checkout@v4
-
 
       - name: Fetch current ETag
         id: fetch
@@ -26,14 +21,12 @@ jobs:
           echo "etag=$ETAG" >> $GITHUB_OUTPUT
           echo "Current ETag: $ETAG"
 
-
       - name: Read stored ETag
         id: stored
         run: |
           STORED=$(cat etag.txt 2>/dev/null || echo "")
           echo "etag=$STORED" >> $GITHUB_OUTPUT
           echo "Stored ETag: $STORED"
-
 
       - name: Diff and notify
         if: steps.fetch.outputs.etag != steps.stored.outputs.etag && steps.fetch.outputs.etag != ''
@@ -42,8 +35,8 @@ jobs:
           NEW_ETAG: ${{ steps.fetch.outputs.etag }}
         run: |
           curl -sL https://www.rockstargames.com/VI/ > /tmp/page.html
-          MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -5 | awk '{print "• " $0}' | tr '\n' '\n')
-          PAGES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | grep -v "_next" | sort -u | awk '{print "• " $0}' | tr '\n' '\n')
+          MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -5 | awk '{print "\u2022 " $0}')
+          PAGES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | grep -v "_next" | sort -u | awk '{print "\u2022 " $0}')
           TIME=$(date -u '+%d %b %Y at %H:%M UTC')
           MEDIA_STR="${MEDIA:-No new media detected}"
           PAGES_STR="${PAGES:-No new page routes detected}"
@@ -51,7 +44,7 @@ jobs:
             --arg time "$TIME" \
             --arg media "$MEDIA_STR" \
             --arg routes "$PAGES_STR" \
-            '{content: "@everyone", embeds: [{title: "GTA VI Site Updated", url: "https://www.rockstargames.com/VI/", color: 16711680, fields: [{name: "Detected at", value: $time, inline: false}, {name: "Media files on page", value: $media, inline: false}, {name: "Page routes", value: $routes, inline: false}], footer: {text: "GTA VI Monitor • rockstargames.com"}}], allowed_mentions: {parse: ["everyone"]}}')
+            '{content: "@everyone", embeds: [{title: "GTA VI Site Updated", url: "https://www.rockstargames.com/VI/", color: 16711680, fields: [{name: "Detected at", value: $time, inline: false}, {name: "Media files on page", value: $media, inline: false}, {name: "Page routes", value: $routes, inline: false}], footer: {text: "GTA VI Monitor"}}], allowed_mentions: {parse: ["everyone"]}}')
           curl -s -H "Content-Type: application/json" -d "$PAYLOAD" "$DISCORD_WEBHOOK"
           echo "$NEW_ETAG" > etag.txt
           git config user.name "github-actions[bot]"
@@ -60,8 +53,6 @@ jobs:
           git commit -m "ETag updated: $NEW_ETAG"
           git push
 
-
       - name: No change
         if: steps.fetch.outputs.etag == steps.stored.outputs.etag
         run: echo "No change. ETag unchanged."
-
