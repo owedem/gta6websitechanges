@@ -18,7 +18,6 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
-          set -e
           curl -sL https://www.rockstargames.com/VI/ > /tmp/page.html
           mkdir -p /tmp/chunks
           grep -oP '_next/static/chunks/[^"]+\.js' /tmp/page.html | sort -u | head -30 | while read chunk; do
@@ -44,10 +43,21 @@ jobs:
             exit 0
           fi
 
+          # Get only new lines (not section headers or blanks)
           if [ -f "$PREV" ]; then
-            NEWLINES=$(diff "$PREV" /tmp/new.txt | grep '^>' | sed 's/^> //' | grep -v '^$') || true
+            NEWLINES=$(diff "$PREV" /tmp/new.txt | grep '^>' | sed 's/^> //' | grep -vP '^(HIDDEN ROUTES:|DATES:|KEYWORDS:|API ENDPOINTS:|)$') || true
           else
-            NEWLINES=$(cat /tmp/new.txt)
+            NEWLINES=$(grep -vP '^(HIDDEN ROUTES:|DATES:|KEYWORDS:|API ENDPOINTS:|)$' /tmp/new.txt) || true
+          fi
+
+          if [ -z "$NEWLINES" ]; then
+            echo "Only structural changes, no new content. Skipping Discord."
+            cp /tmp/new.txt scan-findings.txt
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add scan-findings.txt
+            git commit -m "Scan findings updated" && git push || true
+            exit 0
           fi
 
           TIME=$(date -u '+%Y-%m-%d %H:%M UTC')
@@ -58,7 +68,7 @@ jobs:
 
             ROUTES=$(echo "$NEWLINES" | grep -oP '"/VI/[^"]+' | sed 's|"/VI/||') || true
             if [ -n "$ROUTES" ]; then
-              echo "**New Hidden Pages** (pages that exist in the code but arent publicly linked):"
+              echo "**New Hidden Pages** (pages in the code not publicly linked):"
               echo "$ROUTES" | sed 's|^|  - rockstargames.com/VI/|'
               echo ""
             fi
@@ -81,6 +91,13 @@ jobs:
             if [ -n "$APIS" ]; then
               echo "**Backend URLs** (servers the site talks to behind the scenes):"
               echo "$APIS" | sed 's/^/  - /'
+              echo ""
+            fi
+
+            # Fallback: show raw new lines if nothing matched above
+            if [ -z "$ROUTES" ] && [ -z "$DATES" ] && [ -z "$KEYWORDS" ] && [ -z "$APIS" ]; then
+              echo "**Raw changes detected in site code:**"
+              echo "$NEWLINES" | head -30 | sed 's/^/  /'
             fi
           } > /tmp/msg.txt
 
