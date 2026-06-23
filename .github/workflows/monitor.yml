@@ -42,11 +42,14 @@ jobs:
           NEW_MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -20 | tr '\n' ' ')
           NEW_ROUTES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | sort -u | tr '\n' ' ')
 
-          PAYLOAD='{"content": "@everyone **GTA VI site just updated!** Detected at: '"$TIME"' | Media: '"$NEW_MEDIA"' | Routes: '"$NEW_ROUTES"' | https://www.rockstargames.com/VI/"}'
-
-          curl -s -X POST "$DISCORD_WEBHOOK" \
-            -H "Content-Type: application/json" \
-            -d "$PAYLOAD"
+          python3 -c "
+          import json, os, urllib.request
+          msg = '@everyone **GTA VI site just updated!**\nDetected at: {}\nMedia: {}\nRoutes: {}\nhttps://www.rockstargames.com/VI/'.format(
+              os.environ['TIME'], os.environ['NEW_MEDIA'], os.environ['NEW_ROUTES'])
+          data = json.dumps({'content': msg}).encode()
+          req = urllib.request.Request(os.environ['DISCORD_WEBHOOK'], data=data, headers={'Content-Type': 'application/json'})
+          urllib.request.urlopen(req)
+          " 
 
           echo "$NEW" > etag.txt
           git config user.name "github-actions[bot]"
