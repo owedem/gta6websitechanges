@@ -42,7 +42,7 @@ jobs:
           cat > /tmp/notify.py << 'PYEOF'
           import json, os, urllib.request
           msg = "@everyone **GTA VI site just updated!**\nDetected at: " + os.environ.get("TIME","") + "\nMedia: " + os.environ.get("NEW_MEDIA","none") + "\nRoutes: " + os.environ.get("NEW_ROUTES","none") + "\nhttps://www.rockstargames.com/VI/"
-          data = json.dumps({"content": msg}).encode()
+          data = json.dumps({"content": msg, "allowed_mentions": {"parse": ["everyone"]}}).encode()
           req = urllib.request.Request(os.environ["DISCORD_WEBHOOK"], data=data, headers={"Content-Type": "application/json"})
           urllib.request.urlopen(req)
           PYEOF
