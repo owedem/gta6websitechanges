@@ -35,7 +35,8 @@ jobs:
           NEW_ETAG: ${{ steps.fetch.outputs.etag }}
         run: |
           curl -sL https://www.rockstargames.com/VI/ > /tmp/page.html
-          MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -5 | awk '{print "• " $0}')
+          BASE="https://www.rockstargames.com/VI/_next/static/media/"
+          MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -5 | awk -v b="$BASE" '{print "• [" $0 "](" b $0 ")"}')
           PAGES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | grep -v "_next" | sort -u | awk '{print "• " $0}')
           TIME=$(date -u '+%d %b %Y at %H:%M UTC')
           MEDIA_STR="${MEDIA:-No media detected}"
