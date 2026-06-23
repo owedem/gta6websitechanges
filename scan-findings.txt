@@ -1,0 +1,76 @@
+GTA VI Site Scan - 2026-06-23 15:18 UTC
+==============================
+
+=== HIDDEN ROUTES ===
+none found
+
+=== DATES ===
+ tG=!1;var tY=e.i(812024),tX=e.i(373382),tQ=
+",copyright:"© 2014-2024 Denis Pushkarev (zl
+),!0}return!1}])},812024,t=>{"use strict";t.
+3.0-canary-3f0b9e61-20260317"!==d4)throw Err
+3.0-canary-3f0b9e61-20260317"));if(G.findDOM
+3.0-canary-3f0b9e61-20260317",rendererPackag
+3.0-canary-3f0b9e61-20260317"}),eP=d5}catch(
+3.0-canary-3f0b9e61-20260317"},174080,(e,t,r
+3.0-canary-3f0b9e61-20260317"},271645,(e,t,r
+3.0-canary-3f0b9e61-20260317"},88014,(e,t,n)
+r \x85\u200E\u200F\u2028\u2029]/i,T=/^\.(?:(
+r                　\u2028\u2029\ufeff",Li=b("
+t.i(454300),p=t.i(812024),l=t.i(170637),d=t.
+t.i(804478),d=t.i(812024),_=t.i(242222);clas
+
+=== PREORDER/UNLOCK/LAUNCH ===
+.assign(Object.assign({},s),{id:m}),r),"RELEASE"===p&&(t.removeEventListener("message",
+.name);(function(e,t){let{environment:i,release:n,dist:r,maxValueLength:a}=t;e.environm
+=40,s.ratio.value=12,s.attack.value=0,s.release.value=.25,c.connect(s),s.connect(i.dest
+ENTRY_RELEASE__:ej.SENTRY_RELEASE?.id,sendClientReports:!0,parentSpanIsAl
+ageChannel;d(e,a),c=q(t,[t])}break;case"RELEASE":c=void 0;break;default:return}}catch(e
+ession because of missing or non-string release",ed=Symbol.for("SentryInternalError"),e
+fterSendEvent",e,t))}sendSession(e){let{release:t,environment:n=B.DEFAULT_ENVIRONMENT}=
+ggregates"in e){let r=e.attrs||{};if(!r.release&&!t){E.DEBUG_BUILD&&m.debug.warn(ec);re
+l_mechanism:t.abnormal_mechanism,attrs:{release:t.release,environment:t.environment,ip_
+mestamp-t.started;t.duration=e>=0?e:0}e.release&&(t.release=e.release),e.environment&&(
+n p(e){if(e)throw Error("Proxy has been released and is not useable")}function l(e){ret
+n(){return f},refreshOnInstantNavigationUnlock:function(){return o},useActionQueue:fun
+nsaction:a,attributes:i,startTime:o}=e,{release:l,environment:s,sendDefaultPii:u}=n.get
+nstructor(e){const t=function(e){return{release:"string"==typeof __SENTRY_RELEASE__?__S
+nt:r.environment||e.DEFAULT_ENVIRONMENT,release:r.release,public_key:i,trace_id:t,org_i
+ntalThirdPartyOriginStackFrames:i})),r),release:"e25f1df37fb556971aca35191efe56c9f0c83c
+ntexts.profile.profile_id}catch{}let m={release:l,environment:s,user:h||void 0,profile_
+nvironment||i||c.DEFAULT_ENVIRONMENT,!e.release&&n&&(e.release=n),!e.dist&&r&&(e.dist=r
+riteProfilerMark"in e,"MSStream"in e,"msLaunchUri"in t,"msSaveBlob"in t])>=3&&!E()}fun
+rs=r}else{if(!e.release&&!t){E.DEBUG_BUILD&&m.debug.warn(ec);re
+
+=== API ENDPOINTS ===
+https://media.rockstargames.com/VI/downloads
+https://scapi.rockstargames.com
+https://signin.rockstargames.com/connect/authorize/rsg
+https://signin.rockstargames.com/connect/cors/check/rsg
+https://www.rockstargames.com
+https://www.rockstargames.com/account/communications
+https://www.rockstargames.com/auth/gateway.json
+https://www.rockstargames.com/auth/ping-bearer.json
+https://www.rockstargames.com/videoplayer
+
+=== FEATURE FLAGS ===
+$.enable=function(e){return!$.isEnabled&&(l9(ei?en:a,"scroll",al),l.i
+$},$.disable=function(){$.isEnabled&&(l1.filter(function(e){retur
+,0,function(e=!1){e?Z():O()},"isEnabled",0,function(){let e=(0,a.getC
+,eR),H&&l9(a,lZ+"move",eM)),$.isEnabled=!0,e&&e.type&&eg(e),T&&T($)),
+DEVTOOLS_GLOBAL_HOOK__;if(!d5.isDisabled&&d5.supportsFiber)try{eT=d5.i
+Press:i,onPressUp:s,onClick:p,isDisabled:o,preventFocusOnPress:d,ref:t
+ave",eR),ae(a,lZ+"move",eM),$.isEnabled=$.isPressed=$.isDragging=!1,N
+cessors.push(e)}init(){(this._isEnabled()||this._options.integrations
+ef:n,...r}=t;return r}(t),s=e.isDisabled?{}:l,c=(0,o.useRef)(e.autoFoc
+essing)return!0;t++}return!1}_isEnabled(){return!1!==this.getOptions(
+le:function(){c().enabled=!1},isEnabled:s,log:function(...t){o("log",
+let n,{elementType:r="button",isDisabled:o,onPress:i,onPressStart:a,on
+mit("beforeEnvelope",e),this._isEnabled()&&this._transport)try{return
+n)}})}function E(){return{get isEnabled(){return!1},enable(){throw Ob
+nPress:d,className:"_42pd8s3",isDisabled:c},n);return o[2]!==r||o[3]!=
+oardProps:r}={keyboardProps:e.isDisabled?{}:{onKeyDown:e_(e.onKeyDown)
+ssEnd:f,onPressUp:p,onClick:m,isDisabled:v,isPressed:g,preventFocusOnP
+tart:a,onPressEnd:o,onClick:l,isDisabled:i,...s}=e,u={};"a"!==r&&(u={r
+tart:a,onPressEnd:o,onClick:l,isDisabled:i,ref:t}),g=(0,f.filterDOMPro
+t||(0,_.getClient)();if(!(0,b.isEnabled)()||!t)return{};let n=(0,F.ge
