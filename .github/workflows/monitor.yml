@@ -35,18 +35,16 @@ jobs:
           NEW_ETAG: ${{ steps.fetch.outputs.etag }}
         run: |
           curl -sL https://www.rockstargames.com/VI/ > /tmp/page.html
-          MEDIA_FILES=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png)' /tmp/page.html | sort -u | head -5)
-          PAGES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | grep -v "_next" | sort -u)
+          MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -5 | awk '{print "• " $0}')
+          PAGES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | grep -v "_next" | sort -u | awk '{print "• " $0}')
           TIME=$(date -u '+%d %b %Y at %H:%M UTC')
-          MEDIA_STR=$(echo "$MEDIA_FILES" | awk '{print "• " $0}' | tr '\n' '\n')
-          MEDIA_STR="${MEDIA_STR:-No media detected}"
-          PAGES_STR=$(echo "$PAGES" | awk '{print "• " $0}' | head -5)
-          PAGES_STR="${PAGES_STR:-No new routes}"
+          MEDIA_STR="${MEDIA:-No media detected}"
+          PAGES_STR="${PAGES:-No new routes}"
           PAYLOAD=$(jq -n \
             --arg time "$TIME" \
             --arg media "$MEDIA_STR" \
             --arg routes "$PAGES_STR" \
-            '{content: "@everyone", embeds: [{title: "GTA VI Site Updated", url: "https://www.rockstargames.com/VI/", color: 16711680, thumbnail: {url: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Rockstar_Games_Logo.svg/120px-Rockstar_Games_Logo.svg.png"}, fields: [{name: "Detected at", value: $time, inline: false}, {name: "Media files on page", value: $media, inline: false}, {name: "Page routes", value: $routes, inline: false}], footer: {text: "GTA VI Monitor"}}], allowed_mentions: {parse: ["everyone"]}}')
+            '{content: "@everyone", embeds: [{title: "GTA VI Site Updated", url: "https://www.rockstargames.com/VI/", color: 16711680, fields: [{name: "Detected at", value: $time, inline: false}, {name: "Media files on page", value: $media, inline: false}, {name: "Page routes", value: $routes, inline: false}], footer: {text: "GTA VI Monitor"}}], allowed_mentions: {parse: ["everyone"]}}')
           curl -s -H "Content-Type: application/json" -d "$PAYLOAD" "$DISCORD_WEBHOOK"
           echo "$NEW_ETAG" > etag.txt
           git config user.name "github-actions[bot]"
