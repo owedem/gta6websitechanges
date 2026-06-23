@@ -42,11 +42,9 @@ jobs:
           NEW_MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -20 | tr '\n' ' ')
           NEW_ROUTES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | sort -u | tr '\n' ' ')
 
-          BODY="@everyone **GTA VI site just updated!**\\n\\nDetected at: $TIME\\nNew media: $NEW_MEDIA\\nRoutes: $NEW_ROUTES\\n\\nhttps://www.rockstargames.com/VI/"
-
           curl -s -X POST "$DISCORD_WEBHOOK" \
             -H "Content-Type: application/json" \
-            -d "{\"content\": \"$BODY\"}"
+            -d "{\"content\": \"@everyone **GTA VI site just updated!**\n\nDetected at: $TIME\nNew media: $NEW_MEDIA\nRoutes: $NEW_ROUTES\n\nhttps://www.rockstargames.com/VI/\"}"
 
           echo "$NEW" > etag.txt
           git config user.name "github-actions[bot]"
