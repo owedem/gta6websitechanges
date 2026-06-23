@@ -32,35 +32,25 @@ jobs:
         if: steps.fetch.outputs.etag != steps.stored.outputs.etag && steps.fetch.outputs.etag != ''
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-          NEW_ETAG: ${{ steps.fetch.outputs.etag }}
-          OLD_ETAG: ${{ steps.stored.outputs.etag }}
         run: |
           curl -sL https://www.rockstargames.com/VI/ > /tmp/page.html
           NEW_MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -20 | tr '\n' ' ')
           NEW_ROUTES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | sort -u | tr '\n' ' ')
           TIME=$(date -u '+%Y-%m-%d %H:%M UTC')
-          python3 << 'PYEOF'
-          import json, os, urllib.request
-          msg = (
-              "@everyone **GTA VI site just updated!**\n"
-              "Detected at: " + os.environ.get("TIME","") + "\n"
-              "Media files: " + os.environ.get("NEW_MEDIA","none") + "\n"
-              "Routes: " + os.environ.get("NEW_ROUTES","none") + "\n"
-              "https://www.rockstargames.com/VI/"
-          )
-          data = json.dumps({"content": msg}).encode()
-          req = urllib.request.Request(
-              os.environ["DISCORD_WEBHOOK"],
-              data=data,
-              headers={"Content-Type": "application/json"}
-          )
-          urllib.request.urlopen(req)
-          PYEOF
-          echo "$NEW_ETAG" > etag.txt
+
+          python3 -c "
+import json, sys
+msg = '@everyone **GTA VI site just updated!**\nDetected at: $TIME\nMedia: ${NEW_MEDIA:-none}\nRoutes: ${NEW_ROUTES:-none}\nhttps://www.rockstargames.com/VI/'
+with open('/tmp/payload.json', 'w') as f:
+    json.dump({'content': msg}, f)
+"
+          curl -v -H "Content-Type: application/json" -d @/tmp/payload.json "$DISCORD_WEBHOOK"
+
+          echo "${{ steps.fetch.outputs.etag }}" > etag.txt
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add etag.txt
-          git commit -m "ETag updated: $NEW_ETAG"
+          git commit -m "ETag updated: ${{ steps.fetch.outputs.etag }}"
           git push
 
       - name: No change
