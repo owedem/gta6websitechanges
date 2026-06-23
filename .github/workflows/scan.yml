@@ -23,16 +23,16 @@ jobs:
             curl -sL "https://www.rockstargames.com/VI/${chunk}" >> /tmp/allchunks.js
           done
 
-          echo "HIDDEN ROUTES:" > /tmp/new.txt
+          echo 'HIDDEN ROUTES:' > /tmp/new.txt
           grep -oP '"/VI/[a-zA-Z0-9_\-/]+"' /tmp/allchunks.js | sort -u | grep -v "_next" >> /tmp/new.txt || echo "none" >> /tmp/new.txt
-          echo "" >> /tmp/new.txt
-          echo "DATES:" >> /tmp/new.txt
-          grep -oP '.{20}(202[456789]).{20}' /tmp/allchunks.js | sort -u | head -20 >> /tmp/new.txt || echo "none" >> /tmp/new.txt
-          echo "" >> /tmp/new.txt
-          echo "PREORDER/UNLOCK/LAUNCH:" >> /tmp/new.txt
+          echo '' >> /tmp/new.txt
+          echo 'DATES:' >> /tmp/new.txt
+          grep -oP '.{20}(202[456789]).{20}' /tmp/allchunks.js | sort -u | head -20 >> /tmp/new.txt || echo 'none' >> /tmp/new.txt
+          echo '' >> /tmp/new.txt
+          echo 'PREORDER/UNLOCK/LAUNCH:' >> /tmp/new.txt
           grep -oiP '.{0,40}(preorder|unlock|launch).{0,40}' /tmp/allchunks.js | grep -iv "pointerCapture|releaseProxy|releaseLock|onRelease|releasePointer" | sort -u | head -20 >> /tmp/new.txt || echo "none" >> /tmp/new.txt
-          echo "" >> /tmp/new.txt
-          echo "API ENDPOINTS:" >> /tmp/new.txt
+          echo '' >> /tmp/new.txt
+          echo 'API ENDPOINTS:' >> /tmp/new.txt
           grep -oP 'https?://[^"\x27\s]+rockstar[^"\x27\s]+' /tmp/allchunks.js | sort -u >> /tmp/new.txt || echo "none" >> /tmp/new.txt
 
           PREV=scan-findings.txt
@@ -41,15 +41,37 @@ jobs:
             exit 0
           fi
 
-          # Find only new lines
           if [ -f "$PREV" ]; then
-            DIFF=$(diff "$PREV" /tmp/new.txt | grep '^>' | sed 's/^> //' | grep -v '^$')
+            NEWLINES=$(diff "$PREV" /tmp/new.txt | grep '^>' | sed 's/^> //' | grep -v '^$')
           else
-            DIFF=$(cat /tmp/new.txt)
+            NEWLINES=$(cat /tmp/new.txt)
           fi
 
           TIME=$(date -u '+%Y-%m-%d %H:%M UTC')
-          printf "**GTA VI Scan - New findings at %s:**\n%s" "$TIME" "$DIFF" > /tmp/msg.txt
+
+          {
+            echo "**GTA VI Site - New Findings ($TIME)**"
+            echo ""
+            if echo "$NEWLINES" | grep -qP '"/VI/'; then
+              echo "**New Pages Found** (pages that exist on the site but are not publicly linked):"
+              echo "$NEWLINES" | grep -oP '"/VI/[^"]+' | sed 's|"/VI/|  - rockstargames.com/VI/|'
+              echo ""
+            fi
+            if echo "$NEWLINES" | grep -qP '202[456789]'; then
+              echo "**Dates Spotted in Code** (possible release dates, event windows or countdowns):"
+              echo "$NEWLINES" | grep -oP '.{0,20}202[456789].{0,20}' | sed 's/^/  - /'
+              echo ""
+            fi
+            if echo "$NEWLINES" | grep -qiP 'preorder|unlock|launch'; then
+              echo "**Keywords Found** (preorder, unlock, or launch appeared in the code):"
+              echo "$NEWLINES" | grep -iP 'preorder|unlock|launch' | grep -iv "pointer|releaseProxy|releaseLock|onRelease" | sed 's/^/  - /'
+              echo ""
+            fi
+            if echo "$NEWLINES" | grep -qP 'https?://'; then
+              echo "**Backend Servers Found** (URLs the site talks to behind the scenes):"
+              echo "$NEWLINES" | grep -oP 'https?://[^\s]+' | sed 's/^/  - /'
+            fi
+          } > /tmp/msg.txt
 
           TOTAL=$(wc -c < /tmp/msg.txt)
           START=0
