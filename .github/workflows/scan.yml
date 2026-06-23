@@ -19,25 +19,31 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
           curl -sL https://www.rockstargames.com/VI/ > /tmp/page.html
+          mkdir -p /tmp/chunks
           grep -oP '_next/static/chunks/[^"]+\.js' /tmp/page.html | sort -u | head -30 | while read chunk; do
-            curl -sL "https://www.rockstargames.com/VI/${chunk}" >> /tmp/allchunks.js
+            FNAME=$(basename "$chunk")
+            curl -sL "https://www.rockstargames.com/VI/${chunk}" > "/tmp/chunks/${FNAME}"
           done
 
           echo 'HIDDEN ROUTES:' > /tmp/new.txt
-          grep -oP '"/VI/[a-zA-Z0-9_\-/]+"' /tmp/allchunks.js | sort -u | grep -v "_next" >> /tmp/new.txt || echo "none" >> /tmp/new.txt
+          grep -rhoP '"/VI/[a-zA-Z0-9_\-/]+"' /tmp/chunks/ | sort -u | grep -v "_next" >> /tmp/new.txt || echo "none" >> /tmp/new.txt
           echo '' >> /tmp/new.txt
           echo 'DATES:' >> /tmp/new.txt
-          grep -oP '.{20}(202[456789]).{20}' /tmp/allchunks.js | sort -u | head -20 >> /tmp/new.txt || echo 'none' >> /tmp/new.txt
+          grep -rhoP '.{20}202[456789].{20}' /tmp/chunks/ | sort -u | head -20 >> /tmp/new.txt || echo 'none' >> /tmp/new.txt
           echo '' >> /tmp/new.txt
-          echo 'PREORDER/UNLOCK/LAUNCH:' >> /tmp/new.txt
-          grep -oiP '.{0,40}(preorder|unlock|launch).{0,40}' /tmp/allchunks.js | grep -iv "pointerCapture|releaseProxy|releaseLock|onRelease|releasePointer" | sort -u | head -20 >> /tmp/new.txt || echo "none" >> /tmp/new.txt
+          echo 'KEYWORDS:' >> /tmp/new.txt
+          grep -rniP 'preorder|unlock|launch' /tmp/chunks/ | grep -ivP "pointerCapture|releaseProxy|releaseLock|onRelease|releasePointer|unlockAudioContext|launchpad|launcher" | while IFS=: read file match; do
+            FNAME=$(basename "$file")
+            CONTEXT=$(echo "$match" | grep -oP '.{0,60}(preorder|unlock|launch).{0,60}')
+            echo "[$FNAME] $CONTEXT"
+          done | sort -u | head -20 >> /tmp/new.txt || echo "none" >> /tmp/new.txt
           echo '' >> /tmp/new.txt
           echo 'API ENDPOINTS:' >> /tmp/new.txt
-          grep -oP 'https?://[^"\x27\s]+rockstar[^"\x27\s]+' /tmp/allchunks.js | sort -u >> /tmp/new.txt || echo "none" >> /tmp/new.txt
+          grep -rhoP 'https?://[^"\x27\s]+rockstar[^"\x27\s]+' /tmp/chunks/ | sort -u >> /tmp/new.txt || echo "none" >> /tmp/new.txt
 
           PREV=scan-findings.txt
           if [ -f "$PREV" ] && diff -q "$PREV" /tmp/new.txt > /dev/null 2>&1; then
-            echo "No changes in scan findings. Skipping Discord."
+            echo "No changes. Skipping Discord."
             exit 0
           fi
 
@@ -52,24 +58,32 @@ jobs:
           {
             echo "**GTA VI Site - New Findings ($TIME)**"
             echo ""
-            if echo "$NEWLINES" | grep -qP '"/VI/'; then
-              echo "**New Pages Found** (pages that exist on the site but are not publicly linked):"
-              echo "$NEWLINES" | grep -oP '"/VI/[^"]+' | sed 's|"/VI/|  - rockstargames.com/VI/|'
+
+            ROUTES=$(echo "$NEWLINES" | grep -oP '"/VI/[^"]+' | sed 's|"/VI/||')
+            if [ -n "$ROUTES" ]; then
+              echo "**New Hidden Pages** (pages that exist in the code but arent publicly linked):"
+              echo "$ROUTES" | sed 's|^|  - rockstargames.com/VI/|'
               echo ""
             fi
-            if echo "$NEWLINES" | grep -qP '202[456789]'; then
-              echo "**Dates Spotted in Code** (possible release dates, event windows or countdowns):"
-              echo "$NEWLINES" | grep -oP '.{0,20}202[456789].{0,20}' | sed 's/^/  - /'
+
+            DATES=$(echo "$NEWLINES" | grep -oP '.{0,20}202[456789].{0,20}')
+            if [ -n "$DATES" ]; then
+              echo "**Dates Found in Code** (possible release dates or event windows):"
+              echo "$DATES" | sed 's/^/  - /'
               echo ""
             fi
-            if echo "$NEWLINES" | grep -qiP 'preorder|unlock|launch'; then
-              echo "**Keywords Found** (preorder, unlock, or launch appeared in the code):"
-              echo "$NEWLINES" | grep -iP 'preorder|unlock|launch' | grep -iv "pointer|releaseProxy|releaseLock|onRelease" | sed 's/^/  - /'
+
+            KEYWORDS=$(echo "$NEWLINES" | grep -iP '^\[' | grep -iP 'preorder|unlock|launch')
+            if [ -n "$KEYWORDS" ]; then
+              echo "**Preorder / Launch Keywords** (found in JS file - shows file name and surrounding code):"
+              echo "$KEYWORDS" | sed 's/^/  - /'
               echo ""
             fi
-            if echo "$NEWLINES" | grep -qP 'https?://'; then
-              echo "**Backend Servers Found** (URLs the site talks to behind the scenes):"
-              echo "$NEWLINES" | grep -oP 'https?://[^\s]+' | sed 's/^/  - /'
+
+            APIS=$(echo "$NEWLINES" | grep -oP 'https?://[^\s]+')
+            if [ -n "$APIS" ]; then
+              echo "**Backend URLs** (servers the site talks to behind the scenes):"
+              echo "$APIS" | sed 's/^/  - /'
             fi
           } > /tmp/msg.txt
 
