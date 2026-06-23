@@ -1,9 +1,12 @@
 name: GTA VI Site Monitor
 
+
 on:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '*/10 * * * *'→ Runs every 30 minutes
+
   workflow_dispatch:
+
 
 jobs:
   check:
@@ -11,8 +14,10 @@ jobs:
     permissions:
       contents: write
 
+
     steps:
       - uses: actions/checkout@v4
+
 
       - name: Fetch current ETag
         id: fetch
@@ -21,12 +26,14 @@ jobs:
           echo "etag=$ETAG" >> $GITHUB_OUTPUT
           echo "Current ETag: $ETAG"
 
+
       - name: Read stored ETag
         id: stored
         run: |
           STORED=$(cat etag.txt 2>/dev/null || echo "")
           echo "etag=$STORED" >> $GITHUB_OUTPUT
           echo "Stored ETag: $STORED"
+
 
       - name: Diff and notify
         if: steps.fetch.outputs.etag != steps.stored.outputs.etag && steps.fetch.outputs.etag != ''
@@ -53,6 +60,8 @@ jobs:
           git commit -m "ETag updated: $NEW_ETAG"
           git push
 
+
       - name: No change
         if: steps.fetch.outputs.etag == steps.stored.outputs.etag
         run: echo "No change. ETag unchanged."
+
