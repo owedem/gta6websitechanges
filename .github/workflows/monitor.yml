@@ -37,31 +37,26 @@ jobs:
           OLD="${{ steps.stored.outputs.etag }}"
           TIME=$(date -u '+%Y-%m-%d %H:%M UTC')
 
-          # Dig into what changed
           curl -sL https://www.rockstargames.com/VI/ > /tmp/page.html
 
-          NEW_CHUNKS=$(grep -oP '/_next/static/chunks/\K[^"?]+\.js' /tmp/page.html | sort -u)
-          NEW_MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u)
+          NEW_MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -20)
           NEW_ROUTES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | sort -u)
 
-          MSG="🚨 **GTA VI site just updated!**\n\n"
-          MSG+="**Detected at:** $TIME\n\n"
+          MSG="**GTA VI site just updated!**\n\nDetected at: $TIME\n"
 
           if [ -n "$NEW_MEDIA" ]; then
-            MSG+="**New/changed media files:**\n\`\`\`\n$NEW_MEDIA\n\`\`\`\n"
+            MSG="${MSG}\nNew media files:\n\`\`\`\n${NEW_MEDIA}\n\`\`\`"
           fi
 
           if [ -n "$NEW_ROUTES" ]; then
-            MSG+="**Page routes found:**\n\`\`\`\n$NEW_ROUTES\n\`\`\`\n"
+            MSG="${MSG}\nRoutes found:\n\`\`\`\n${NEW_ROUTES}\n\`\`\`"
           fi
 
-          MSG+="\nhttps://www.rockstargames.com/VI/"
+          MSG="${MSG}\n\nhttps://www.rockstargames.com/VI/"
 
-          curl -s -X POST "$DISCORD_WEBHOOK" \
-            -H "Content-Type: application/json" \
-            -d "{\"content\": \"$(echo "$MSG" | head -c 1900 | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')\"}"
+          PAYLOAD=$(jq -n --arg content "$MSG" '{"content": $content}')
+          curl -s -X POST "$DISCORD_WEBHOOK" -H "Content-Type: application/json" -d "$PAYLOAD"
 
-          # Save new ETag
           echo "$NEW" > etag.txt
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -71,4 +66,4 @@ jobs:
 
       - name: No change
         if: steps.fetch.outputs.etag == steps.stored.outputs.etag
-        run: echo "No change. ETag unchanged: ${{ steps.fetch.outputs.etag }}"
+        run: echo "No change. ETag unchanged."
