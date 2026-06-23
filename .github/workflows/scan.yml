@@ -16,6 +16,7 @@ jobs:
           grep -oP '_next/static/chunks/[^"]+\.js' /tmp/page.html | sort -u | head -30 | while read chunk; do
             curl -sL "https://www.rockstargames.com/VI/${chunk}" >> /tmp/allchunks.js
           done
+
           echo "=== HIDDEN ROUTES ===" > /tmp/findings.txt
           grep -oP '"/VI/[a-zA-Z0-9_\-/]+"' /tmp/allchunks.js | sort -u | grep -v "_next" >> /tmp/findings.txt || true
           echo "" >> /tmp/findings.txt
@@ -30,17 +31,21 @@ jobs:
           echo "" >> /tmp/findings.txt
           echo "=== FEATURE FLAGS ===" >> /tmp/findings.txt
           grep -oiP '.{0,30}(featureFlag|isEnabled|isDisabled).{0,30}' /tmp/allchunks.js | sort -u | head -20 >> /tmp/findings.txt || true
-          cat /tmp/findings.txt
-          cat > /tmp/send.py << 'PYEOF'
-          import os, json, urllib.request
-          content = open("/tmp/findings.txt").read()
-          chunks = [content[i:i+1800] for i in range(0, min(len(content), 9000), 1800)]
-          webhook = os.environ["DISCORD_WEBHOOK"]
-          for i, chunk in enumerate(chunks):
-              nl = chr(10)
-              msg = "**GTA VI Deep Scan (part " + str(i+1) + "/" + str(len(chunks)) + "):**" + nl + "```" + nl + chunk + nl + "```"
-              data = json.dumps({"content": msg}).encode()
-              req = urllib.request.Request(webhook, data=data, headers={"Content-Type": "application/json"})
-              urllib.request.urlopen(req)
-          PYEOF
-          python3 /tmp/send.py
+
+          # Split findings into chunks and send via curl
+          CONTENT=$(cat /tmp/findings.txt)
+          TOTAL_LEN=${#CONTENT}
+          CHUNK_SIZE=1800
+          START=0
+          PART=1
+          while [ $START -lt $TOTAL_LEN ]; do
+            CHUNK="${CONTENT:$START:$CHUNK_SIZE}"
+            START=$((START + CHUNK_SIZE))
+            PAYLOAD=$(jq -n --arg text "$CHUNK" --arg part "$PART" '{content: ("**GTA VI Deep Scan (part " + $part + "):**
+```
+" + $text + "
+```")}')
+            curl -s -H "Content-Type: application/json" -d "$PAYLOAD" "$DISCORD_WEBHOOK"
+            PART=$((PART + 1))
+            sleep 1
+          done
