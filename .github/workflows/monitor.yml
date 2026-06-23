@@ -36,16 +36,19 @@ jobs:
         run: |
           curl -sL https://www.rockstargames.com/VI/ > /tmp/page.html
           BASE="https://www.rockstargames.com/VI/_next/static/media/"
-          MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -5 | awk -v b="$BASE" '{print "• [" $0 "](" b $0 ")"}')
+          IMAGES=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png)' /tmp/page.html | sort -u | awk -v b="$BASE" '{print "• [" $0 "](" b $0 ")"}')
+          VIDEOS=$(grep -oP '/_next/static/media/\K[^"?]+\.(mp4|webm)' /tmp/page.html | sort -u | awk -v b="$BASE" '{print "• [" $0 "](" b $0 ")"}')
           PAGES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | grep -v "_next" | sort -u | awk '{print "• " $0}')
           TIME=$(date -u '+%d %b %Y at %H:%M UTC')
-          MEDIA_STR="${MEDIA:-No media detected}"
-          PAGES_STR="${PAGES:-No new routes}"
+          IMAGES_STR="${IMAGES:-None}"
+          VIDEOS_STR="${VIDEOS:-None}"
+          PAGES_STR="${PAGES:-None}"
           PAYLOAD=$(jq -n \
             --arg time "$TIME" \
-            --arg media "$MEDIA_STR" \
+            --arg images "$IMAGES_STR" \
+            --arg videos "$VIDEOS_STR" \
             --arg routes "$PAGES_STR" \
-            '{content: "@everyone", embeds: [{title: "GTA VI Site Updated", url: "https://www.rockstargames.com/VI/", color: 16711680, fields: [{name: "Detected at", value: $time, inline: false}, {name: "Media files on page", value: $media, inline: false}, {name: "Page routes", value: $routes, inline: false}], footer: {text: "GTA VI Monitor"}}], allowed_mentions: {parse: ["everyone"]}}')
+            '{content: "@everyone", embeds: [{title: "GTA VI Site Updated", url: "https://www.rockstargames.com/VI/", color: 16711680, fields: [{name: "Detected at", value: $time, inline: false}, {name: "Images", value: ($images | .[0:1020]), inline: false}, {name: "Videos", value: ($videos | .[0:1020]), inline: false}, {name: "Page routes", value: $routes, inline: false}], footer: {text: "GTA VI Monitor"}}], allowed_mentions: {parse: ["everyone"]}}')
           curl -s -H "Content-Type: application/json" -d "$PAYLOAD" "$DISCORD_WEBHOOK"
           echo "$NEW_ETAG" > etag.txt
           git config user.name "github-actions[bot]"
