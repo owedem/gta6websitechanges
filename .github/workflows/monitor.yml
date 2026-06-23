@@ -39,23 +39,14 @@ jobs:
 
           curl -sL https://www.rockstargames.com/VI/ > /tmp/page.html
 
-          NEW_MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -20)
-          NEW_ROUTES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | sort -u)
+          NEW_MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -20 | tr '\n' ' ')
+          NEW_ROUTES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | sort -u | tr '\n' ' ')
 
-          MSG="@everyone **GTA VI site just updated!**\n\nDetected at: $TIME\n"
+          BODY="@everyone **GTA VI site just updated!**\\n\\nDetected at: $TIME\\nNew media: $NEW_MEDIA\\nRoutes: $NEW_ROUTES\\n\\nhttps://www.rockstargames.com/VI/"
 
-          if [ -n "$NEW_MEDIA" ]; then
-            MSG="${MSG}\nNew media files:\n\`\`\`\n${NEW_MEDIA}\n\`\`\`"
-          fi
-
-          if [ -n "$NEW_ROUTES" ]; then
-            MSG="${MSG}\nRoutes found:\n\`\`\`\n${NEW_ROUTES}\n\`\`\`"
-          fi
-
-          MSG="${MSG}\n\nhttps://www.rockstargames.com/VI/"
-
-          PAYLOAD=$(jq -n --arg content "$MSG" '{"content": $content}')
-          curl -s -X POST "$DISCORD_WEBHOOK" -H "Content-Type: application/json" -d "$PAYLOAD"
+          curl -s -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "{\"content\": \"$BODY\"}"
 
           echo "$NEW" > etag.txt
           git config user.name "github-actions[bot]"
