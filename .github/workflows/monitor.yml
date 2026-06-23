@@ -1,0 +1,74 @@
+name: GTA VI Site Monitor
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch current ETag
+        id: fetch
+        run: |
+          ETAG=$(curl -sIL https://www.rockstargames.com/VI/ | grep -i "^etag:" | tail -1 | tr -d '\r' | awk '{print $2}')
+          echo "etag=$ETAG" >> $GITHUB_OUTPUT
+          echo "Current ETag: $ETAG"
+
+      - name: Read stored ETag
+        id: stored
+        run: |
+          STORED=$(cat etag.txt 2>/dev/null || echo "")
+          echo "etag=$STORED" >> $GITHUB_OUTPUT
+          echo "Stored ETag: $STORED"
+
+      - name: Diff and notify
+        if: steps.fetch.outputs.etag != steps.stored.outputs.etag && steps.fetch.outputs.etag != ''
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          NEW="${{ steps.fetch.outputs.etag }}"
+          OLD="${{ steps.stored.outputs.etag }}"
+          TIME=$(date -u '+%Y-%m-%d %H:%M UTC')
+
+          # Dig into what changed
+          curl -sL https://www.rockstargames.com/VI/ > /tmp/page.html
+
+          NEW_CHUNKS=$(grep -oP '/_next/static/chunks/\K[^"?]+\.js' /tmp/page.html | sort -u)
+          NEW_MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u)
+          NEW_ROUTES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | sort -u)
+
+          MSG="🚨 **GTA VI site just updated!**\n\n"
+          MSG+="**Detected at:** $TIME\n\n"
+
+          if [ -n "$NEW_MEDIA" ]; then
+            MSG+="**New/changed media files:**\n\`\`\`\n$NEW_MEDIA\n\`\`\`\n"
+          fi
+
+          if [ -n "$NEW_ROUTES" ]; then
+            MSG+="**Page routes found:**\n\`\`\`\n$NEW_ROUTES\n\`\`\`\n"
+          fi
+
+          MSG+="\nhttps://www.rockstargames.com/VI/"
+
+          curl -s -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "{\"content\": \"$(echo "$MSG" | head -c 1900 | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')\"}"
+
+          # Save new ETag
+          echo "$NEW" > etag.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add etag.txt
+          git commit -m "ETag updated: $NEW"
+          git push
+
+      - name: No change
+        if: steps.fetch.outputs.etag == steps.stored.outputs.etag
+        run: echo "No change. ETag unchanged: ${{ steps.fetch.outputs.etag }}"
