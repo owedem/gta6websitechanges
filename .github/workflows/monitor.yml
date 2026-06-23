@@ -38,17 +38,14 @@ jobs:
           export NEW_MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -20 | tr '\n' ' ')
           export NEW_ROUTES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | sort -u | tr '\n' ' ')
           export TIME=$(date -u '+%Y-%m-%d %H:%M UTC')
-
           cat > /tmp/notify.py << 'PYEOF'
           import json, os, urllib.request
-          msg = "@everyone **GTA VI site just updated!**\nDetected at: " + os.environ.get("TIME","") + "\nMedia: " + os.environ.get("NEW_MEDIA","none") + "\nRoutes: " + os.environ.get("NEW_ROUTES","none") + "\nhttps://www.rockstargames.com/VI/"
-          data = json.dumps({"content": msg, "allowed_mentions": {"parse": ["everyone"]}}).encode()
+          msg = "**GTA VI site just updated!**\nDetected at: " + os.environ.get("TIME","") + "\nMedia: " + os.environ.get("NEW_MEDIA","none") + "\nRoutes: " + os.environ.get("NEW_ROUTES","none") + "\nhttps://www.rockstargames.com/VI/"
+          data = json.dumps({"content": msg}).encode()
           req = urllib.request.Request(os.environ["DISCORD_WEBHOOK"], data=data, headers={"Content-Type": "application/json"})
           urllib.request.urlopen(req)
           PYEOF
-
           python3 /tmp/notify.py
-
           echo "$NEW_ETAG" > etag.txt
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
