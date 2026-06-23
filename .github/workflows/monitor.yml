@@ -35,17 +35,17 @@ jobs:
           NEW_ETAG: ${{ steps.fetch.outputs.etag }}
         run: |
           curl -sL https://www.rockstargames.com/VI/ > /tmp/page.html
-          export NEW_MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -20 | tr '\n' ' ')
-          export NEW_ROUTES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | sort -u | tr '\n' ' ')
-          export TIME=$(date -u '+%Y-%m-%d %H:%M UTC')
-          echo "Webhook URL length: ${#DISCORD_WEBHOOK}"
-          echo "Webhook starts with: ${DISCORD_WEBHOOK:0:40}"
-          curl -s -o /tmp/discord_response.txt -w "%{http_code}" \
-            -H "Content-Type: application/json" \
-            -d '{"content":"GTA VI site monitor test - ignore"}' \
-            "$DISCORD_WEBHOOK" > /tmp/discord_status.txt
-          echo "Discord status: $(cat /tmp/discord_status.txt)"
-          echo "Discord response: $(cat /tmp/discord_response.txt)"
+          NEW_MEDIA=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|mp4|webm)' /tmp/page.html | sort -u | head -20 | tr '\n' ' ')
+          NEW_ROUTES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | sort -u | tr '\n' ' ')
+          TIME=$(date -u '+%Y-%m-%d %H:%M UTC')
+          python3 -c "import json,sys; d={'content': '@everyone **GTA VI site updated!** Detected: '+open('/dev/stdin').read(), 'allowed_mentions':{'parse':['everyone']}}; print(json.dumps(d))" <<< "$TIME media:${NEW_MEDIA} routes:${NEW_ROUTES} https://www.rockstargames.com/VI/" > /tmp/payload.json
+          curl -s -H "Content-Type: application/json" -d @/tmp/payload.json "$DISCORD_WEBHOOK"
+          echo "$NEW_ETAG" > etag.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add etag.txt
+          git commit -m "ETag updated: $NEW_ETAG"
+          git push
 
       - name: No change
         if: steps.fetch.outputs.etag == steps.stored.outputs.etag
