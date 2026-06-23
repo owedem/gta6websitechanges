@@ -18,6 +18,7 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
+          set -e
           curl -sL https://www.rockstargames.com/VI/ > /tmp/page.html
           mkdir -p /tmp/chunks
           grep -oP '_next/static/chunks/[^"]+\.js' /tmp/page.html | sort -u | head -30 | while read chunk; do
@@ -26,20 +27,16 @@ jobs:
           done
 
           echo 'HIDDEN ROUTES:' > /tmp/new.txt
-          grep -rhoP '"/VI/[a-zA-Z0-9_\-/]+"' /tmp/chunks/ | sort -u | grep -v "_next" >> /tmp/new.txt || echo "none" >> /tmp/new.txt
+          grep -rhoP '"/VI/[a-zA-Z0-9_\-/]+"' /tmp/chunks/ 2>/dev/null | sort -u | grep -v "_next" >> /tmp/new.txt || echo "none" >> /tmp/new.txt
           echo '' >> /tmp/new.txt
           echo 'DATES:' >> /tmp/new.txt
-          grep -rhoP '.{20}202[456789].{20}' /tmp/chunks/ | sort -u | head -20 >> /tmp/new.txt || echo 'none' >> /tmp/new.txt
+          grep -rhoP '.{20}202[456789].{20}' /tmp/chunks/ 2>/dev/null | sort -u | head -20 >> /tmp/new.txt || echo 'none' >> /tmp/new.txt
           echo '' >> /tmp/new.txt
           echo 'KEYWORDS:' >> /tmp/new.txt
-          grep -rniP 'preorder|unlock|launch' /tmp/chunks/ | grep -ivP "pointerCapture|releaseProxy|releaseLock|onRelease|releasePointer|unlockAudioContext|launchpad|launcher" | while IFS=: read file match; do
-            FNAME=$(basename "$file")
-            CONTEXT=$(echo "$match" | grep -oP '.{0,60}(preorder|unlock|launch).{0,60}')
-            echo "[$FNAME] $CONTEXT"
-          done | sort -u | head -20 >> /tmp/new.txt || echo "none" >> /tmp/new.txt
+          grep -rhoP '.{0,50}(preorder|unlock|launch).{0,50}' /tmp/chunks/ 2>/dev/null | grep -ivP "pointerCapture|releaseProxy|releaseLock|onRelease|releasePointer|unlockAudioContext|launchpad|launcher" | sort -u | head -20 >> /tmp/new.txt || echo "none" >> /tmp/new.txt
           echo '' >> /tmp/new.txt
           echo 'API ENDPOINTS:' >> /tmp/new.txt
-          grep -rhoP 'https?://[^"\x27\s]+rockstar[^"\x27\s]+' /tmp/chunks/ | sort -u >> /tmp/new.txt || echo "none" >> /tmp/new.txt
+          grep -rhoP 'https?://[^"\x27\s]+rockstar[^"\x27\s]+' /tmp/chunks/ 2>/dev/null | sort -u >> /tmp/new.txt || echo "none" >> /tmp/new.txt
 
           PREV=scan-findings.txt
           if [ -f "$PREV" ] && diff -q "$PREV" /tmp/new.txt > /dev/null 2>&1; then
@@ -48,7 +45,7 @@ jobs:
           fi
 
           if [ -f "$PREV" ]; then
-            NEWLINES=$(diff "$PREV" /tmp/new.txt | grep '^>' | sed 's/^> //' | grep -v '^$')
+            NEWLINES=$(diff "$PREV" /tmp/new.txt | grep '^>' | sed 's/^> //' | grep -v '^$') || true
           else
             NEWLINES=$(cat /tmp/new.txt)
           fi
@@ -59,28 +56,28 @@ jobs:
             echo "**GTA VI Site - New Findings ($TIME)**"
             echo ""
 
-            ROUTES=$(echo "$NEWLINES" | grep -oP '"/VI/[^"]+' | sed 's|"/VI/||')
+            ROUTES=$(echo "$NEWLINES" | grep -oP '"/VI/[^"]+' | sed 's|"/VI/||') || true
             if [ -n "$ROUTES" ]; then
               echo "**New Hidden Pages** (pages that exist in the code but arent publicly linked):"
               echo "$ROUTES" | sed 's|^|  - rockstargames.com/VI/|'
               echo ""
             fi
 
-            DATES=$(echo "$NEWLINES" | grep -oP '.{0,20}202[456789].{0,20}')
+            DATES=$(echo "$NEWLINES" | grep -oP '.{0,20}202[456789].{0,20}') || true
             if [ -n "$DATES" ]; then
               echo "**Dates Found in Code** (possible release dates or event windows):"
               echo "$DATES" | sed 's/^/  - /'
               echo ""
             fi
 
-            KEYWORDS=$(echo "$NEWLINES" | grep -iP '^\[' | grep -iP 'preorder|unlock|launch')
+            KEYWORDS=$(echo "$NEWLINES" | grep -iP 'preorder|unlock|launch' | grep -ivP "pointer|releaseProxy|releaseLock|onRelease|unlockAudio|launchpad|launcher") || true
             if [ -n "$KEYWORDS" ]; then
-              echo "**Preorder / Launch Keywords** (found in JS file - shows file name and surrounding code):"
+              echo "**Preorder / Launch Keywords** (found in site JS code):"
               echo "$KEYWORDS" | sed 's/^/  - /'
               echo ""
             fi
 
-            APIS=$(echo "$NEWLINES" | grep -oP 'https?://[^\s]+')
+            APIS=$(echo "$NEWLINES" | grep -oP 'https?://[^\s]+') || true
             if [ -n "$APIS" ]; then
               echo "**Backend URLs** (servers the site talks to behind the scenes):"
               echo "$APIS" | sed 's/^/  - /'
