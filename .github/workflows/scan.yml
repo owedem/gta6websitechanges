@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Scan chunks and send to Discord
+      - name: Scan chunks and notify only on changes
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
@@ -23,32 +23,49 @@ jobs:
             curl -sL "https://www.rockstargames.com/VI/${chunk}" >> /tmp/allchunks.js
           done
 
-          TIME=$(date -u '+%Y-%m-%d %H:%M UTC')
-          echo "GTA VI Site Scan - $TIME" > /tmp/findings.txt
-          echo "==============================" >> /tmp/findings.txt
-          echo "" >> /tmp/findings.txt
-          echo "HIDDEN ROUTES:" >> /tmp/findings.txt
-          grep -oP '"/VI/[a-zA-Z0-9_\-/]+"' /tmp/allchunks.js | sort -u | grep -v "_next" >> /tmp/findings.txt || echo "none" >> /tmp/findings.txt
-          echo "" >> /tmp/findings.txt
-          echo "DATES:" >> /tmp/findings.txt
-          grep -oP '.{20}(202[456789]).{20}' /tmp/allchunks.js | sort -u | head -20 >> /tmp/findings.txt || echo "none" >> /tmp/findings.txt
-          echo "" >> /tmp/findings.txt
-          echo "PREORDER/UNLOCK/LAUNCH:" >> /tmp/findings.txt
-          grep -oiP '.{0,40}(preorder|unlock|launch).{0,40}' /tmp/allchunks.js | grep -iv "pointerCapture|releaseProxy|releaseLock|onRelease|releasePointer" | sort -u | head -20 >> /tmp/findings.txt || echo "none" >> /tmp/findings.txt
-          echo "" >> /tmp/findings.txt
-          echo "API ENDPOINTS:" >> /tmp/findings.txt
-          grep -oP 'https?://[^"\x27\s]+rockstar[^"\x27\s]+' /tmp/allchunks.js | sort -u >> /tmp/findings.txt || echo "none" >> /tmp/findings.txt
+          echo "HIDDEN ROUTES:" > /tmp/new.txt
+          grep -oP '"/VI/[a-zA-Z0-9_\-/]+"' /tmp/allchunks.js | sort -u | grep -v "_next" >> /tmp/new.txt || echo "none" >> /tmp/new.txt
+          echo "" >> /tmp/new.txt
+          echo "DATES:" >> /tmp/new.txt
+          grep -oP '.{20}(202[456789]).{20}' /tmp/allchunks.js | sort -u | head -20 >> /tmp/new.txt || echo "none" >> /tmp/new.txt
+          echo "" >> /tmp/new.txt
+          echo "PREORDER/UNLOCK/LAUNCH:" >> /tmp/new.txt
+          grep -oiP '.{0,40}(preorder|unlock|launch).{0,40}' /tmp/allchunks.js | grep -iv "pointerCapture|releaseProxy|releaseLock|onRelease|releasePointer" | sort -u | head -20 >> /tmp/new.txt || echo "none" >> /tmp/new.txt
+          echo "" >> /tmp/new.txt
+          echo "API ENDPOINTS:" >> /tmp/new.txt
+          grep -oP 'https?://[^"\x27\s]+rockstar[^"\x27\s]+' /tmp/allchunks.js | sort -u >> /tmp/new.txt || echo "none" >> /tmp/new.txt
 
-          TOTAL=$(wc -c < /tmp/findings.txt)
+          PREV=scan-findings.txt
+          if [ -f "$PREV" ] && diff -q "$PREV" /tmp/new.txt > /dev/null 2>&1; then
+            echo "No changes in scan findings. Skipping Discord."
+            exit 0
+          fi
+
+          # Find only new lines
+          if [ -f "$PREV" ]; then
+            DIFF=$(diff "$PREV" /tmp/new.txt | grep '^>' | sed 's/^> //' | grep -v '^$')
+          else
+            DIFF=$(cat /tmp/new.txt)
+          fi
+
+          TIME=$(date -u '+%Y-%m-%d %H:%M UTC')
+          printf "**GTA VI Scan - New findings at %s:**\n%s" "$TIME" "$DIFF" > /tmp/msg.txt
+
+          TOTAL=$(wc -c < /tmp/msg.txt)
           START=0
           PART=1
           while [ $START -lt $TOTAL ]; do
-            dd if=/tmp/findings.txt bs=1 skip=$START count=1900 2>/dev/null > /tmp/chunk.txt
+            dd if=/tmp/msg.txt bs=1 skip=$START count=1900 2>/dev/null > /tmp/chunk.txt
             START=$((START + 1900))
-            printf "**GTA VI Deep Scan - Part %s:**\n" "$PART" > /tmp/msg.txt
-            cat /tmp/chunk.txt >> /tmp/msg.txt
-            jq -n --rawfile text /tmp/msg.txt '{content: $text}' > /tmp/payload.json
+            jq -n --rawfile text /tmp/chunk.txt '{content: $text}' > /tmp/payload.json
             curl -s -H "Content-Type: application/json" -d @/tmp/payload.json "$DISCORD_WEBHOOK"
             PART=$((PART + 1))
             sleep 1
           done
+
+          cp /tmp/new.txt scan-findings.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add scan-findings.txt
+          git commit -m "Scan findings updated"
+          git push
