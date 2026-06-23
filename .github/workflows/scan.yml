@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Scan chunks and save findings
+      - name: Scan chunks and send to Discord
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
@@ -22,30 +22,31 @@ jobs:
           done
 
           TIME=$(date -u '+%Y-%m-%d %H:%M UTC')
-          echo "GTA VI Site Scan - $TIME" > scan-findings.txt
-          echo "==============================" >> scan-findings.txt
-          echo "" >> scan-findings.txt
-          echo "=== HIDDEN ROUTES ===" >> scan-findings.txt
-          grep -oP '"/VI/[a-zA-Z0-9_\-/]+"' /tmp/allchunks.js | sort -u | grep -v "_next" >> scan-findings.txt || echo "none found" >> scan-findings.txt
-          echo "" >> scan-findings.txt
-          echo "=== DATES ===" >> scan-findings.txt
-          grep -oP '.{20}(202[456789]).{20}' /tmp/allchunks.js | sort -u | head -20 >> scan-findings.txt || echo "none found" >> scan-findings.txt
-          echo "" >> scan-findings.txt
-          echo "=== PREORDER/UNLOCK/LAUNCH ===" >> scan-findings.txt
-          grep -oiP '.{0,40}(preorder|unlock|launch|release).{0,40}' /tmp/allchunks.js | grep -iv "pointerCapture\|releaseProxy\|releaseLock\|onRelease\|RELEASE.*pointer\|releasePointer" | sort -u | head -20 >> scan-findings.txt || echo "none found" >> scan-findings.txt
-          echo "" >> scan-findings.txt
-          echo "=== API ENDPOINTS ===" >> scan-findings.txt
-          grep -oP 'https?://[^"\x27\s]+rockstar[^"\x27\s]+' /tmp/allchunks.js | sort -u >> scan-findings.txt || echo "none found" >> scan-findings.txt
-          echo "" >> scan-findings.txt
-          echo "=== FEATURE FLAGS ===" >> scan-findings.txt
-          grep -oiP '.{0,30}(featureFlag|isEnabled|isDisabled).{0,30}' /tmp/allchunks.js | sort -u | head -20 >> scan-findings.txt || echo "none found" >> scan-findings.txt
+          echo "GTA VI Site Scan - $TIME" > /tmp/findings.txt
+          echo "==============================" >> /tmp/findings.txt
+          echo "" >> /tmp/findings.txt
+          echo "HIDDEN ROUTES:" >> /tmp/findings.txt
+          grep -oP '"/VI/[a-zA-Z0-9_\-/]+"' /tmp/allchunks.js | sort -u | grep -v "_next" >> /tmp/findings.txt || echo "none" >> /tmp/findings.txt
+          echo "" >> /tmp/findings.txt
+          echo "DATES:" >> /tmp/findings.txt
+          grep -oP '.{20}(202[456789]).{20}' /tmp/allchunks.js | sort -u | head -20 >> /tmp/findings.txt || echo "none" >> /tmp/findings.txt
+          echo "" >> /tmp/findings.txt
+          echo "PREORDER/UNLOCK/LAUNCH:" >> /tmp/findings.txt
+          grep -oiP '.{0,40}(preorder|unlock|launch).{0,40}' /tmp/allchunks.js | grep -iv "pointerCapture|releaseProxy|releaseLock|onRelease|releasePointer" | sort -u | head -20 >> /tmp/findings.txt || echo "none" >> /tmp/findings.txt
+          echo "" >> /tmp/findings.txt
+          echo "API ENDPOINTS:" >> /tmp/findings.txt
+          grep -oP 'https?://[^"\x27\s]+rockstar[^"\x27\s]+' /tmp/allchunks.js | sort -u >> /tmp/findings.txt || echo "none" >> /tmp/findings.txt
 
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add scan-findings.txt
-          git commit -m "Scan results: $TIME"
-          git push
-
-          RUN_URL="https://github.com/owedem/gta6websitechanges/blob/main/scan-findings.txt"
-          PAYLOAD=$(jq -n --arg url "$RUN_URL" --arg time "$TIME" '{content: ("**GTA VI Deep Scan complete!** " + $time + " - Results: " + $url)}')
-          curl -s -H "Content-Type: application/json" -d "$PAYLOAD" "$DISCORD_WEBHOOK"
+          TOTAL=$(wc -c < /tmp/findings.txt)
+          START=0
+          PART=1
+          while [ $START -lt $TOTAL ]; do
+            dd if=/tmp/findings.txt bs=1 skip=$START count=1900 2>/dev/null > /tmp/chunk.txt
+            START=$((START + 1900))
+            printf "**GTA VI Deep Scan - Part %s:**\n" "$PART" > /tmp/msg.txt
+            cat /tmp/chunk.txt >> /tmp/msg.txt
+            jq -n --rawfile text /tmp/msg.txt '{content: $text}' > /tmp/payload.json
+            curl -s -H "Content-Type: application/json" -d @/tmp/payload.json "$DISCORD_WEBHOOK"
+            PART=$((PART + 1))
+            sleep 1
+          done
