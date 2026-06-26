@@ -7,9 +7,10 @@ name: GTA Bot Ultracode
 
 on:
   schedule:
-    # :05 and :35 — offset from the others (which run at :00/:10/:20/:40) to
-    # avoid git push races on main.
-    - cron: '5,35 * * * *'
+    # Every 5 minutes, offset by 2 (:02, :07, :12, ... :57) so it never shares a
+    # minute with monitor.yml (:00/:10/...) or scan.yml (:00/:20/:40) — keeps it
+    # off the other workflows' git push windows on main.
+    - cron: '2-59/5 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -40,7 +41,7 @@ jobs:
           # https://aistudio.google.com/apikey
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: gemini-2.0-flash
-          # PAID option: Anthropic Claude. Only used if GEMINI_API_KEY is unset.
+          # PAID option: Anthropic Claude. Only used if no GROQ_API_KEY/GEMINI_API_KEY.
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ANALYSIS_MODEL: claude-opus-4-8
           # Dedicated webhook (its own Discord channel) — no fallback, so this
@@ -52,12 +53,20 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase --autostash origin main
           git add ultracode-state 2>/dev/null || true
           [ -f ultracode-log.md ] && git add ultracode-log.md
           if git diff --cached --quiet; then
             echo "No snapshot changes to commit."
           else
             git commit -m "Ultracode: snapshot state updated"
-            git push
+            # Retry against concurrent pushes from the other workflows so the
+            # snapshot is never lost — a lost snapshot would re-trigger the same
+            # alert on the next run (duplicate Discord message).
+            pushed=false
+            for i in 1 2 3 4 5; do
+              git pull --rebase --autostash origin main && git push && { pushed=true; break; }
+              echo "push attempt $i failed (likely a concurrent push); retrying..."
+              sleep 5
+            done
+            [ "$pushed" = true ] || echo "::warning::could not push snapshot after retries"
           fi
