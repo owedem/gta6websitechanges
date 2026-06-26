@@ -10,11 +10,3 @@ ress:()=>{g({...d.analytics,event:"cta_buy",text:"pre-order now"}),f(!0)},"aria-
 
 API ENDPOINTS:
 https://media.rockstargames.com/VI/downloads
-https://scapi.rockstargames.com
-https://signin.rockstargames.com/connect/authorize/rsg
-https://signin.rockstargames.com/connect/cors/check/rsg
-https://www.rockstargames.com
-https://www.rockstargames.com/account/communications
-https://www.rockstargames.com/auth/gateway.json
-https://www.rockstargames.com/auth/ping-bearer.json
-https://www.rockstargames.com/videoplayer
