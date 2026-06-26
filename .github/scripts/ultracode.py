@@ -69,6 +69,9 @@ ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "").strip()
 # Anthropic, so the AI write-ups cost nothing.
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
+# When set (via the workflow's "selftest" dispatch input), post a synthetic
+# alert through the real pipeline to verify the webhook + AI key.
+SELFTEST = os.environ.get("SELFTEST", "").strip().lower() in ("1", "true", "yes")
 
 USER_AGENT = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -458,9 +461,40 @@ def is_baseline():
     return True
 
 
+def run_selftest(stamp):
+    """Post a synthetic alert through the real analyse()+Discord pipeline so the
+    user can verify the webhook and AI key work, without waiting for a real
+    site change. Touches no snapshot state."""
+    changed = ["home"]
+    bundle = (
+        "--- home/head (before)\n+++ home/head (after)\n@@ -1,2 +1,2 @@\n"
+        "-og:image: https://www.rockstargames.com/VI/-/opengraph-image.OLD.jpg\n"
+        "-title: Grand Theft Auto VI - Rockstar Games\n"
+        "+og:image: https://www.rockstargames.com/VI/-/opengraph-image.NEW.jpg\n"
+        "+title: Grand Theft Auto VI - Pre-Order Now\n\n"
+        "--- home/routes (before)\n+++ home/routes (after)\n@@ -1,2 +1,3 @@\n"
+        " /VI/\n+/VI/buy\n /VI/only-in-leonida"
+    )
+    provider = "Gemini" if GEMINI_API_KEY else ("Claude" if ANTHROPIC_API_KEY else "none")
+    analysis = analyse(changed, bundle)
+    note = (f"🧪 **GTA Bot Ultracode — SELF-TEST** | {stamp}\n"
+            f"_(synthetic change, NOT real — just verifying the pipeline. "
+            f"AI provider: {provider})_\n")
+    if analysis:
+        post_discord(note + "\n" + analysis)
+    else:
+        post_discord(note + "\n(No AI key detected — this is the non-AI fallback. "
+                     "Add GEMINI_API_KEY for free English explanations.)")
+    safe_print(f"Self-test posted (provider: {provider}).")
+
+
 def main():
     baseline = is_baseline()
     stamp = datetime.now(timezone.utc).strftime("%d %b %Y at %H:%M UTC")
+
+    if SELFTEST:
+        run_selftest(stamp)
+        return
 
     # Each entry: (priority, surface, artifact, old, new)
     changes = []
