@@ -13,7 +13,56 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Track media counts
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          curl -sL --max-time 15 "https://www.rockstargames.com/VI/media" > /tmp/media_page.html
 
+          python3 << 'PYEOF' > /tmp/new_counts.txt
+          import re
+          html = open('/tmp/media_page.html').read()
+          for label in ['Videos', 'Screenshots', 'Artwork']:
+              m = re.search(label + r'.*?aria-hidden=["\']true["\']>(\d+)', html, re.DOTALL)
+              print(label.lower() + '=' + (m.group(1) if m else '0'))
+          PYEOF
+
+          echo "Counts found:"; cat /tmp/new_counts.txt
+
+          COUNTS_FILE="monitor-media-counts.txt"
+          touch "$COUNTS_FILE"
+
+          OLD_VIDEOS=$(grep -oP '(?<=videos=)\d+' "$COUNTS_FILE" || echo "0")
+          OLD_SCREENSHOTS=$(grep -oP '(?<=screenshots=)\d+' "$COUNTS_FILE" || echo "0")
+          OLD_ARTWORK=$(grep -oP '(?<=artwork=)\d+' "$COUNTS_FILE" || echo "0")
+          NEW_VIDEOS=$(grep -oP '(?<=videos=)\d+' /tmp/new_counts.txt || echo "0")
+          NEW_SCREENSHOTS=$(grep -oP '(?<=screenshots=)\d+' /tmp/new_counts.txt || echo "0")
+          NEW_ARTWORK=$(grep -oP '(?<=artwork=)\d+' /tmp/new_counts.txt || echo "0")
+
+          CHANGES=""
+          [ "$NEW_VIDEOS" -gt "$OLD_VIDEOS" ] 2>/dev/null && \
+            CHANGES="${CHANGES}📹 Videos: ${OLD_VIDEOS} → ${NEW_VIDEOS}\n"
+          [ "$NEW_SCREENSHOTS" -gt "$OLD_SCREENSHOTS" ] 2>/dev/null && \
+            CHANGES="${CHANGES}📸 Screenshots: ${OLD_SCREENSHOTS} → ${NEW_SCREENSHOTS}\n"
+          [ "$NEW_ARTWORK" -gt "$OLD_ARTWORK" ] 2>/dev/null && \
+            CHANGES="${CHANGES}🎨 Artwork: ${OLD_ARTWORK} → ${NEW_ARTWORK}\n"
+
+          if [ -n "$CHANGES" ]; then
+            TIME=$(date -u '+%d %b %Y at %H:%M UTC')
+            MSG="📺 **GTA VI media page updated** | ${TIME}\n\n${CHANGES}\nhttps://www.rockstargames.com/VI/media"
+            curl -s -X POST "$DISCORD_WEBHOOK" \
+              -H "Content-Type: application/json" \
+              -d "$(jq -n --arg content "$MSG" '{content: $content}')"
+          else
+            echo "No media count changes."
+          fi
+
+          cp /tmp/new_counts.txt "$COUNTS_FILE"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase --autostash origin main
+          git add "$COUNTS_FILE"
+          git diff --cached --quiet || git commit -m "Media counts updated" && git push || true
       - name: Fetch current ETag
         id: fetch
         run: |
