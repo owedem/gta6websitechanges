@@ -11,11 +11,6 @@ on:
     # avoid git push races on main.
     - cron: '5,35 * * * *'
   workflow_dispatch:
-    inputs:
-      selftest:
-        description: "Tick to post a synthetic test alert (verifies webhook + AI key). Leave unticked for a real scan."
-        type: boolean
-        default: false
 
 jobs:
   ultracode:
@@ -51,8 +46,6 @@ jobs:
           # Dedicated webhook (its own Discord channel) — no fallback, so this
           # workflow stays cleanly separate for A/B comparison with the others.
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_ULTRACODE }}
-          # Set by the "Run workflow" selftest checkbox; empty on scheduled runs.
-          SELFTEST: ${{ inputs.selftest }}
         run: python .github/scripts/ultracode.py
 
       - name: Commit snapshot state
