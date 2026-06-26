@@ -1,0 +1,25 @@
+canonical: https://www.rockstargames.com/VI/
+description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+format-detection: telephone=no, date=no, address=no, email=no
+next-size-adjust: 
+og:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+og:image: https://www.rockstargames.com/VI/-/opengraph-image.jpg?opengraph-image.0t8ty~nlmxq2s.jpg
+og:image:height: 630
+og:image:type: image/jpeg
+og:image:width: 1200
+og:locale: en-US
+og:site_name: Rockstar Games
+og:title: Grand Theft Auto VI - Rockstar Games
+og:type: website
+title: Grand Theft Auto VI - Rockstar Games
+twitter:card: summary
+twitter:creator: @rockstargames
+twitter:creator:id: 29758446
+twitter:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+twitter:image: https://www.rockstargames.com/VI/-/twitter-image.jpg?twitter-image.0t8ty~nlmxq2s.jpg
+twitter:image:height: 630
+twitter:image:type: image/jpeg
+twitter:image:width: 1200
+twitter:site: @rockstargames
+twitter:title: Grand Theft Auto VI - Rockstar Games
+viewport: width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no

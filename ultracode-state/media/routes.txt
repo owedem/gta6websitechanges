@@ -1,0 +1,5 @@
+/VI/
+/VI/media
+/VI/media/artwork-wallpapers
+/VI/media/screenshots
+/VI/media/videos
