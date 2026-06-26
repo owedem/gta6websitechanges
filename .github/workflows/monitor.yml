@@ -175,9 +175,10 @@ jobs:
           MSG="${MSG}\nhttps://www.rockstargames.com/VI/"
 
           TRIMMED=$(printf '%s' "$(printf "$MSG")" | head -c 1950)
-          curl -s -X POST "$DISCORD_WEBHOOK" \
-            -H "Content-Type: application/json" \
-            -d "$(jq -n --arg content "$TRIMMED" '{content: $content}')"
+            CONTENT=$(printf '%b' "$MSG")
+            curl -s -X POST "$DISCORD_WEBHOOK" \
+              -H "Content-Type: application/json" \
+              -d "$(jq -n --arg content "$CONTENT" '{content: $content}')"
 
           # Save new state
           cp /tmp/curr_images.txt  monitor-images.txt
