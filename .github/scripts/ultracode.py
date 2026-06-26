@@ -317,6 +317,10 @@ def _user_content(changed_surfaces, diff_bundle):
     )
 
 
+# Records the most recent AI-provider failure reason; surfaced by the self-test.
+LAST_AI_ERROR = None
+
+
 def analyse(changed_surfaces, diff_bundle):
     """Dispatch to whichever LLM provider is configured. Free Gemini is preferred
     over (paid) Anthropic. Returns plain-English analysis or None."""
@@ -331,6 +335,7 @@ def analyse(changed_surfaces, diff_bundle):
 
 def analyse_with_gemini(changed_surfaces, diff_bundle):
     """Free option: Google Gemini API over raw HTTP (no SDK dependency)."""
+    global LAST_AI_ERROR
     url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
            f"{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}")
     payload = {
@@ -348,17 +353,38 @@ def analyse_with_gemini(changed_surfaces, diff_bundle):
         )
         with urllib.request.urlopen(req, timeout=60) as resp:
             data = json.loads(resp.read())
-        cands = data.get("candidates") or []
-        if not cands:  # safety block or empty response
-            sys.stderr.write(f"[warn] Gemini returned no candidates: "
-                             f"{json.dumps(data)[:300]}\n")
-            return None
-        parts = cands[0].get("content", {}).get("parts", [])
-        text = "".join(p.get("text", "") for p in parts).strip()
-        return text or None
-    except Exception as e:
-        sys.stderr.write(f"[warn] Gemini analysis failed: {e}\n")
+    except urllib.error.HTTPError as e:
+        body = ""
+        try:
+            body = e.read().decode("utf-8", "replace")
+        except Exception:
+            pass
+        reason = body
+        try:
+            reason = json.loads(body).get("error", {}).get("message", body)
+        except Exception:
+            pass
+        LAST_AI_ERROR = f"HTTP {e.code} — {reason[:240]}"
+        sys.stderr.write(f"[warn] Gemini: {LAST_AI_ERROR}\n")
         return None
+    except Exception as e:
+        LAST_AI_ERROR = f"request failed — {e}"
+        sys.stderr.write(f"[warn] Gemini: {LAST_AI_ERROR}\n")
+        return None
+
+    cands = data.get("candidates") or []
+    if not cands:
+        fb = data.get("promptFeedback", {})
+        LAST_AI_ERROR = f"no candidates returned (promptFeedback: {json.dumps(fb)[:160]})"
+        sys.stderr.write(f"[warn] Gemini: {LAST_AI_ERROR}\n")
+        return None
+    parts = cands[0].get("content", {}).get("parts", [])
+    text = "".join(p.get("text", "") for p in parts).strip()
+    if not text:
+        LAST_AI_ERROR = f"empty text (finishReason: {cands[0].get('finishReason')})"
+        sys.stderr.write(f"[warn] Gemini: {LAST_AI_ERROR}\n")
+        return None
+    return text
 
 
 def analyse_with_claude(changed_surfaces, diff_bundle):
@@ -482,10 +508,14 @@ def run_selftest(stamp):
             f"AI provider: {provider})_\n")
     if analysis:
         post_discord(note + "\n" + analysis)
+    elif provider == "none":
+        post_discord(note + "\n(No AI key set — add GEMINI_API_KEY for free "
+                     "English explanations.)")
     else:
-        post_discord(note + "\n(No AI key detected — this is the non-AI fallback. "
-                     "Add GEMINI_API_KEY for free English explanations.)")
-    safe_print(f"Self-test posted (provider: {provider}).")
+        post_discord(note + f"\n⚠️ The **{provider}** key is set but the call "
+                     f"failed:\n```{LAST_AI_ERROR}```\nFix that and re-run the "
+                     f"self-test.")
+    safe_print(f"Self-test posted (provider: {provider}, error: {LAST_AI_ERROR}).")
 
 
 def main():
