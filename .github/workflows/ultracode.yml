@@ -13,9 +13,9 @@ on:
   workflow_dispatch:
     inputs:
       selftest:
-        description: "Post a synthetic test alert (verifies webhook + AI key)"
+        description: "Post a synthetic test alert (verifies webhook + AI key). Untick for a real manual scan."
         type: boolean
-        default: false
+        default: true
 
 jobs:
   ultracode:
