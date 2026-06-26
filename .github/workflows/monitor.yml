@@ -36,24 +36,44 @@ jobs:
         run: |
           curl -sL https://www.rockstargames.com/VI/ > /tmp/page.html
           BASE="https://www.rockstargames.com/VI/_next/static/media/"
-          IMAGES=$(grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png)' /tmp/page.html | sort -u | awk -v b="$BASE" '{print "• [" $0 "](" b $0 ")"}')
-          VIDEOS=$(grep -oP '/_next/static/media/\K[^"?]+\.(mp4|webm)' /tmp/page.html | sort -u | awk -v b="$BASE" '{print "• [" $0 "](" b $0 ")"}')
-          PAGES=$(grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | grep -v "_next" | sort -u | awk '{print "• " $0}')
-          TIME=$(date -u '+%d %b %Y at %H:%M UTC')
-          IMAGES_STR="${IMAGES:-None}"
-          VIDEOS_STR="${VIDEOS:-None}"
-          PAGES_STR="${PAGES:-None}"
+
+          # Get current images/routes
+          grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png)' /tmp/page.html | sort -u > /tmp/curr_images.txt
+          grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | grep -v "_next" | sort -u > /tmp/curr_routes.txt
+
+          # Compare with previous
+          NEW_IMAGES=$(diff monitor-images.txt /tmp/curr_images.txt 2>/dev/null | grep '^>' | sed 's/^> //') || true
+          NEW_ROUTES=$(diff monitor-routes.txt /tmp/curr_routes.txt 2>/dev/null | grep '^>' | sed 's/^> //') || true
+
+          TIME=$(date -u '%d %b %Y at %H:%M UTC')
+
+          # Build embed fields - only show new items
+          if [ -n "$NEW_IMAGES" ]; then
+            IMAGES_STR=$(echo "$NEW_IMAGES" | awk -v b="$BASE" '{print "• [" $0 "](" b $0 ")"}' | head -20)
+          else
+            IMAGES_STR="None"
+          fi
+
+          if [ -n "$NEW_ROUTES" ]; then
+            ROUTES_STR=$(echo "$NEW_ROUTES" | awk '{print "• " $0}')
+          else
+            ROUTES_STR="None"
+          fi
+
           PAYLOAD=$(jq -n \
             --arg time "$TIME" \
             --arg images "$IMAGES_STR" \
-            --arg videos "$VIDEOS_STR" \
-            --arg routes "$PAGES_STR" \
-            '{content: "@everyone", embeds: [{title: "GTA VI Site Updated", url: "https://www.rockstargames.com/VI/", color: 16711680, fields: [{name: "Detected at", value: $time, inline: false}, {name: "Images", value: ($images | .[0:1020]), inline: false}, {name: "Videos", value: ($videos | .[0:1020]), inline: false}, {name: "Page routes", value: $routes, inline: false}], footer: {text: "GTA VI Monitor"}}], allowed_mentions: {parse: ["everyone"]}}')
+            --arg routes "$ROUTES_STR" \
+            '{content: "@everyone", embeds: [{title: "GTA VI Site Updated", url: "https://www.rockstargames.com/VI/", color: 16711680, fields: [{name: "Detected at", value: $time, inline: false}, {name: "New Images", value: ($images | .[0:1020]), inline: false}, {name: "New Page Routes", value: $routes, inline: false}], footer: {text: "GTA VI Monitor"}}], allowed_mentions: {parse: ["everyone"]}}')
           curl -s -H "Content-Type: application/json" -d "$PAYLOAD" "$DISCORD_WEBHOOK"
+
+          # Save current state
+          cp /tmp/curr_images.txt monitor-images.txt
+          cp /tmp/curr_routes.txt monitor-routes.txt
           echo "$NEW_ETAG" > etag.txt
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add etag.txt
+          git add etag.txt monitor-images.txt monitor-routes.txt
           git commit -m "ETag updated: $NEW_ETAG"
           git push
 
