@@ -24,59 +24,139 @@ jobs:
       - name: Read stored ETag
         id: stored
         run: |
-          STORED=$(cat etag.txt 2>/dev/null || echo "")
+          STORED=$(cat etag.txt 2>/dev/null || echo "none")
           echo "etag=$STORED" >> $GITHUB_OUTPUT
           echo "Stored ETag: $STORED"
 
-      - name: Diff and notify
+      - name: Analyse and notify
         if: steps.fetch.outputs.etag != steps.stored.outputs.etag && steps.fetch.outputs.etag != ''
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           NEW_ETAG: ${{ steps.fetch.outputs.etag }}
         run: |
           curl -sL https://www.rockstargames.com/VI/ > /tmp/page.html
-          BASE="https://www.rockstargames.com/VI/_next/static/media/"
+          TIME=$(date -u '+%d %b %Y at %H:%M UTC')
 
-          # Get current images/routes
-          grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png)' /tmp/page.html | sort -u > /tmp/curr_images.txt
-          grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | grep -v "_next" | sort -u > /tmp/curr_routes.txt
+          # Images: strip hash (everything from first dot) to get stable base names
+          # e.g. poster_full.02ig6s_80ei58.jpg -> poster_full
+          # Prevents false positives when Rockstar rebuilds and all hashes rotate
+          grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|svg|webp)' /tmp/page.html \
+            | sed 's/\..*//' | sort -u > /tmp/curr_images.txt
 
-          # Compare with previous
-          NEW_IMAGES=$(diff monitor-images.txt /tmp/curr_images.txt 2>/dev/null | grep '^>' | sed 's/^> //') || true
-          NEW_ROUTES=$(diff monitor-routes.txt /tmp/curr_routes.txt 2>/dev/null | grep '^>' | sed 's/^> //') || true
+          # JS chunks: track count and names separately from turbopack
+          grep -oP '/_next/static/chunks/\K(?!turbopack)[^"]+\.js' /tmp/page.html \
+            | sort -u > /tmp/curr_chunks.txt
+          TURBOPACK_NEW=$(grep -oP '/_next/static/chunks/\Kturbopack[^"]+\.js' /tmp/page.html | head -1)
+          TURBOPACK_OLD=$(cat monitor-turbopack.txt 2>/dev/null || echo "none")
 
-          TIME=$(date -u '%d %b %Y at %H:%M UTC')
+          # Nav routes
+          grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | grep -v '_next' \
+            | sort -u > /tmp/curr_routes.txt
 
-          # Build embed fields - only show new items
-          if [ -n "$NEW_IMAGES" ]; then
-            IMAGES_STR=$(echo "$NEW_IMAGES" | awk -v b="$BASE" '{print "• [" $0 "](" b $0 ")"}' | head -20)
+          # Key visible text: release dates, CTAs
+          grep -oP '(Coming [A-Z][a-z]|Available Now|Pre-order|Buy Now|November [0-9]|June [0-9])[^"<]{0,60}' /tmp/page.html \
+            | sort -u | head -10 > /tmp/curr_text.txt
+
+          # Diff everything
+          NEW_IMAGES=$(diff   monitor-images.txt /tmp/curr_images.txt 2>/dev/null | grep '^>' | sed 's/^> //' || true)
+          REM_IMAGES=$(diff   monitor-images.txt /tmp/curr_images.txt 2>/dev/null | grep '^<' | sed 's/^< //' || true)
+          NEW_CHUNKS=$(diff   monitor-chunks.txt /tmp/curr_chunks.txt 2>/dev/null | grep '^>' | sed 's/^> //' || true)
+          REM_CHUNKS=$(diff   monitor-chunks.txt /tmp/curr_chunks.txt 2>/dev/null | grep '^<' | sed 's/^< //' || true)
+          NEW_ROUTES=$(diff   monitor-routes.txt /tmp/curr_routes.txt 2>/dev/null | grep '^>' | sed 's/^> //' || true)
+          REM_ROUTES=$(diff   monitor-routes.txt /tmp/curr_routes.txt 2>/dev/null | grep '^<' | sed 's/^< //' || true)
+          TEXT_CHANGES=$(diff monitor-text.txt   /tmp/curr_text.txt   2>/dev/null | grep '^>' | sed 's/^> //' || true)
+
+          OLD_COUNT=$(wc -l < monitor-chunks.txt 2>/dev/null | tr -d ' ' || echo 0)
+          NEW_COUNT=$(wc -l < /tmp/curr_chunks.txt | tr -d ' ')
+          CHUNK_DELTA=$((NEW_COUNT - OLD_COUNT))
+          ADDED_C=$(echo "$NEW_CHUNKS" | grep -c . 2>/dev/null || echo 0)
+          REMOVED_C=$(echo "$REM_CHUNKS" | grep -c . 2>/dev/null || echo 0)
+
+          # Determine change type
+          IS_CONTENT=false
+          [ -n "$NEW_IMAGES" ]     && IS_CONTENT=true
+          [ -n "$REM_IMAGES" ]     && IS_CONTENT=true
+          [ -n "$NEW_ROUTES" ]     && IS_CONTENT=true
+          [ -n "$REM_ROUTES" ]     && IS_CONTENT=true
+          [ -n "$TEXT_CHANGES" ]   && IS_CONTENT=true
+          [ "$CHUNK_DELTA" -gt 0 ] && IS_CONTENT=true
+
+          # Build Discord message
+          if [ "$IS_CONTENT" = true ]; then
+            MSG="🚨 **GTA VI site updated — content change detected**"
           else
-            IMAGES_STR="None"
+            MSG="🔄 **GTA VI site updated — backend/rebuild only**"
           fi
+          MSG="$MSG | $TIME\n\n"
 
           if [ -n "$NEW_ROUTES" ]; then
-            ROUTES_STR=$(echo "$NEW_ROUTES" | awk '{print "• " $0}')
-          else
-            ROUTES_STR="None"
+            MSG="${MSG}🗺️ **New nav links:**\n$(echo "$NEW_ROUTES" | sed 's|^|• /VI/|')\n\n"
+          fi
+          if [ -n "$REM_ROUTES" ]; then
+            MSG="${MSG}🗺️ **Removed nav links:**\n$(echo "$REM_ROUTES" | sed 's|^|• /VI/|')\n\n"
           fi
 
-          PAYLOAD=$(jq -n \
-            --arg time "$TIME" \
-            --arg images "$IMAGES_STR" \
-            --arg routes "$ROUTES_STR" \
-            '{content: "@everyone", embeds: [{title: "GTA VI Site Updated", url: "https://www.rockstargames.com/VI/", color: 16711680, fields: [{name: "Detected at", value: $time, inline: false}, {name: "New Images", value: ($images | .[0:1020]), inline: false}, {name: "New Page Routes", value: $routes, inline: false}], footer: {text: "GTA VI Monitor"}}], allowed_mentions: {parse: ["everyone"]}}')
-          curl -s -H "Content-Type: application/json" -d "$PAYLOAD" "$DISCORD_WEBHOOK"
+          if [ -n "$TEXT_CHANGES" ]; then
+            MSG="${MSG}📝 **Page text changed** (date, CTAs):\n$(echo "$TEXT_CHANGES" | sed 's/^/• /' | head -5)\n\n"
+          fi
 
-          # Save current state
-          cp /tmp/curr_images.txt monitor-images.txt
-          cp /tmp/curr_routes.txt monitor-routes.txt
-          echo "$NEW_ETAG" > etag.txt
-          git config user.name "github-actions[bot]"
+          if [ -n "$NEW_IMAGES" ]; then
+            COUNT=$(echo "$NEW_IMAGES" | wc -l | tr -d ' ')
+            MSG="${MSG}🖼️ **${COUNT} new image(s):**\n$(echo "$NEW_IMAGES" | sed 's/^/• /' | head -15)\n\n"
+          fi
+          if [ -n "$REM_IMAGES" ]; then
+            COUNT=$(echo "$REM_IMAGES" | wc -l | tr -d ' ')
+            MSG="${MSG}🗑️ **${COUNT} removed image(s):**\n$(echo "$REM_IMAGES" | sed 's/^/• /' | head -10)\n\n"
+          fi
+
+          if [ "$CHUNK_DELTA" -gt 0 ]; then
+            MSG="${MSG}⚙️ **+${CHUNK_DELTA} net JS chunk(s)** (${ADDED_C} added / ${REMOVED_C} removed) — new code or pages likely staged\n"
+          elif [ "$CHUNK_DELTA" -lt 0 ]; then
+            CHUNK_DELTA_ABS=$(echo $CHUNK_DELTA | tr -d '-')
+            MSG="${MSG}⚙️ **-${CHUNK_DELTA_ABS} net JS chunk(s)** (${ADDED_C} added / ${REMOVED_C} removed) — code removed or consolidated\n"
+          elif [ "$ADDED_C" -gt 0 ] || [ "$TURBOPACK_NEW" != "$TURBOPACK_OLD" ]; then
+            MSG="${MSG}⚙️ **JS bundle rebuilt** — ${ADDED_C} chunk(s) swapped, net change: 0. Likely a hotfix or dependency update.\n"
+          else
+            MSG="${MSG}⚙️ **No JS changes** — ETag may reflect a CDN or server-side config change.\n"
+          fi
+
+          MSG="${MSG}\nhttps://www.rockstargames.com/VI/"
+
+          TRIMMED=$(printf '%s' "$(printf "$MSG")" | head -c 1950)
+          curl -s -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n --arg content "$TRIMMED" '{content: $content}')"
+
+          # Save new state
+          cp /tmp/curr_images.txt  monitor-images.txt
+          cp /tmp/curr_chunks.txt  monitor-chunks.txt
+          cp /tmp/curr_routes.txt  monitor-routes.txt
+          cp /tmp/curr_text.txt    monitor-text.txt
+          echo "$TURBOPACK_NEW"  > monitor-turbopack.txt
+          echo "$NEW_ETAG"       > etag.txt
+
+          # Append to scan-findings log
+          {
+            echo "=== $(date -u '+%Y-%m-%dT%H:%M:%SZ') ==="
+            echo "ETag: $NEW_ETAG"
+            echo "Type: $([ "$IS_CONTENT" = true ] && echo 'content' || echo 'backend')"
+            [ -n "$NEW_IMAGES" ]   && echo "New images:     $NEW_IMAGES"
+            [ -n "$REM_IMAGES" ]   && echo "Removed images: $REM_IMAGES"
+            [ -n "$NEW_ROUTES" ]   && echo "New routes:     $NEW_ROUTES"
+            [ -n "$TEXT_CHANGES" ] && echo "Text changes:   $TEXT_CHANGES"
+            echo "JS chunks: ${NEW_COUNT} total, delta: ${CHUNK_DELTA} (+${ADDED_C}/-${REMOVED_C})"
+            echo ""
+          } >> scan-findings.txt
+
+          # Pull first to avoid race condition if two runs overlap
+          git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add etag.txt monitor-images.txt monitor-routes.txt
+          git pull --rebase origin main
+          git add etag.txt monitor-images.txt monitor-chunks.txt monitor-routes.txt \
+                  monitor-text.txt monitor-turbopack.txt scan-findings.txt
           git commit -m "ETag updated: $NEW_ETAG"
           git push
 
       - name: No change
         if: steps.fetch.outputs.etag == steps.stored.outputs.etag
-        run: echo "No change. ETag unchanged."
+        run: echo "No change. ETag: ${{ steps.fetch.outputs.etag }}"
