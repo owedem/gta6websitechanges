@@ -37,8 +37,12 @@ jobs:
         env:
           # --- AI analysis layer (optional; the workflow still detects, diffs,
           # commits, and posts a non-AI summary without any key) ---
-          # FREE option (preferred when set): Google Gemini. Get a no-cost key
-          # at https://aistudio.google.com/apikey — no credit card needed.
+          # FREE option (preferred): Groq — generous free tier, no card, works
+          # everywhere. Key: https://console.groq.com/keys
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GROQ_MODEL: llama-3.3-70b-versatile
+          # FREE option: Google Gemini (low/regional free limits). Key:
+          # https://aistudio.google.com/apikey
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: gemini-2.0-flash
           # PAID option: Anthropic Claude. Only used if GEMINI_API_KEY is unset.

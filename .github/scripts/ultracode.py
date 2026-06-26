@@ -69,6 +69,10 @@ ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "").strip()
 # Anthropic, so the AI write-ups cost nothing.
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
+# Another free option: Groq (OpenAI-compatible, generous free tier, no card).
+# Preferred over Gemini when set.
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "").strip()
+GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
 # When set (via the workflow's "selftest" dispatch input), post a synthetic
 # alert through the real pipeline to verify the webhook + AI key.
 SELFTEST = os.environ.get("SELFTEST", "").strip().lower() in ("1", "true", "yes")
@@ -322,15 +326,70 @@ LAST_AI_ERROR = None
 
 
 def analyse(changed_surfaces, diff_bundle):
-    """Dispatch to whichever LLM provider is configured. Free Gemini is preferred
-    over (paid) Anthropic. Returns plain-English analysis or None."""
+    """Dispatch to whichever LLM provider is configured. Free providers (Groq,
+    then Gemini) are preferred over paid Anthropic. Returns analysis or None."""
+    if GROQ_API_KEY:
+        return analyse_with_groq(changed_surfaces, diff_bundle)
     if GEMINI_API_KEY:
         return analyse_with_gemini(changed_surfaces, diff_bundle)
     if ANTHROPIC_API_KEY:
         return analyse_with_claude(changed_surfaces, diff_bundle)
-    sys.stderr.write("[info] No LLM key set (GEMINI_API_KEY / ANTHROPIC_API_KEY) "
-                     "— skipping AI analysis.\n")
+    sys.stderr.write("[info] No LLM key set (GROQ_API_KEY / GEMINI_API_KEY / "
+                     "ANTHROPIC_API_KEY) — skipping AI analysis.\n")
     return None
+
+
+def _http_error_reason(e):
+    """Pull a human-readable reason out of an HTTPError response body."""
+    body = ""
+    try:
+        body = e.read().decode("utf-8", "replace")
+    except Exception:
+        pass
+    try:
+        return json.loads(body).get("error", {}).get("message", "") or body[:240]
+    except Exception:
+        return body[:240]
+
+
+def analyse_with_groq(changed_surfaces, diff_bundle):
+    """Free option: Groq (OpenAI-compatible chat completions) over raw HTTP."""
+    global LAST_AI_ERROR
+    payload = {
+        "model": GROQ_MODEL,
+        "messages": [
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": _user_content(changed_surfaces, diff_bundle)},
+        ],
+        "temperature": 0.7,
+        "max_tokens": 1500,
+    }
+    try:
+        req = urllib.request.Request(
+            "https://api.groq.com/openai/v1/chat/completions",
+            data=json.dumps(payload).encode("utf-8"),
+            headers={"Content-Type": "application/json",
+                     "User-Agent": USER_AGENT,
+                     "Authorization": f"Bearer {GROQ_API_KEY}"},
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            data = json.loads(resp.read())
+    except urllib.error.HTTPError as e:
+        LAST_AI_ERROR = f"HTTP {e.code} — {_http_error_reason(e)}"
+        sys.stderr.write(f"[warn] Groq: {LAST_AI_ERROR}\n")
+        return None
+    except Exception as e:
+        LAST_AI_ERROR = f"request failed — {e}"
+        sys.stderr.write(f"[warn] Groq: {LAST_AI_ERROR}\n")
+        return None
+    try:
+        text = data["choices"][0]["message"]["content"].strip()
+    except Exception:
+        LAST_AI_ERROR = f"unexpected response: {json.dumps(data)[:200]}"
+        sys.stderr.write(f"[warn] Groq: {LAST_AI_ERROR}\n")
+        return None
+    return text or None
 
 
 def analyse_with_gemini(changed_surfaces, diff_bundle):
@@ -349,22 +408,13 @@ def analyse_with_gemini(changed_surfaces, diff_bundle):
     try:
         req = urllib.request.Request(
             url, data=json.dumps(payload).encode("utf-8"),
-            headers={"Content-Type": "application/json"}, method="POST",
+            headers={"Content-Type": "application/json", "User-Agent": USER_AGENT},
+            method="POST",
         )
         with urllib.request.urlopen(req, timeout=60) as resp:
             data = json.loads(resp.read())
     except urllib.error.HTTPError as e:
-        body = ""
-        try:
-            body = e.read().decode("utf-8", "replace")
-        except Exception:
-            pass
-        reason = body
-        try:
-            reason = json.loads(body).get("error", {}).get("message", body)
-        except Exception:
-            pass
-        LAST_AI_ERROR = f"HTTP {e.code} — {reason[:240]}"
+        LAST_AI_ERROR = f"HTTP {e.code} — {_http_error_reason(e)}"
         sys.stderr.write(f"[warn] Gemini: {LAST_AI_ERROR}\n")
         return None
     except Exception as e:
@@ -501,7 +551,14 @@ def run_selftest(stamp):
         "--- home/routes (before)\n+++ home/routes (after)\n@@ -1,2 +1,3 @@\n"
         " /VI/\n+/VI/buy\n /VI/only-in-leonida"
     )
-    provider = "Gemini" if GEMINI_API_KEY else ("Claude" if ANTHROPIC_API_KEY else "none")
+    if GROQ_API_KEY:
+        provider = "Groq"
+    elif GEMINI_API_KEY:
+        provider = "Gemini"
+    elif ANTHROPIC_API_KEY:
+        provider = "Claude"
+    else:
+        provider = "none"
     analysis = analyse(changed, bundle)
     note = (f"🧪 **GTA Bot Ultracode — SELF-TEST** | {stamp}\n"
             f"_(synthetic change, NOT real — just verifying the pipeline. "
