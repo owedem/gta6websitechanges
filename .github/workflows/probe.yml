@@ -2,7 +2,7 @@ name: GTA VI URL Probe
 
 on:
   schedule:
-    - cron: '0 */1 * * *'
+    - cron: '0 */2 * * *'
   workflow_dispatch:
 
 jobs:
@@ -20,12 +20,10 @@ jobs:
         run: |
           TIME=$(date -u '+%d %b %Y at %H:%M UTC')
 
-          # Get catch-all reference sizes — paths that return 200 but aren't real pages
           HOME_SIZE=$(curl -sL --max-time 15 -o /dev/null -w "%{size_download}" "https://www.rockstargames.com/VI/")
           OIL_SIZE=$(curl -sL --max-time 15 -o /dev/null -w "%{size_download}" "https://www.rockstargames.com/VI/only-in-leonida")
           echo "Catch-all sizes: homepage=${HOME_SIZE} only-in-leonida=${OIL_SIZE}"
 
-          # Initialise known pages file on first run
           KNOWN="probe-known.txt"
           if [ ! -f "$KNOWN" ]; then
             printf 'only-in-leonida\nmedia\neditions\njason\nlucia\nambrosia\nboobie\nbrian\ncal\ndrequan\nraul\ndimez\nvice-city\nport-gellhorn\nleonida-keys\ngrassrivers\nkalaga\ndownloads\n' > "$KNOWN"
@@ -49,7 +47,6 @@ jobs:
           NEW_PAGES=""
 
           for path in "${PATHS[@]}"; do
-            # Skip already known paths
             grep -q "^${path}$" "$KNOWN" && continue
 
             RESULT=$(curl -sL --max-time 10 -o /dev/null -w "%{http_code} %{size_download}" "https://www.rockstargames.com/VI/$path")
@@ -57,7 +54,6 @@ jobs:
             BYTES=$(echo "$RESULT" | awk '{print $2}')
 
             if [ "$STATUS" = "200" ]; then
-              # Check it's not just a catch-all response
               HOME_DIFF=$(( HOME_SIZE - BYTES )); [ $HOME_DIFF -lt 0 ] && HOME_DIFF=$(( -HOME_DIFF ))
               OIL_DIFF=$(( OIL_SIZE - BYTES ));  [ $OIL_DIFF -lt 0 ] && OIL_DIFF=$(( -OIL_DIFF ))
 
@@ -68,23 +64,25 @@ jobs:
             fi
           done
 
-          if [ -z "$NEW_PAGES" ]; then
+          # Discord alert only when new pages found
+          if [ -n "$NEW_PAGES" ]; then
+            MSG="🗺️ **New GTA VI page(s) live!** | ${TIME}\n\n$(printf "$NEW_PAGES")\nhttps://www.rockstargames.com/VI/"
+            curl -s -X POST "$DISCORD_WEBHOOK" \
+              -H "Content-Type: application/json" \
+              -d "$(jq -n --arg content "$MSG" '{content: $content}')"
+          else
             echo "No new pages found."
-            exit 0
           fi
 
-          MSG="🗺️ **New GTA VI page(s) live!** | ${TIME}\n\n$(printf "$NEW_PAGES")\nhttps://www.rockstargames.com/VI/"
-
-          curl -s -X POST "$DISCORD_WEBHOOK" \
-            -H "Content-Type: application/json" \
-            -d "$(jq -n --arg content "$MSG" '{content: $content}')"
-
+          # Always commit probe-known.txt — creates it on first run, updates on discovery
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git pull --rebase --autostash origin main
           git add "$KNOWN"
-          git commit -m "New VI pages detected"
-          git push
-
-      - name: No new pages
-        run: echo "Probe complete."
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+          else
+            COMMIT_MSG=$([ -n "$NEW_PAGES" ] && echo "New VI pages detected" || echo "Initialise probe-known.txt")
+            git commit -m "$COMMIT_MSG"
+            git push
+          fi
