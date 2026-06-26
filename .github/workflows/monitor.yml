@@ -69,8 +69,8 @@ jobs:
           OLD_COUNT=$(wc -l < monitor-chunks.txt 2>/dev/null | tr -d ' ' || echo 0)
           NEW_COUNT=$(wc -l < /tmp/curr_chunks.txt | tr -d ' ')
           CHUNK_DELTA=$((NEW_COUNT - OLD_COUNT))
-          ADDED_C=$(echo "$NEW_CHUNKS" | grep -c . 2>/dev/null || echo 0)
-          REMOVED_C=$(echo "$REM_CHUNKS" | grep -c . 2>/dev/null || echo 0)
+          ADDED_C=$(printf '%s' "$NEW_CHUNKS" | grep -c . || echo 0)
+          REMOVED_C=$(printf '%s' "$REM_CHUNKS" | grep -c . || echo 0)
 
           # Determine change type
           IS_CONTENT=false
