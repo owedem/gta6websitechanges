@@ -29,7 +29,6 @@ jobs:
           grep -rhoP '"/VI/[a-zA-Z0-9_\-/]+"' /tmp/chunks/ 2>/dev/null | sort -u | grep -v "_next" >> /tmp/new.txt || echo "none" >> /tmp/new.txt
           echo '' >> /tmp/new.txt
           echo 'DATES:' >> /tmp/new.txt
-          # Only match real date formats: 2026-09-17, 2026/09/17, Sep 2026, September 2026, 17 Sep 2026
           grep -rhoP '202[456789]-\d{2}-\d{2}' /tmp/chunks/ 2>/dev/null | sort -u >> /tmp/new.txt || true
           grep -rhoP '202[456789]/\d{2}/\d{2}' /tmp/chunks/ 2>/dev/null | sort -u >> /tmp/new.txt || true
           grep -rhoP '(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]* 202[456789]' /tmp/chunks/ 2>/dev/null | sort -u >> /tmp/new.txt || true
@@ -42,7 +41,7 @@ jobs:
           echo 'API ENDPOINTS:' >> /tmp/new.txt
           grep -rhoP 'https?://[^"\x27\s]+rockstar[^"\x27\s]+' /tmp/chunks/ 2>/dev/null | sort -u >> /tmp/new.txt || echo "none" >> /tmp/new.txt
 
-          PREV=scan-findings.txt
+          PREV=deep-scan-findings.txt
           if [ -f "$PREV" ] && diff -q "$PREV" /tmp/new.txt > /dev/null 2>&1; then
             echo "No changes. Skipping Discord."
             exit 0
@@ -56,11 +55,12 @@ jobs:
 
           if [ -z "$NEWLINES" ]; then
             echo "Only structural changes, no new content. Skipping Discord."
-            cp /tmp/new.txt scan-findings.txt
+            cp /tmp/new.txt deep-scan-findings.txt
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add scan-findings.txt
-            git commit -m "Scan findings updated" && git push || true
+            git pull --rebase --autostash origin main
+            git add deep-scan-findings.txt
+            git commit -m "Deep scan findings updated" && git push || true
             exit 0
           fi
 
@@ -110,9 +110,10 @@ jobs:
             sleep 1
           done
 
-          cp /tmp/new.txt scan-findings.txt
+          cp /tmp/new.txt deep-scan-findings.txt
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add scan-findings.txt
-          git commit -m "Scan findings updated"
+          git pull --rebase --autostash origin main
+          git add deep-scan-findings.txt
+          git commit -m "Deep scan findings updated"
           git push
