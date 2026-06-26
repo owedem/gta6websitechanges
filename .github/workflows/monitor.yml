@@ -22,9 +22,18 @@ jobs:
           python3 << 'PYEOF' > /tmp/new_counts.txt
           import re
           html = open('/tmp/media_page.html').read()
-          for label in ['Videos', 'Screenshots', 'Artwork']:
-              m = re.search(label + r'.*?aria-hidden=["\']true["\']>(\d+)', html, re.DOTALL)
-              print(label.lower() + '=' + (m.group(1) if m else '0'))
+          matches = re.findall(
+              r'>([A-Z][^<>"]{1,60}?)\s*<(?:div|span)[^>]+aria-hidden=["\']true["\']>\s*(\d+)\s*</',
+              html
+          )
+          seen = set()
+          for text, count in matches:
+              text = text.strip()
+              if 2 < len(text) < 60:
+                  key = re.sub(r'[^a-z0-9]+', '_', text.lower()).strip('_')
+                  if key not in seen:
+                      seen.add(key)
+                      print(f'{key}={count}')
           PYEOF
 
           echo "Counts found:"; cat /tmp/new_counts.txt
@@ -32,20 +41,14 @@ jobs:
           COUNTS_FILE="monitor-media-counts.txt"
           touch "$COUNTS_FILE"
 
-          OLD_VIDEOS=$(grep -oP '(?<=videos=)\d+' "$COUNTS_FILE" || echo "0")
-          OLD_SCREENSHOTS=$(grep -oP '(?<=screenshots=)\d+' "$COUNTS_FILE" || echo "0")
-          OLD_ARTWORK=$(grep -oP '(?<=artwork=)\d+' "$COUNTS_FILE" || echo "0")
-          NEW_VIDEOS=$(grep -oP '(?<=videos=)\d+' /tmp/new_counts.txt || echo "0")
-          NEW_SCREENSHOTS=$(grep -oP '(?<=screenshots=)\d+' /tmp/new_counts.txt || echo "0")
-          NEW_ARTWORK=$(grep -oP '(?<=artwork=)\d+' /tmp/new_counts.txt || echo "0")
-
           CHANGES=""
-          [ "$NEW_VIDEOS" -gt "$OLD_VIDEOS" ] 2>/dev/null && \
-            CHANGES="${CHANGES}📹 Videos: ${OLD_VIDEOS} → ${NEW_VIDEOS}\n"
-          [ "$NEW_SCREENSHOTS" -gt "$OLD_SCREENSHOTS" ] 2>/dev/null && \
-            CHANGES="${CHANGES}📸 Screenshots: ${OLD_SCREENSHOTS} → ${NEW_SCREENSHOTS}\n"
-          [ "$NEW_ARTWORK" -gt "$OLD_ARTWORK" ] 2>/dev/null && \
-            CHANGES="${CHANGES}🎨 Artwork: ${OLD_ARTWORK} → ${NEW_ARTWORK}\n"
+          while IFS='=' read -r key newval; do
+            oldval=$(grep -oP "(?<=${key}=)\d+" "$COUNTS_FILE" 2>/dev/null || echo "0")
+            if [ -n "$newval" ] && [ "$newval" -gt "$oldval" ] 2>/dev/null; then
+              label=$(echo "$key" | tr '_' ' ')
+              CHANGES="${CHANGES}• ${label}: ${oldval} → ${newval}\n"
+            fi
+          done < /tmp/new_counts.txt
 
           if [ -n "$CHANGES" ]; then
             TIME=$(date -u '+%d %b %Y at %H:%M UTC')
