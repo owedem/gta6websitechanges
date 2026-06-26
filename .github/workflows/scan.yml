@@ -39,7 +39,7 @@ jobs:
           grep -rhoP '.{0,50}(preorder|pre-order|pre_order).{0,50}' /tmp/chunks/ 2>/dev/null | grep -ivP "pointerCapture|releaseProxy|releaseLock|onRelease|releasePointer|unlockAudioContext|launchpad|launcher" | sort -u | head -20 >> /tmp/new.txt || echo "none" >> /tmp/new.txt
           echo '' >> /tmp/new.txt
           echo 'API ENDPOINTS:' >> /tmp/new.txt
-          grep -rhoP 'https?://[^"\x27\s]+rockstar[^"\x27\s]+' /tmp/chunks/ 2>/dev/null | sort -u >> /tmp/new.txt || echo "none" >> /tmp/new.txt
+          grep -rhoP 'https?://[^"\x27\s]+rockstar[^"\x27\s]+/VI/[^"\x27\s]*' /tmp/chunks/ 2>/dev/null | sort -u >> /tmp/new.txt || echo "none" >> /tmp/new.txt
 
           PREV=deep-scan-findings.txt
           if [ -f "$PREV" ] && diff -q "$PREV" /tmp/new.txt > /dev/null 2>&1; then
