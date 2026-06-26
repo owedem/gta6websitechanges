@@ -1,3 +1,4 @@
+
 name: GTA VI Site Monitor
 
 on:
@@ -13,6 +14,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Track media counts
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
@@ -53,9 +55,10 @@ jobs:
           if [ -n "$CHANGES" ]; then
             TIME=$(date -u '+%d %b %Y at %H:%M UTC')
             MSG="📺 **GTA VI media page updated** | ${TIME}\n\n${CHANGES}\nhttps://www.rockstargames.com/VI/media"
+            CONTENT=$(printf '%b' "$MSG")
             curl -s -X POST "$DISCORD_WEBHOOK" \
               -H "Content-Type: application/json" \
-              -d "$(jq -n --arg content "$MSG" '{content: $content}')"
+              -d "$(jq -n --arg content "$CONTENT" '{content: $content}')"
           else
             echo "No media count changes."
           fi
@@ -66,6 +69,7 @@ jobs:
           git pull --rebase --autostash origin main
           git add "$COUNTS_FILE"
           git diff --cached --quiet || git commit -m "Media counts updated" && git push || true
+
       - name: Fetch current ETag
         id: fetch
         run: |
@@ -89,27 +93,20 @@ jobs:
           curl -sL https://www.rockstargames.com/VI/ > /tmp/page.html
           TIME=$(date -u '+%d %b %Y at %H:%M UTC')
 
-          # Images: strip hash (everything from first dot) to get stable base names
-          # e.g. poster_full.02ig6s_80ei58.jpg -> poster_full
-          # Prevents false positives when Rockstar rebuilds and all hashes rotate
           grep -oP '/_next/static/media/\K[^"?]+\.(jpg|png|svg|webp)' /tmp/page.html \
             | sed 's/\..*//' | sort -u > /tmp/curr_images.txt
 
-          # JS chunks: track count and names separately from turbopack
           grep -oP '/_next/static/chunks/\K(?!turbopack)[^"]+\.js' /tmp/page.html \
             | sort -u > /tmp/curr_chunks.txt
           TURBOPACK_NEW=$(grep -oP '/_next/static/chunks/\Kturbopack[^"]+\.js' /tmp/page.html | head -1)
           TURBOPACK_OLD=$(cat monitor-turbopack.txt 2>/dev/null || echo "none")
 
-          # Nav routes
           grep -oP 'href="/VI/\K[^"]+' /tmp/page.html | grep -v '_next' \
             | sort -u > /tmp/curr_routes.txt
 
-          # Key visible text: release dates, CTAs
           grep -oP '(Coming [A-Z][a-z]|Available Now|Pre-order|Buy Now|November [0-9]|June [0-9])[^"<]{0,60}' /tmp/page.html \
             | sort -u | head -10 > /tmp/curr_text.txt
 
-          # Diff everything
           NEW_IMAGES=$(diff   monitor-images.txt /tmp/curr_images.txt 2>/dev/null | grep '^>' | sed 's/^> //' || true)
           REM_IMAGES=$(diff   monitor-images.txt /tmp/curr_images.txt 2>/dev/null | grep '^<' | sed 's/^< //' || true)
           NEW_CHUNKS=$(diff   monitor-chunks.txt /tmp/curr_chunks.txt 2>/dev/null | grep '^>' | sed 's/^> //' || true)
@@ -124,7 +121,6 @@ jobs:
           ADDED_C=$(printf '%s' "$NEW_CHUNKS" | grep -c . || echo 0)
           REMOVED_C=$(printf '%s' "$REM_CHUNKS" | grep -c . || echo 0)
 
-          # Determine change type
           IS_CONTENT=false
           [ -n "$NEW_IMAGES" ]     && IS_CONTENT=true
           [ -n "$REM_IMAGES" ]     && IS_CONTENT=true
@@ -133,7 +129,6 @@ jobs:
           [ -n "$TEXT_CHANGES" ]   && IS_CONTENT=true
           [ "$CHUNK_DELTA" -gt 0 ] && IS_CONTENT=true
 
-          # Build Discord message
           if [ "$IS_CONTENT" = true ]; then
             MSG="🚨 **GTA VI site updated — content change detected**"
           else
@@ -147,11 +142,9 @@ jobs:
           if [ -n "$REM_ROUTES" ]; then
             MSG="${MSG}🗺️ **Removed nav links:**\n$(echo "$REM_ROUTES" | sed 's|^|• /VI/|')\n\n"
           fi
-
           if [ -n "$TEXT_CHANGES" ]; then
             MSG="${MSG}📝 **Page text changed** (date, CTAs):\n$(echo "$TEXT_CHANGES" | sed 's/^/• /' | head -5)\n\n"
           fi
-
           if [ -n "$NEW_IMAGES" ]; then
             COUNT=$(echo "$NEW_IMAGES" | wc -l | tr -d ' ')
             MSG="${MSG}🖼️ **${COUNT} new image(s):**\n$(echo "$NEW_IMAGES" | sed 's/^/• /' | head -15)\n\n"
@@ -175,12 +168,10 @@ jobs:
           MSG="${MSG}\nhttps://www.rockstargames.com/VI/"
 
           TRIMMED=$(printf '%s' "$(printf "$MSG")" | head -c 1950)
-            CONTENT=$(printf '%b' "$MSG")
-            curl -s -X POST "$DISCORD_WEBHOOK" \
-              -H "Content-Type: application/json" \
-              -d "$(jq -n --arg content "$CONTENT" '{content: $content}')"
+          curl -s -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n --arg content "$TRIMMED" '{content: $content}')"
 
-          # Save new state
           cp /tmp/curr_images.txt  monitor-images.txt
           cp /tmp/curr_chunks.txt  monitor-chunks.txt
           cp /tmp/curr_routes.txt  monitor-routes.txt
@@ -188,7 +179,6 @@ jobs:
           echo "$TURBOPACK_NEW"  > monitor-turbopack.txt
           echo "$NEW_ETAG"       > etag.txt
 
-          # Append to scan-findings log
           {
             echo "=== $(date -u '+%Y-%m-%dT%H:%M:%SZ') ==="
             echo "ETag: $NEW_ETAG"
@@ -201,7 +191,6 @@ jobs:
             echo ""
           } >> scan-findings.txt
 
-          # Pull first to avoid race condition if two runs overlap
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git pull --rebase --autostash origin main
