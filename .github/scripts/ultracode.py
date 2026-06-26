@@ -318,7 +318,7 @@ def _user_content(changed_surfaces, diff_bundle):
     )
 
 
-# Records the most recent AI-provider failure reason; surfaced by the self-test.
+# Records the most recent AI-provider failure reason (logged to the Actions log).
 LAST_AI_ERROR = None
 
 
