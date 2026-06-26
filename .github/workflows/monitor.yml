@@ -151,7 +151,7 @@ jobs:
           # Pull first to avoid race condition if two runs overlap
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase origin main
+          git pull --rebase --autostash origin main
           git add etag.txt monitor-images.txt monitor-chunks.txt monitor-routes.txt \
                   monitor-text.txt monitor-turbopack.txt scan-findings.txt
           git commit -m "ETag updated: $NEW_ETAG"
