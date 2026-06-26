@@ -20,15 +20,15 @@ jobs:
           curl -sL --max-time 15 "https://www.rockstargames.com/VI/media" > /tmp/media_page.html
 
           python3 << 'PYEOF' > /tmp/new_counts.txt
-          import re
-          html = open('/tmp/media_page.html').read()
+          import re, html as html_parser
+          page = open('/tmp/media_page.html').read()
           matches = re.findall(
               r'>([A-Z][^<>"]{1,60}?)\s*<(?:div|span)[^>]+aria-hidden=["\']true["\']>\s*(\d+)\s*</',
-              html
+              page
           )
           seen = set()
           for text, count in matches:
-              text = text.strip()
+              text = html_parser.unescape(text.strip())
               if 2 < len(text) < 60:
                   key = re.sub(r'[^a-z0-9]+', '_', text.lower()).strip('_')
                   if key not in seen:
