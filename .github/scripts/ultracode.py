@@ -31,10 +31,16 @@ when an alert fires, so cost stays near zero.
 Snapshots live under STATE_DIR (committed to the repo) so each run diffs against
 the last.
 
+The AI write-up can be powered by a FREE provider (Google Gemini) or a paid one
+(Anthropic Claude). Gemini wins if both keys are set. With no key at all, the
+workflow still detects/diffs/commits and posts a non-AI summary.
+
 Env:
-  ANTHROPIC_API_KEY   - enables the AI analysis layer (degrades gracefully if absent)
-  DISCORD_WEBHOOK     - where to post (degrades gracefully if absent)
+  GEMINI_API_KEY      - free AI layer via Google Gemini (preferred if set)
+  GEMINI_MODEL        - Gemini model id (default: gemini-2.0-flash)
+  ANTHROPIC_API_KEY   - paid AI layer via Claude (used only if no GEMINI_API_KEY)
   ANALYSIS_MODEL      - Claude model id (default: claude-opus-4-8)
+  DISCORD_WEBHOOK     - where to post (degrades gracefully if absent)
   STATE_DIR           - snapshot directory (default: ultracode-state)
   LOG_FILE            - changelog path (default: ultracode-log.md)
 """
@@ -59,6 +65,10 @@ LOG_FILE = os.environ.get("LOG_FILE", "ultracode-log.md")
 MODEL = os.environ.get("ANALYSIS_MODEL", "claude-opus-4-8")
 DISCORD_WEBHOOK = os.environ.get("DISCORD_WEBHOOK", "").strip()
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "").strip()
+# Free alternative: Google Gemini. If GEMINI_API_KEY is set it is preferred over
+# Anthropic, so the AI write-ups cost nothing.
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
 
 USER_AGENT = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -297,21 +307,66 @@ present speculation as fact.\
 """
 
 
-def analyse_with_claude(changed_surfaces, diff_bundle):
-    """Return Claude's plain-English analysis, or None if unavailable/failed."""
-    if not ANTHROPIC_API_KEY:
-        sys.stderr.write("[info] ANTHROPIC_API_KEY not set — skipping AI analysis.\n")
+def _user_content(changed_surfaces, diff_bundle):
+    return (
+        f"Surfaces with changes: {', '.join(changed_surfaces)}\n\n"
+        f"Here is the diff:\n\n{diff_bundle}"
+    )
+
+
+def analyse(changed_surfaces, diff_bundle):
+    """Dispatch to whichever LLM provider is configured. Free Gemini is preferred
+    over (paid) Anthropic. Returns plain-English analysis or None."""
+    if GEMINI_API_KEY:
+        return analyse_with_gemini(changed_surfaces, diff_bundle)
+    if ANTHROPIC_API_KEY:
+        return analyse_with_claude(changed_surfaces, diff_bundle)
+    sys.stderr.write("[info] No LLM key set (GEMINI_API_KEY / ANTHROPIC_API_KEY) "
+                     "— skipping AI analysis.\n")
+    return None
+
+
+def analyse_with_gemini(changed_surfaces, diff_bundle):
+    """Free option: Google Gemini API over raw HTTP (no SDK dependency)."""
+    url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
+           f"{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}")
+    payload = {
+        "systemInstruction": {"parts": [{"text": SYSTEM_PROMPT}]},
+        "contents": [{
+            "role": "user",
+            "parts": [{"text": _user_content(changed_surfaces, diff_bundle)}],
+        }],
+        "generationConfig": {"temperature": 0.7, "maxOutputTokens": 1500},
+    }
+    try:
+        req = urllib.request.Request(
+            url, data=json.dumps(payload).encode("utf-8"),
+            headers={"Content-Type": "application/json"}, method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            data = json.loads(resp.read())
+        cands = data.get("candidates") or []
+        if not cands:  # safety block or empty response
+            sys.stderr.write(f"[warn] Gemini returned no candidates: "
+                             f"{json.dumps(data)[:300]}\n")
+            return None
+        parts = cands[0].get("content", {}).get("parts", [])
+        text = "".join(p.get("text", "") for p in parts).strip()
+        return text or None
+    except Exception as e:
+        sys.stderr.write(f"[warn] Gemini analysis failed: {e}\n")
         return None
+
+
+def analyse_with_claude(changed_surfaces, diff_bundle):
+    """Paid option: Claude via the Anthropic SDK. Returns analysis or None."""
     try:
         import anthropic
     except Exception as e:
         sys.stderr.write(f"[warn] anthropic SDK unavailable: {e}\n")
         return None
 
-    user_content = (
-        f"Surfaces with changes: {', '.join(changed_surfaces)}\n\n"
-        f"Here is the diff:\n\n{diff_bundle}"
-    )
+    user_content = _user_content(changed_surfaces, diff_bundle)
 
     try:
         client = anthropic.Anthropic()
@@ -489,7 +544,7 @@ def main():
     diff_bundle = "\n\n".join(parts)
 
     changed_sorted = sorted(changed_surfaces)
-    analysis = analyse_with_claude(changed_sorted, diff_bundle)
+    analysis = analyse(changed_sorted, diff_bundle)
 
     header = f"🚨 **GTA Bot Ultracode — change detected** | {stamp}\n"
     if analysis:

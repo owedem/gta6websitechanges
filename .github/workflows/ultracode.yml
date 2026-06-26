@@ -30,14 +30,18 @@ jobs:
 
       - name: Run Ultracode
         env:
-          # AI analysis layer. Without it the workflow still detects, diffs,
-          # commits, and posts a non-AI summary.
+          # --- AI analysis layer (optional; the workflow still detects, diffs,
+          # commits, and posts a non-AI summary without any key) ---
+          # FREE option (preferred when set): Google Gemini. Get a no-cost key
+          # at https://aistudio.google.com/apikey — no credit card needed.
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: gemini-2.0-flash
+          # PAID option: Anthropic Claude. Only used if GEMINI_API_KEY is unset.
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANALYSIS_MODEL: claude-opus-4-8
           # Dedicated webhook (its own Discord channel) — no fallback, so this
           # workflow stays cleanly separate for A/B comparison with the others.
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_ULTRACODE }}
-          # Swap to claude-sonnet-4-6 or claude-haiku-4-5 here to cut cost.
-          ANALYSIS_MODEL: claude-opus-4-8
         run: python .github/scripts/ultracode.py
 
       - name: Commit snapshot state
