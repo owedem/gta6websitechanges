@@ -159,4 +159,4 @@ jobs:
 
       - name: No change
         if: steps.fetch.outputs.etag == steps.stored.outputs.etag
-        run: echo "No change. ETag: ${{ steps.fetch.outputs.etag }}
+        run: echo "No change - ETag unchanged."
