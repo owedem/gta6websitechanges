@@ -18,9 +18,15 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
-          curl -sL https://www.rockstargames.com/VI/ > /tmp/page.html
           mkdir -p /tmp/chunks
-          grep -oP '_next/static/chunks/[^"]+\.js' /tmp/page.html | sort -u | head -30 | while read chunk; do
+          for PAGE in \
+            "https://www.rockstargames.com/VI/" \
+            "https://www.rockstargames.com/VI/only-in-leonida" \
+            "https://www.rockstargames.com/VI/media" \
+            "https://www.rockstargames.com/VI/editions"; do
+            curl -sL --max-time 15 "$PAGE" >> /tmp/all_pages.html
+          done
+          grep -oP '_next/static/chunks/[^"]+\.js' /tmp/all_pages.html | sort -u | head -50 | while read chunk; do
             FNAME=$(basename "$chunk")
             curl -sL "https://www.rockstargames.com/VI/${chunk}" > "/tmp/chunks/${FNAME}"
           done
