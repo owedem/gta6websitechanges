@@ -1,0 +1,55 @@
+name: GTA Bot Ultracode
+
+# Forensic deep-diff of every GTA VI surface, with a plain-English AI analysis
+# layer. Runs independently of monitor.yml / scan.yml / probe.yml — different
+# schedule, different state files, its own Discord webhook — so it cannot
+# interfere with them and can be A/B compared against them.
+
+on:
+  schedule:
+    # :05 and :35 — offset from the others (which run at :00/:10/:20/:40) to
+    # avoid git push races on main.
+    - cron: '5,35 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ultracode:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install --quiet anthropic
+
+      - name: Run Ultracode
+        env:
+          # AI analysis layer. Without it the workflow still detects, diffs,
+          # commits, and posts a non-AI summary.
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Dedicated webhook (its own Discord channel) — no fallback, so this
+          # workflow stays cleanly separate for A/B comparison with the others.
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_ULTRACODE }}
+          # Swap to claude-sonnet-4-6 or claude-haiku-4-5 here to cut cost.
+          ANALYSIS_MODEL: claude-opus-4-8
+        run: python .github/scripts/ultracode.py
+
+      - name: Commit snapshot state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase --autostash origin main
+          git add ultracode-state 2>/dev/null || true
+          [ -f ultracode-log.md ] && git add ultracode-log.md
+          if git diff --cached --quiet; then
+            echo "No snapshot changes to commit."
+          else
+            git commit -m "Ultracode: snapshot state updated"
+            git push
+          fi
