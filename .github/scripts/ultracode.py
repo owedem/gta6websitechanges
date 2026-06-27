@@ -1,48 +1,38 @@
 #!/usr/bin/env python3
 """
-GTA Bot Ultracode
-=================
+GTA Bot Ultracode — the single GTA VI monitor
+=============================================
 
-A separate, deep-dive monitor for the official GTA VI website. Where the other
-workflows (monitor.yml / scan.yml / probe.yml) watch for *specific* known
-patterns, this one takes a broad forensic snapshot of every GTA VI surface,
-diffs it byte-for-byte against the previous run, and — when something
-*meaningful* changes — asks Claude to explain the before/after in plain English
-and cautiously forecast what it might mean.
+One tool that watches the official GTA VI site from every angle and explains any
+meaningful change in plain English (free AI: Groq, then Gemini, then Claude).
 
-For each page it captures and normalises:
-  - text     : visible page copy (tags stripped)          [meaningful → alerts]
-  - head     : <title>, meta description, Open Graph /     [meaningful → alerts]
-               Twitter tags (og:image, og:title, ...), canonical
-  - routes   : /VI/* navigation links (excluding _next)    [meaningful → alerts]
-  - assets   : referenced /_next/static/* filenames        [supporting context]
-               (content-hashed → rotate on every rebuild)
-  - headers  : stable subset of response headers (ETag...) [supporting context]
-Plus site-wide robots.txt and the GTA VI slice of sitemap.xml  [meaningful].
+It folds in everything the old monitor.yml / scan.yml / probe.yml did:
 
-The site is a Next.js App Router build (no __NEXT_DATA__/buildId); the ETag in
-`headers` is the per-deploy fingerprint.
+  Per page (home, only-in-leonida, media, editions), every run (~5 min):
+    - text     : visible page copy                                  [alerts]
+    - head     : <title>, meta description, OG/Twitter share tags    [alerts]
+    - routes   : /VI/* nav links                                     [alerts]
+    - media    : /_next/static/media image names (new screenshots)   [alerts]
+    - chunks   : JS/CSS bundle filenames (rotate every deploy)       [context]
+    - headers  : ETag etc. (deploy fingerprint)                      [context]
+  Site-wide, every run:
+    - media counts on /VI/media (new items)                          [alerts]
+    - robots.txt / sitemap (GTA VI slice)                            [alerts]
+  Heavier checks on their own cadence (gated by a timestamp in state):
+    - code scan (~20 min): download JS chunk *contents*, grep for hidden
+      routes, dates, pre-order keywords, API endpoints                [alerts]
+    - URL probe (~2 hr): test candidate /VI/<path> URLs for pages going
+      live before they are linked                                     [alerts]
 
-Routine rebuilds (only asset hashes / ETag rotate) are snapshotted silently — no
-Discord ping — because monitor.yml already reports those. A Discord post + AI
-analysis fires only when a *meaningful* surface changes. Claude is only called
-when an alert fires, so cost stays near zero.
-
-Snapshots live under STATE_DIR (committed to the repo) so each run diffs against
-the last.
-
-The AI write-up can be powered by a FREE provider (Google Gemini) or a paid one
-(Anthropic Claude). Gemini wins if both keys are set. With no key at all, the
-workflow still detects/diffs/commits and posts a non-AI summary.
+Routine rebuilds (only chunk hashes / ETag rotate) update the snapshot silently.
+A manual "Run workflow" forces the heavy checks too (full scan on demand).
 
 Env:
-  GEMINI_API_KEY      - free AI layer via Google Gemini (preferred if set)
-  GEMINI_MODEL        - Gemini model id (default: gemini-2.0-flash)
-  ANTHROPIC_API_KEY   - paid AI layer via Claude (used only if no GEMINI_API_KEY)
-  ANALYSIS_MODEL      - Claude model id (default: claude-opus-4-8)
-  DISCORD_WEBHOOK     - where to post (degrades gracefully if absent)
-  STATE_DIR           - snapshot directory (default: ultracode-state)
-  LOG_FILE            - changelog path (default: ultracode-log.md)
+  GROQ_API_KEY / GROQ_MODEL          - free AI (preferred)
+  GEMINI_API_KEY / GEMINI_MODEL      - free AI (fallback)
+  ANTHROPIC_API_KEY / ANALYSIS_MODEL - paid AI (last resort)
+  DISCORD_WEBHOOK                    - where to post
+  STATE_DIR / LOG_FILE               - snapshot dir / changelog
 """
 
 import os
@@ -62,51 +52,60 @@ from datetime import datetime, timezone
 
 STATE_DIR = os.environ.get("STATE_DIR", "ultracode-state")
 LOG_FILE = os.environ.get("LOG_FILE", "ultracode-log.md")
-MODEL = os.environ.get("ANALYSIS_MODEL", "claude-opus-4-8")
 DISCORD_WEBHOOK = os.environ.get("DISCORD_WEBHOOK", "").strip()
-ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "").strip()
-# Free alternative: Google Gemini. If GEMINI_API_KEY is set it is preferred over
-# Anthropic, so the AI write-ups cost nothing.
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
-GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
-# Another free option: Groq (OpenAI-compatible, generous free tier, no card).
-# Preferred over Gemini when set.
+
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "").strip()
 GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
+ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "").strip()
+MODEL = os.environ.get("ANALYSIS_MODEL", "claude-opus-4-8")
+
+# A manual run forces the heavy checks regardless of their cadence timers.
+FORCE_FULL = os.environ.get("GITHUB_EVENT_NAME", "") == "workflow_dispatch"
 
 USER_AGENT = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 )
+BASE = "https://www.rockstargames.com"
 
-# Pages we fetch and decompose into artifacts.
 PAGES = [
-    ("home", "https://www.rockstargames.com/VI/"),
-    ("only-in-leonida", "https://www.rockstargames.com/VI/only-in-leonida"),
-    ("media", "https://www.rockstargames.com/VI/media"),
-    ("editions", "https://www.rockstargames.com/VI/editions"),
+    ("home", f"{BASE}/VI/"),
+    ("only-in-leonida", f"{BASE}/VI/only-in-leonida"),
+    ("media", f"{BASE}/VI/media"),
+    ("editions", f"{BASE}/VI/editions"),
 ]
-
-# Raw text endpoints. `grep` (optional) keeps only lines containing that
-# substring (case-insensitive) so we stay scoped to GTA VI. sitemap currently
-# 404s — kept because a sitemap *appearing* would itself be a signal.
 RAW = [
-    ("robots", "https://www.rockstargames.com/robots.txt", None),
-    ("sitemap", "https://www.rockstargames.com/sitemap.xml", "/vi"),
+    ("robots", f"{BASE}/robots.txt", None),
+    ("sitemap", f"{BASE}/sitemap.xml", "/vi"),
 ]
 
-# A change in these triggers a Discord alert + AI analysis. They are
-# human-meaningful and do NOT rotate on a routine rebuild.
-TRIGGER_ARTIFACTS = {"text", "head", "routes", "robots", "sitemap"}
+# Heavy-check cadences (seconds). Slightly under the nominal interval so the
+# ~5-min ticks reliably cross the threshold despite scheduler jitter.
+CODESCAN_INTERVAL = 19 * 60
+PROBE_INTERVAL = 118 * 60
 
-# Captured and shown to Claude as supporting context, but a change here alone
-# does not raise an alert (these churn on every deploy).
-CONTEXT_ARTIFACTS = {"assets", "headers"}
-
-# Order in which diffs are bundled for Claude (most meaningful first).
-ARTIFACT_PRIORITY = ["head", "text", "routes", "robots", "sitemap",
-                     "headers", "assets"]
-DIFF_BUDGET = 30000
+# Candidate paths the URL probe brute-forces (ported from probe.yml).
+PROBE_PATHS = [
+    "story", "gameplay", "features", "world", "map", "characters", "factions",
+    "weapons", "vehicles", "radio", "music", "soundtrack",
+    "online", "gta-online", "multiplayer",
+    "buy", "pre-order", "collector", "special-edition", "day-one",
+    "ultimate-edition", "standard-edition",
+    "pc", "requirements", "accessibility",
+    "news", "newswire", "support", "faq",
+    "heist", "score", "prologue", "epilogue", "credits",
+    "gta-plus", "interactive",
+    "trailer", "trailers", "videos", "screenshots", "artwork", "wallpapers",
+    "gameplay-trailer", "making-of", "behind-the-scenes",
+    "leonida", "kelly-county", "launch", "release",
+]
+PROBE_SEED = [
+    "only-in-leonida", "media", "editions", "jason", "lucia", "ambrosia",
+    "boobie", "brian", "cal", "drequan", "raul", "dimez", "vice-city",
+    "port-gellhorn", "leonida-keys", "grassrivers", "kalaga", "downloads",
+]
 
 KEEP_HEADERS = {
     "etag", "last-modified", "content-length", "content-type",
@@ -117,6 +116,15 @@ ASSET_RE = re.compile(
     r"/_next/static/[A-Za-z0-9_.~/\-]+"
     r"\.(?:js|css|woff2?|json|png|jpe?g|webp|svg|avif|gif|ico|mp4|webm)"
 )
+MEDIA_RE = re.compile(
+    r"/_next/static/media/([^\"?\s]+)\.(?:jpg|jpeg|png|svg|webp|avif|gif)"
+)
+CHUNK_RE = re.compile(r"/_next/static/chunks/(?!turbopack)[^\"?\s]+\.(?:js|css)")
+CHUNK_PATH_RE = re.compile(r"_next/static/chunks/[^\"?\s]+\.js")
+
+# Which per-page artifacts raise an alert vs. are recorded as context only.
+TRIGGER_ARTIFACTS = {"text", "head", "routes", "media"}
+CONTEXT_ARTIFACTS = {"chunks", "headers"}
 
 
 # --------------------------------------------------------------------------- #
@@ -125,7 +133,6 @@ ASSET_RE = re.compile(
 
 
 def safe_print(s):
-    """Print Unicode safely regardless of console encoding."""
     try:
         sys.stdout.buffer.write((s + "\n").encode("utf-8", "replace"))
         sys.stdout.flush()
@@ -133,44 +140,100 @@ def safe_print(s):
         sys.stdout.write(s.encode("ascii", "replace").decode("ascii") + "\n")
 
 
-# --------------------------------------------------------------------------- #
-# Fetching
-# --------------------------------------------------------------------------- #
-
-
 def fetch(url, retries=2):
     """Return (status, headers_dict, body_text) or None on failure."""
-    last_err = None
+    last = None
     for attempt in range(retries + 1):
         try:
             req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
             with urllib.request.urlopen(req, timeout=25) as resp:
-                raw = resp.read()
+                body = resp.read().decode("utf-8", "replace")
                 headers = {k.lower(): v for k, v in resp.headers.items()}
-                body = raw.decode("utf-8", "replace")
                 return resp.status, headers, body
-        except Exception as e:  # network blip, 5xx, 404, timeout, etc.
-            last_err = e
+        except Exception as e:
+            last = e
             if attempt < retries:
                 time.sleep(2 * (attempt + 1))
-    sys.stderr.write(f"[warn] fetch failed for {url}: {last_err}\n")
+    sys.stderr.write(f"[warn] fetch failed for {url}: {last}\n")
     return None
 
 
+def probe_url(url):
+    """Return (status_code, size_bytes); status None on connection error."""
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+        with urllib.request.urlopen(req, timeout=12) as resp:
+            return resp.status, len(resp.read())
+    except urllib.error.HTTPError as e:
+        return e.code, 0
+    except Exception:
+        return None, 0
+
+
 # --------------------------------------------------------------------------- #
-# Extraction / normalisation — every function returns a deterministic string
-# so that git diffs are clean and stable.
+# State storage
 # --------------------------------------------------------------------------- #
 
 
-def x_assets(html):
-    return "\n".join(sorted(set(ASSET_RE.findall(html))))
+def state_path(*parts):
+    return os.path.join(STATE_DIR, *parts)
+
+
+def read_state(*parts):
+    p = state_path(*parts)
+    if os.path.exists(p):
+        with open(p, "r", encoding="utf-8") as f:
+            return f.read()
+    return None
+
+
+def write_state(content, *parts):
+    p = state_path(*parts)
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    with open(p, "w", encoding="utf-8", newline="\n") as f:
+        f.write(content)
+
+
+def last_run(name):
+    v = read_state("_meta", name)
+    try:
+        return float(v.strip())
+    except Exception:
+        return 0.0
+
+
+def mark_run(name):
+    write_state(str(time.time()), "_meta", name)
+
+
+def added_lines(old, new):
+    o = set(old.splitlines()) if old else set()
+    return sorted(set(new.splitlines()) - o)
+
+
+def unified(old, new, label):
+    return "\n".join(difflib.unified_diff(
+        old.splitlines(), new.splitlines(),
+        fromfile=f"{label} (before)", tofile=f"{label} (after)",
+        lineterm="", n=2,
+    ))
+
+
+# --------------------------------------------------------------------------- #
+# Per-page extraction
+# --------------------------------------------------------------------------- #
+
+
+def x_media(html):
+    return "\n".join(sorted({m.split(".")[0] for m in MEDIA_RE.findall(html)}))
+
+
+def x_chunks(html):
+    return "\n".join(sorted(set(CHUNK_RE.findall(html))))
 
 
 def x_routes(html):
-    # /VI/* navigation links, excluding hashed /_next/static asset references.
-    found = set(re.findall(r'href="(/VI/(?!_next/)[^"#?]*)"', html))
-    return "\n".join(sorted(found))
+    return "\n".join(sorted(set(re.findall(r'href="(/VI/(?!_next/)[^"#?]*)"', html))))
 
 
 def x_head(html):
@@ -207,137 +270,156 @@ def x_text(html):
 
 
 def x_headers(headers):
-    return "\n".join(
-        f"{k}: {headers[k]}" for k in sorted(headers) if k in KEEP_HEADERS
-    )
+    return "\n".join(f"{k}: {headers[k]}" for k in sorted(headers) if k in KEEP_HEADERS)
 
 
-def build_artifacts(html, headers):
+def page_artifacts(html, headers):
     return {
         "text": x_text(html),
         "head": x_head(html),
         "routes": x_routes(html),
-        "assets": x_assets(html),
+        "media": x_media(html),
+        "chunks": x_chunks(html),
         "headers": x_headers(headers),
     }
 
 
-# --------------------------------------------------------------------------- #
-# Snapshot storage + diffing
-# --------------------------------------------------------------------------- #
-
-
-def artifact_path(surface, name):
-    return os.path.join(STATE_DIR, surface, f"{name}.txt")
-
-
-def read_old(surface, name):
-    p = artifact_path(surface, name)
-    if os.path.exists(p):
-        with open(p, "r", encoding="utf-8") as f:
-            return f.read()
-    return None
-
-
-def write_new(surface, name, content):
-    p = artifact_path(surface, name)
-    os.makedirs(os.path.dirname(p), exist_ok=True)
-    with open(p, "w", encoding="utf-8", newline="\n") as f:
-        f.write(content)
-
-
-def make_diff(old, new, label):
-    diff = difflib.unified_diff(
-        old.splitlines(), new.splitlines(),
-        fromfile=f"{label} (before)", tofile=f"{label} (after)",
-        lineterm="", n=2,
-    )
-    return "\n".join(diff)
-
-
-def assets_summary(old, new, label):
-    """A one-line summary instead of a 2000-line hash diff."""
-    o, n = set(old.splitlines()), set(new.splitlines())
-    return (f"{label}: +{len(n - o)} new / -{len(o - n)} removed asset file(s) "
-            f"(content-hashed JS/CSS/media — these rotate on every rebuild).")
+def media_counts(html):
+    """Extract '<Label> <count>' pairs from the media page (ported from monitor.yml)."""
+    pairs, seen = [], set()
+    for text, count in re.findall(
+        r'>([A-Z][^<>"]{1,60}?)\s*<(?:div|span)[^>]+aria-hidden=["\']true["\']>\s*(\d+)\s*</',
+        html,
+    ):
+        text = html_mod.unescape(text.strip())
+        if 2 < len(text) < 60:
+            key = re.sub(r"[^a-z0-9]+", "_", text.lower()).strip("_")
+            if key and key not in seen:
+                seen.add(key)
+                pairs.append(f"{key}={count}")
+    return "\n".join(pairs)
 
 
 # --------------------------------------------------------------------------- #
-# Claude analysis
+# Heavy checks
+# --------------------------------------------------------------------------- #
+
+KEYWORD_EXCLUDE = re.compile(
+    r"pointerCapture|releaseProxy|releaseLock|onRelease|releasePointer|"
+    r"unlockAudioContext|launchpad|launcher", re.I)
+
+
+def code_scan():
+    """Download JS chunk contents and grep for clues (ported from scan.yml).
+    Returns a sorted list of 'category: finding' strings."""
+    all_html = ""
+    for _, url in PAGES:
+        r = fetch(url)
+        if r:
+            all_html += r[2]
+    chunk_paths = sorted(set(CHUNK_PATH_RE.findall(all_html)))[:50]
+    blobs = []
+    for cp in chunk_paths:
+        r = fetch(f"{BASE}/VI/{cp}")
+        if r:
+            blobs.append(r[2])
+    code = "\n".join(blobs)
+
+    findings = set()
+    for route in re.findall(r'"(/VI/[a-zA-Z0-9_\-/]+)"', code):
+        if "_next" not in route:
+            findings.add(f"route: {route}")
+    for pat in (r"202[456789]-\d{2}-\d{2}", r"202[456789]/\d{2}/\d{2}",
+                r"(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]* 202[456789]",
+                r"\d{1,2} (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]* 202[456789]"):
+        for d in re.findall(pat, code):
+            findings.add(f"date: {d}")
+    kw = []
+    for m in re.findall(r".{0,50}(?:preorder|pre-order|pre_order).{0,50}", code, re.I):
+        if not KEYWORD_EXCLUDE.search(m):
+            kw.append(m.strip())
+    for m in sorted(set(kw))[:20]:
+        findings.add(f"keyword: {m}")
+    for api in re.findall(r"https?://[^\"'\s]+rockstar[^\"'\s]+/VI/[^\"'\s]*", code):
+        findings.add(f"api: {api}")
+    return sorted(findings)
+
+
+def url_probe(known):
+    """Probe candidate paths for new live pages (ported from probe.yml).
+    Returns (new_paths, updated_known_set)."""
+    _, home_size = probe_url(f"{BASE}/VI/")
+    _, oil_size = probe_url(f"{BASE}/VI/only-in-leonida")
+    new = []
+    for path in PROBE_PATHS:
+        if path in known:
+            continue
+        status, size = probe_url(f"{BASE}/VI/{path}")
+        if status == 200 and abs(home_size - size) > 10000 and abs(oil_size - size) > 10000:
+            new.append(path)
+            known.add(path)
+    return new, known
+
+
+# --------------------------------------------------------------------------- #
+# AI analysis
 # --------------------------------------------------------------------------- #
 
 SYSTEM_PROMPT = """\
 You are a forensic analyst for a community that tracks the official Grand Theft \
 Auto VI website (rockstargames.com/VI) for the earliest possible signs of news: \
-a release date, pre-orders going live, new trailers/screenshots, or new pages \
-appearing.
+a release date, pre-orders going live, new trailers/screenshots, or new pages.
 
-You are given a DIFF between two automatically-captured technical snapshots of \
-the site, taken about 30 minutes apart. The snapshot artifacts are:
-  - text    : the visible copy on the page, with HTML tags stripped.
-  - head    : <title>, meta description, and Open Graph / Twitter share tags \
-(og:image, og:title, ...). The share image and title are often updated shortly \
-before content goes live, so changes here are a strong early signal.
-  - routes  : /VI/* navigation links present on the page (a new one means a new \
-page is being linked).
-  - robots / sitemap : robots.txt and the GTA VI slice of the sitemap; new URLs \
-here can reveal pages before they are linked anywhere.
-  - assets  : a SUMMARY of how many content-hashed /_next/static files changed. \
-These rotate on EVERY deploy even when nothing visible changed, so treat asset \
-churn as background noise, not news — it only tells you a deploy happened.
-  - headers : selected HTTP response headers. The ETag changes on every deploy.
+You are given the CHANGES found in one scan of the site, grouped by source. \
+Possible groups:
+  - PAGE TEXT / HEAD (share tags) / NAV ROUTES: what changed on the visible \
+pages. The og:image / twitter:image and title are often updated just before \
+content goes live.
+  - NEW MEDIA IMAGES: new image asset names (likely new screenshots/art).
+  - MEDIA COUNTS: item counts on the media page went up.
+  - CLUES IN SITE CODE: strings found inside the JS bundles that are not visible \
+on any page yet — hidden routes, hardcoded dates, pre-order keywords, API URLs.
+  - NEW PAGES LIVE: a /VI/<path> URL that used to 404 now returns a real page, \
+before it is linked anywhere.
+  - ROBOTS / SITEMAP: changes to robots.txt or the sitemap.
 
-Write a Discord post for a NON-TECHNICAL audience of GTA fans. Use this exact \
-structure:
+Write a Discord post for a NON-TECHNICAL audience of GTA fans. Structure:
 
 **<emoji> One-line headline**
 
 **What changed:**
-- 2-6 short bullets in plain English describing before -> after. Translate the \
-technical artifacts into what a fan would actually care about. Quote the specific \
-new/changed text, dates, image names, or routes when present. Skip pure noise.
+- 2-8 short bullets in plain English. Translate each finding into what a fan \
+would care about. Quote specific new text, dates, image names, routes, or pages. \
+Group related findings. Skip pure noise.
 
 **What it likely means:**
 - 1-3 sentences.
 
 **Could signal:** _(confidence: low | medium | high)_
 - Cautious, clearly-hedged speculation about what might be coming and a rough \
-timeframe if one is inferable from the diff.
+timeframe if inferable.
 
-Rules: Be precise and grounded strictly in the diff — never invent dates, names, \
-or details that are not in it. If the change turns out to be cosmetic or just a \
-deploy with no real content change, say so plainly and keep the post short. Never \
-present speculation as fact.\
+Rules: be precise and grounded strictly in the findings — never invent dates, \
+names, or details not present. A hidden date or a new "/VI/buy" route is a strong \
+signal; asset-hash churn is noise. If nothing here is actually meaningful, say so \
+briefly. Never present speculation as fact.\
 """
 
-
-def _user_content(changed_surfaces, diff_bundle):
-    return (
-        f"Surfaces with changes: {', '.join(changed_surfaces)}\n\n"
-        f"Here is the diff:\n\n{diff_bundle}"
-    )
-
-
-# Records the most recent AI-provider failure reason (logged to the Actions log).
 LAST_AI_ERROR = None
 
 
-def analyse(changed_surfaces, diff_bundle):
-    """Dispatch to whichever LLM provider is configured. Free providers (Groq,
-    then Gemini) are preferred over paid Anthropic. Returns analysis or None."""
+def analyse(bundle):
     if GROQ_API_KEY:
-        return analyse_with_groq(changed_surfaces, diff_bundle)
+        return _groq(bundle)
     if GEMINI_API_KEY:
-        return analyse_with_gemini(changed_surfaces, diff_bundle)
+        return _gemini(bundle)
     if ANTHROPIC_API_KEY:
-        return analyse_with_claude(changed_surfaces, diff_bundle)
-    sys.stderr.write("[info] No LLM key set (GROQ_API_KEY / GEMINI_API_KEY / "
-                     "ANTHROPIC_API_KEY) — skipping AI analysis.\n")
+        return _claude(bundle)
+    sys.stderr.write("[info] No LLM key set — skipping AI analysis.\n")
     return None
 
 
 def _http_error_reason(e):
-    """Pull a human-readable reason out of an HTTPError response body."""
     body = ""
     try:
         body = e.read().decode("utf-8", "replace")
@@ -349,27 +431,20 @@ def _http_error_reason(e):
         return body[:240]
 
 
-def analyse_with_groq(changed_surfaces, diff_bundle):
-    """Free option: Groq (OpenAI-compatible chat completions) over raw HTTP."""
+def _groq(bundle):
     global LAST_AI_ERROR
     payload = {
         "model": GROQ_MODEL,
-        "messages": [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": _user_content(changed_surfaces, diff_bundle)},
-        ],
-        "temperature": 0.7,
-        "max_tokens": 1500,
+        "messages": [{"role": "system", "content": SYSTEM_PROMPT},
+                     {"role": "user", "content": bundle}],
+        "temperature": 0.7, "max_tokens": 1500,
     }
     try:
         req = urllib.request.Request(
             "https://api.groq.com/openai/v1/chat/completions",
             data=json.dumps(payload).encode("utf-8"),
-            headers={"Content-Type": "application/json",
-                     "User-Agent": USER_AGENT,
-                     "Authorization": f"Bearer {GROQ_API_KEY}"},
-            method="POST",
-        )
+            headers={"Content-Type": "application/json", "User-Agent": USER_AGENT,
+                     "Authorization": f"Bearer {GROQ_API_KEY}"}, method="POST")
         with urllib.request.urlopen(req, timeout=60) as resp:
             data = json.loads(resp.read())
     except urllib.error.HTTPError as e:
@@ -381,33 +456,26 @@ def analyse_with_groq(changed_surfaces, diff_bundle):
         sys.stderr.write(f"[warn] Groq: {LAST_AI_ERROR}\n")
         return None
     try:
-        text = data["choices"][0]["message"]["content"].strip()
+        return (data["choices"][0]["message"]["content"].strip() or None)
     except Exception:
         LAST_AI_ERROR = f"unexpected response: {json.dumps(data)[:200]}"
-        sys.stderr.write(f"[warn] Groq: {LAST_AI_ERROR}\n")
         return None
-    return text or None
 
 
-def analyse_with_gemini(changed_surfaces, diff_bundle):
-    """Free option: Google Gemini API over raw HTTP (no SDK dependency)."""
+def _gemini(bundle):
     global LAST_AI_ERROR
     url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
            f"{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}")
     payload = {
         "systemInstruction": {"parts": [{"text": SYSTEM_PROMPT}]},
-        "contents": [{
-            "role": "user",
-            "parts": [{"text": _user_content(changed_surfaces, diff_bundle)}],
-        }],
+        "contents": [{"role": "user", "parts": [{"text": bundle}]}],
         "generationConfig": {"temperature": 0.7, "maxOutputTokens": 1500},
     }
     try:
         req = urllib.request.Request(
             url, data=json.dumps(payload).encode("utf-8"),
             headers={"Content-Type": "application/json", "User-Agent": USER_AGENT},
-            method="POST",
-        )
+            method="POST")
         with urllib.request.urlopen(req, timeout=60) as resp:
             data = json.loads(resp.read())
     except urllib.error.HTTPError as e:
@@ -418,49 +486,33 @@ def analyse_with_gemini(changed_surfaces, diff_bundle):
         LAST_AI_ERROR = f"request failed — {e}"
         sys.stderr.write(f"[warn] Gemini: {LAST_AI_ERROR}\n")
         return None
-
     cands = data.get("candidates") or []
     if not cands:
-        fb = data.get("promptFeedback", {})
-        LAST_AI_ERROR = f"no candidates returned (promptFeedback: {json.dumps(fb)[:160]})"
-        sys.stderr.write(f"[warn] Gemini: {LAST_AI_ERROR}\n")
+        LAST_AI_ERROR = f"no candidates ({json.dumps(data.get('promptFeedback', {}))[:160]})"
         return None
     parts = cands[0].get("content", {}).get("parts", [])
-    text = "".join(p.get("text", "") for p in parts).strip()
-    if not text:
-        LAST_AI_ERROR = f"empty text (finishReason: {cands[0].get('finishReason')})"
-        sys.stderr.write(f"[warn] Gemini: {LAST_AI_ERROR}\n")
-        return None
-    return text
+    return ("".join(p.get("text", "") for p in parts).strip() or None)
 
 
-def analyse_with_claude(changed_surfaces, diff_bundle):
-    """Paid option: Claude via the Anthropic SDK. Returns analysis or None."""
+def _claude(bundle):
+    global LAST_AI_ERROR
     try:
         import anthropic
     except Exception as e:
-        sys.stderr.write(f"[warn] anthropic SDK unavailable: {e}\n")
+        LAST_AI_ERROR = f"anthropic SDK unavailable: {e}"
         return None
-
-    user_content = _user_content(changed_surfaces, diff_bundle)
-
     try:
         client = anthropic.Anthropic()
         resp = client.messages.create(
-            model=MODEL,
-            max_tokens=4000,
-            thinking={"type": "adaptive"},
-            output_config={"effort": "medium"},
-            system=SYSTEM_PROMPT,
-            messages=[{"role": "user", "content": user_content}],
-        )
+            model=MODEL, max_tokens=4000,
+            thinking={"type": "adaptive"}, output_config={"effort": "medium"},
+            system=SYSTEM_PROMPT, messages=[{"role": "user", "content": bundle}])
         if resp.stop_reason == "refusal":
-            sys.stderr.write("[warn] Claude refused to analyse this diff.\n")
+            LAST_AI_ERROR = "Claude refused"
             return None
-        text = "".join(b.text for b in resp.content if b.type == "text").strip()
-        return text or None
+        return ("".join(b.text for b in resp.content if b.type == "text").strip() or None)
     except Exception as e:
-        sys.stderr.write(f"[warn] Claude analysis failed: {e}\n")
+        LAST_AI_ERROR = f"Claude failed — {e}"
         return None
 
 
@@ -479,8 +531,7 @@ def post_discord(message):
         req = urllib.request.Request(
             DISCORD_WEBHOOK, data=payload,
             headers={"Content-Type": "application/json", "User-Agent": USER_AGENT},
-            method="POST",
-        )
+            method="POST")
         try:
             urllib.request.urlopen(req, timeout=20).read()
         except Exception as e:
@@ -505,18 +556,12 @@ def chunk_text(text, size):
     return chunks
 
 
-# --------------------------------------------------------------------------- #
-# Changelog
-# --------------------------------------------------------------------------- #
-
-
-def append_log(stamp, changed, analysis):
-    header = f"\n## {stamp}\n\n"
-    body = f"**Surfaces:** {', '.join(changed)}\n\n"
-    body += (analysis + "\n") if analysis else (
-        "_(AI analysis unavailable — diff committed to snapshot state.)_\n")
+def append_log(stamp, sections, analysis):
+    titles = ", ".join(t for t, _ in sections)
+    body = f"\n## {stamp}\n\n**Found in:** {titles}\n\n"
+    body += (analysis + "\n") if analysis else "_(AI analysis unavailable.)_\n"
     with open(LOG_FILE, "a", encoding="utf-8", newline="\n") as f:
-        f.write(header + body)
+        f.write(body)
 
 
 # --------------------------------------------------------------------------- #
@@ -525,10 +570,9 @@ def append_log(stamp, changed, analysis):
 
 
 def is_baseline():
-    """True if we have no prior snapshots at all (first ever run)."""
     if not os.path.isdir(STATE_DIR):
         return True
-    for _root, _dirs, files in os.walk(STATE_DIR):
+    for _r, _d, files in os.walk(STATE_DIR):
         if any(f.endswith(".txt") for f in files):
             return False
     return True
@@ -538,104 +582,145 @@ def main():
     baseline = is_baseline()
     stamp = datetime.now(timezone.utc).strftime("%d %b %Y at %H:%M UTC")
 
-    # Each entry: (priority, surface, artifact, old, new)
-    changes = []
-    changed_surfaces = set()
-    triggered = False
+    # Sections that raise an alert: (priority, title, body). Lower prio first.
+    sections = []
+    context_changed = False
 
-    # --- Pages ---
+    def add(prio, title, body):
+        if body and body.strip():
+            sections.append((prio, title, body))
+
+    # --- Per-page surface + media + chunks + headers ---
+    media_html = None
     for surface, url in PAGES:
-        result = fetch(url)
-        if result is None:
-            continue  # keep the old snapshot; don't treat a blip as a change
-        status, headers, body = result
+        r = fetch(url)
+        if r is None:
+            continue
+        status, headers, body = r
         if status != 200 or "<html" not in body.lower():
-            sys.stderr.write(f"[warn] {surface}: unexpected response (status {status})\n")
             continue
-        for name, new in build_artifacts(body, headers).items():
-            old = read_old(surface, name)
-            write_new(surface, name, new)
-            if old is not None and old != new:
-                changes.append((ARTIFACT_PRIORITY.index(name), surface, name, old, new))
-                changed_surfaces.add(surface)
-                if name in TRIGGER_ARTIFACTS:
-                    triggered = True
+        if surface == "media":
+            media_html = body
+        for name, new in page_artifacts(body, headers).items():
+            old = read_state(surface, f"{name}.txt")
+            write_state(new, surface, f"{name}.txt")
+            if old is None or old == new:
+                continue
+            if name in TRIGGER_ARTIFACTS:
+                if name == "media":
+                    new_imgs = added_lines(old, new)
+                    if new_imgs:
+                        add(2, f"new media images on {surface}",
+                            "\n".join(f"- {i}" for i in new_imgs))
+                else:
+                    add(0 if name in ("head", "routes") else 1,
+                        f"{surface} {name} changed", unified(old, new, f"{surface}/{name}"))
+            elif name in CONTEXT_ARTIFACTS:
+                context_changed = True
 
-    # --- Raw endpoints (robots, sitemap) ---
+    # --- Media counts (increase only) ---
+    if media_html is not None:
+        new_counts = media_counts(media_html)
+        old_counts = read_state("media-counts.txt")
+        write_state(new_counts, "media-counts.txt")
+        if old_counts is not None and new_counts != old_counts:
+            ov = dict(l.split("=", 1) for l in old_counts.splitlines() if "=" in l)
+            ups = []
+            for line in new_counts.splitlines():
+                if "=" not in line:
+                    continue
+                k, v = line.split("=", 1)
+                try:
+                    if int(v) > int(ov.get(k, 0)):
+                        ups.append(f"- {k.replace('_', ' ')}: {ov.get(k, 0)} -> {v}")
+                except ValueError:
+                    pass
+            if ups:
+                add(1, "media counts increased", "\n".join(ups))
+
+    # --- robots / sitemap ---
     for name, url, grep in RAW:
-        result = fetch(url)
-        if result is None:
+        r = fetch(url)
+        if r is None:
             continue
-        _status, _headers, body = result
+        body = r[2]
         if grep:
-            body = "\n".join(ln for ln in body.splitlines() if grep.lower() in ln.lower())
+            body = "\n".join(l for l in body.splitlines() if grep.lower() in l.lower())
         new = body.strip()
-        old = read_old(name, "raw")
-        write_new(name, "raw", new)
+        old = read_state(name, "raw.txt")
+        write_state(new, name, "raw.txt")
         if old is not None and old != new:
-            changes.append((ARTIFACT_PRIORITY.index(name), name, name, old, new))
-            changed_surfaces.add(name)
-            triggered = True
+            add(0, f"{name} changed", unified(old, new, name))
 
-    # --- Baseline run: store everything, announce, exit ---
+    # --- Heavy: code scan (cadence-gated) ---
+    if FORCE_FULL or time.time() - last_run("codescan.txt") >= CODESCAN_INTERVAL:
+        try:
+            findings = "\n".join(code_scan())
+            old = read_state("code-findings.txt")
+            write_state(findings, "code-findings.txt")
+            mark_run("codescan.txt")
+            if old is not None:
+                new_f = added_lines(old, findings)
+                if new_f:
+                    add(0, "new clues in site code", "\n".join(f"- {x}" for x in new_f))
+        except Exception as e:
+            sys.stderr.write(f"[warn] code scan failed: {e}\n")
+
+    # --- Heavy: URL probe (cadence-gated) ---
+    if FORCE_FULL or time.time() - last_run("probe.txt") >= PROBE_INTERVAL:
+        try:
+            old = read_state("probe-known.txt")
+            known = set(old.splitlines()) if old else set(PROBE_SEED)
+            new_pages, known = url_probe(known)
+            write_state("\n".join(sorted(known)), "probe-known.txt")
+            mark_run("probe.txt")
+            if old is not None and new_pages:
+                add(0, "new pages live",
+                    "\n".join(f"- {BASE}/VI/{p}" for p in new_pages))
+        except Exception as e:
+            sys.stderr.write(f"[warn] url probe failed: {e}\n")
+
+    # --- Baseline: record everything, announce, exit ---
     if baseline:
         n = sum(1 for _r, _d, files in os.walk(STATE_DIR) for f in files
                 if f.endswith(".txt"))
         post_discord(
             f"🛰️ **GTA Bot Ultracode initialised** | {stamp}\n\n"
-            f"Captured a baseline forensic snapshot ({n} artifacts across "
-            f"{len(PAGES)} pages + robots/sitemap). From now on, any meaningful "
-            f"change — even the smallest — will be diffed and explained in plain "
-            f"English.")
+            f"Captured a baseline across pages, media counts, site code, and "
+            f"candidate URLs ({n} artifacts). One tool now watches everything the "
+            f"old monitors did — and explains any meaningful change in plain English.")
         safe_print("Baseline established.")
         return
 
-    if not changes:
-        safe_print("No changes detected.")
+    if not sections:
+        safe_print("Routine rebuild only." if context_changed else "No changes.")
         return
 
-    if not triggered:
-        # Only asset hashes / ETag rotated — a routine rebuild. Snapshot is
-        # already updated on disk; stay quiet (monitor.yml covers rebuilds).
-        safe_print(f"Routine rebuild only ({', '.join(sorted(changed_surfaces))}) "
-                   f"— snapshot updated silently, no alert.")
-        return
-
-    # --- Build the (size-capped) diff bundle for Claude ---
-    changes.sort(key=lambda c: c[0])
-    parts, used = [], 0
-    for _prio, surface, name, old, new in changes:
-        label = f"{surface}/{name}"
-        block = (assets_summary(old, new, label) if name == "assets"
-                 else make_diff(old, new, label))
-        block = block.strip()
-        if not block:
-            continue
-        if used + len(block) > DIFF_BUDGET:
-            block = block[: max(0, DIFF_BUDGET - used)] + "\n[... truncated ...]"
-            parts.append(block)
+    # --- Build the bundle, analyse, post ---
+    sections.sort(key=lambda s: s[0])
+    bundle, used = [], 0
+    for _p, title, body in sections:
+        block = f"=== {title.upper()} ===\n{body}"
+        if used + len(block) > 28000:
+            block = block[: max(0, 28000 - used)] + "\n[... truncated ...]"
+            bundle.append(block)
             break
-        parts.append(block)
+        bundle.append(block)
         used += len(block) + 2
-    diff_bundle = "\n\n".join(parts)
 
-    changed_sorted = sorted(changed_surfaces)
-    analysis = analyse(changed_sorted, diff_bundle)
-
+    analysis = analyse("\n\n".join(bundle))
+    titles = sorted({t for _p, t, _b in sections})
     header = f"🚨 **GTA Bot Ultracode — change detected** | {stamp}\n"
     if analysis:
         message = header + "\n" + analysis
     else:
-        message = (
-            header
-            + f"\nChanged surfaces: {', '.join(changed_sorted)}\n"
-            + "Meaningful change detected (text / metadata / routes). "
-            + "AI analysis was unavailable — see the committed snapshot diff.\n"
-            + "\nhttps://www.rockstargames.com/VI/"
-        )
+        reason = f" ({LAST_AI_ERROR})" if LAST_AI_ERROR else ""
+        message = (header + f"\nChanges found in: {', '.join(titles)}\n"
+                   f"AI write-up unavailable{reason} — see the snapshot diff.\n"
+                   f"\n{BASE}/VI/")
     post_discord(message)
-    append_log(stamp, changed_sorted, analysis)
-    safe_print(f"Alert posted. Changed: {', '.join(changed_sorted)}")
+    append_log(stamp, [(t, b) for _p, t, b in sections], analysis)
+    safe_print(f"Alert posted. Sections: {', '.join(titles)}")
 
 
 if __name__ == "__main__":
