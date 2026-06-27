@@ -7,10 +7,11 @@ name: GTA Bot Ultracode
 
 on:
   schedule:
-    # Every 5 minutes, offset by 2 (:02, :07, :12, ... :57) so it never shares a
-    # minute with monitor.yml (:00/:10/...) or scan.yml (:00/:20/:40) — keeps it
-    # off the other workflows' git push windows on main.
-    - cron: '2-59/5 * * * *'
+    # Every 5 minutes — the fastest GitHub allows. Note GitHub runs scheduled
+    # workflows on a best-effort basis: under load it delays and often drops
+    # triggers, so the real cadence is irregular and usually slower than 5 min.
+    # This is a floor, not a guarantee.
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 jobs:
