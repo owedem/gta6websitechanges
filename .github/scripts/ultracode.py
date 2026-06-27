@@ -87,8 +87,8 @@ RAW = [
 
 # Heavy-check cadences (seconds). Slightly under the nominal interval so the
 # ~5-min ticks reliably cross the threshold despite scheduler jitter.
-CODESCAN_INTERVAL = 19 * 60
-PROBE_INTERVAL = 118 * 60
+CODESCAN_INTERVAL = 19 * 60   # ~20 min: download JS chunks and grep for clues
+PROBE_INTERVAL = 28 * 60      # ~30 min: probe candidate URLs for new live pages
 
 # Candidate paths the URL probe brute-forces (ported from probe.yml).
 PROBE_PATHS = [
