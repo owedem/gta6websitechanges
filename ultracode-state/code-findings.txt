@@ -1,0 +1,8 @@
+api: https://media.rockstargames.com/VI/downloads
+keyword: (o=(0,r.jsx)(ns,{...t}),a[2]=t,a[3]=o):o=a[3],o},"PreorderDrawerRoot",0,e=>{let t,o,a,s,l,i,u,c,d,p,h=(0,n.c
+keyword: 0,oR,"HeaderLogoWrapper",0,oy,"HeaderTitle",0,oS,"PreorderDrawerContent",0,nb,"PreorderDrawerOverlay",0,nw,"
+keyword: PreorderDrawerPortal",0,e=>{let t,o,a=(0,n.c)(4);return a[
+keyword: alytics:d,label:p,variant:m,...h}=e,g=void 0===m?"preorder":m,{trackEvent:v}=(0,R.useAnalytics)(),x=(0,f.use
+keyword: children:d}),h[17]=c,h[18]=d,h[19]=p):p=h[19],p},"PreorderDrawerTitle",0,nx,"PreorderDrawerTrigger",0,oD,"Pr
+keyword: e:"_1sdb9px2 ic6qv70",variantClassNames:{variant:{preorder:"_1sdb9px3",platform:"_1sdb9px4"}},defaultVariant
+keyword: ress:()=>{g({...d.analytics,event:"cta_buy",text:"pre-order now"}),f(!0)},"aria-haspopup":"dialog","aria-cont
