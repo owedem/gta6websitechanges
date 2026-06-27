@@ -61,8 +61,12 @@ GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "").strip()
 MODEL = os.environ.get("ANALYSIS_MODEL", "claude-opus-4-8")
 
-# A manual run forces the heavy checks regardless of their cadence timers.
-FORCE_FULL = os.environ.get("GITHUB_EVENT_NAME", "") == "workflow_dispatch"
+# An explicit "full scan" request (the workflow_dispatch `full_scan` input) forces
+# the heavy checks regardless of their cadence timers. Automated triggers — the
+# cron schedule, or an external pinger calling workflow_dispatch without inputs —
+# leave this false and do a normal cadence-gated run, so frequent 5-min pings
+# don't re-download every JS chunk each time.
+FORCE_FULL = os.environ.get("FULL_SCAN", "").strip().lower() in ("1", "true", "yes")
 
 USER_AGENT = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "

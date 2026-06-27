@@ -13,6 +13,11 @@ on:
     # This is a floor, not a guarantee.
     - cron: '*/5 * * * *'
   workflow_dispatch:
+    inputs:
+      full_scan:
+        description: "Force a full scan now (code scan + URL probe), ignoring their cadence timers"
+        type: boolean
+        default: false
 
 jobs:
   ultracode:
@@ -48,6 +53,9 @@ jobs:
           # Dedicated webhook (its own Discord channel) — no fallback, so this
           # workflow stays cleanly separate for A/B comparison with the others.
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_ULTRACODE }}
+          # true only when a human ticks "Force a full scan"; empty on cron and
+          # on external workflow_dispatch pings (those do a normal gated run).
+          FULL_SCAN: ${{ inputs.full_scan }}
         run: python .github/scripts/ultracode.py
 
       - name: Commit snapshot state
