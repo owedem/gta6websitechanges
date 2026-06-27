@@ -6,12 +6,9 @@ name: GTA Bot Ultracode
 # interfere with them and can be A/B compared against them.
 
 on:
-  schedule:
-    # Every 5 minutes — the fastest GitHub allows. Note GitHub runs scheduled
-    # workflows on a best-effort basis: under load it delays and often drops
-    # triggers, so the real cadence is irregular and usually slower than 5 min.
-    # This is a floor, not a guarantee.
-    - cron: '*/5 * * * *'
+  # Triggered every 5 min by an external cron-job.org pinger (which calls the
+  # workflow_dispatch REST API) — reliable, unlike GitHub's best-effort native
+  # cron, which is intentionally NOT used here. Also runnable manually.
   workflow_dispatch:
     inputs:
       full_scan:
