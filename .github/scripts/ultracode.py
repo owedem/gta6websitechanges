@@ -53,6 +53,10 @@ from datetime import datetime, timezone
 STATE_DIR = os.environ.get("STATE_DIR", "ultracode-state")
 LOG_FILE = os.environ.get("LOG_FILE", "ultracode-log.md")
 DISCORD_WEBHOOK = os.environ.get("DISCORD_WEBHOOK", "").strip()
+# Dedicated channels for posting the actual new media assets (not just naming
+# them in the main alert). One webhook per channel.
+IMAGES_WEBHOOK = os.environ.get("DISCORD_WEBHOOK_IMAGES", "").strip()
+VIDEOS_WEBHOOK = os.environ.get("DISCORD_WEBHOOK_VIDEOS", "").strip()
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "").strip()
 GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
@@ -120,14 +124,20 @@ ASSET_RE = re.compile(
     r"/_next/static/[A-Za-z0-9_.~/\-]+"
     r"\.(?:js|css|woff2?|json|png|jpe?g|webp|svg|avif|gif|ico|mp4|webm)"
 )
-MEDIA_RE = re.compile(
-    r"/_next/static/media/([^\"?\s]+)\.(?:jpg|jpeg|png|svg|webp|avif|gif)"
+# Full media asset filename (name + content-hash + ext) for images and videos.
+# SVG/logos are excluded on purpose; the content hash is kept so we can fetch and
+# post the actual file. (Next.js content-hashes these, so the hash is stable for
+# unchanged content — a new filename means genuinely new/changed media.)
+MEDIA_ASSET_RE = re.compile(
+    r"/_next/static/media/([A-Za-z0-9_.~\-]+\.(?:jpg|jpeg|png|webp|avif|gif|mp4|webm|mov))"
 )
+VIDEO_EXT = (".mp4", ".webm", ".mov")
+MEDIA_SKIP_NAMES = {"esrb", "vi", "t1", "t2"}  # tiny UI/logo assets, not content
 CHUNK_RE = re.compile(r"/_next/static/chunks/(?!turbopack)[^\"?\s]+\.(?:js|css)")
 CHUNK_PATH_RE = re.compile(r"_next/static/chunks/[^\"?\s]+\.js")
 
 # Which per-page artifacts raise an alert vs. are recorded as context only.
-TRIGGER_ARTIFACTS = {"text", "head", "routes", "media"}
+TRIGGER_ARTIFACTS = {"text", "head", "routes"}
 CONTEXT_ARTIFACTS = {"chunks", "headers"}
 
 
@@ -228,8 +238,17 @@ def unified(old, new, label):
 # --------------------------------------------------------------------------- #
 
 
-def x_media(html):
-    return "\n".join(sorted({m.split(".")[0] for m in MEDIA_RE.findall(html)}))
+def media_assets(html):
+    """Map human name -> full asset path (with hash) for image/video media,
+    skipping tiny UI/logo files. The name (part before the first dot) is the
+    hash-independent identity; a new name = genuinely new media."""
+    out = {}
+    for fname in MEDIA_ASSET_RE.findall(html):
+        name = fname.split(".")[0]
+        if name.lower() in MEDIA_SKIP_NAMES:
+            continue
+        out[name] = f"/_next/static/media/{fname}"
+    return out
 
 
 def x_chunks(html):
@@ -282,7 +301,6 @@ def page_artifacts(html, headers):
         "text": x_text(html),
         "head": x_head(html),
         "routes": x_routes(html),
-        "media": x_media(html),
         "chunks": x_chunks(html),
         "headers": x_headers(headers),
     }
@@ -525,6 +543,29 @@ def _claude(bundle):
 # --------------------------------------------------------------------------- #
 
 
+def post_media(name, full_url, is_video):
+    """Post a new media asset to its dedicated channel. Images go as an image
+    embed (Discord fetches the URL); videos go as a link (Discord renders a
+    player, and large videos exceed upload limits anyway)."""
+    webhook = VIDEOS_WEBHOOK if is_video else IMAGES_WEBHOOK
+    if not webhook:
+        return
+    if is_video:
+        payload = {"content": f"🎬 **New GTA VI video:** `{name}`\n{full_url}"}
+    else:
+        payload = {"content": f"🖼️ **New GTA VI image:** `{name}`",
+                   "embeds": [{"image": {"url": full_url}}]}
+    req = urllib.request.Request(
+        webhook, data=json.dumps(payload).encode("utf-8"),
+        headers={"Content-Type": "application/json", "User-Agent": USER_AGENT},
+        method="POST")
+    try:
+        urllib.request.urlopen(req, timeout=20).read()
+    except Exception as e:
+        sys.stderr.write(f"[warn] media post failed ({name}): {e}\n")
+    time.sleep(1)  # stay under Discord's webhook rate limit
+
+
 def post_discord(message):
     if not DISCORD_WEBHOOK:
         sys.stderr.write("[info] DISCORD_WEBHOOK not set — printing instead:\n")
@@ -594,8 +635,9 @@ def main():
         if body and body.strip():
             sections.append((prio, title, body))
 
-    # --- Per-page surface + media + chunks + headers ---
+    # --- Per-page surface + chunks + headers ---
     media_html = None
+    all_media = {}  # name -> full asset path, unioned across pages
     for surface, url in PAGES:
         r = fetch(url)
         if r is None:
@@ -605,20 +647,15 @@ def main():
             continue
         if surface == "media":
             media_html = body
+        all_media.update(media_assets(body))
         for name, new in page_artifacts(body, headers).items():
             old = read_state(surface, f"{name}.txt")
             write_state(new, surface, f"{name}.txt")
             if old is None or old == new:
                 continue
             if name in TRIGGER_ARTIFACTS:
-                if name == "media":
-                    new_imgs = added_lines(old, new)
-                    if new_imgs:
-                        add(2, f"new media images on {surface}",
-                            "\n".join(f"- {i}" for i in new_imgs))
-                else:
-                    add(0 if name in ("head", "routes") else 1,
-                        f"{surface} {name} changed", unified(old, new, f"{surface}/{name}"))
+                add(0 if name in ("head", "routes") else 1,
+                    f"{surface} {name} changed", unified(old, new, f"{surface}/{name}"))
             elif name in CONTEXT_ARTIFACTS:
                 context_changed = True
 
@@ -641,6 +678,30 @@ def main():
                     pass
             if ups:
                 add(1, "media counts increased", "\n".join(ups))
+
+    # --- New media assets: post the actual image/video to its channel ---
+    if all_media:
+        cur = "\n".join(f"{n}|{p}" for n, p in sorted(all_media.items()))
+        old_raw = read_state("media-assets.txt")
+        write_state(cur, "media-assets.txt")
+        if old_raw is not None:  # None = first run -> baseline silently, no posting
+            old_names = {l.split("|", 1)[0] for l in old_raw.splitlines() if "|" in l}
+            new_names = [n for n in sorted(all_media) if n not in old_names]
+            imgs, vids = [], []
+            for n in new_names:
+                path = all_media[n]
+                is_video = path.lower().endswith(VIDEO_EXT)
+                post_media(n, f"{BASE}/VI{path}", is_video)
+                (vids if is_video else imgs).append(n)
+            bits = []
+            if imgs:
+                bits.append(f"{len(imgs)} new image(s) → images channel: "
+                            + ", ".join(imgs[:12]))
+            if vids:
+                bits.append(f"{len(vids)} new video(s) → videos channel: "
+                            + ", ".join(vids[:12]))
+            if bits:
+                add(2, "new media posted", "\n".join(f"- {b}" for b in bits))
 
     # --- robots / sitemap ---
     for name, url, grep in RAW:

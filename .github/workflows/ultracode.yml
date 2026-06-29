@@ -50,6 +50,10 @@ jobs:
           # Dedicated webhook (its own Discord channel) — no fallback, so this
           # workflow stays cleanly separate for A/B comparison with the others.
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_ULTRACODE }}
+          # Dedicated channels for posting the actual new media (optional; if
+          # unset, media just gets named in the main alert as before).
+          DISCORD_WEBHOOK_IMAGES: ${{ secrets.DISCORD_WEBHOOK_IMAGES }}
+          DISCORD_WEBHOOK_VIDEOS: ${{ secrets.DISCORD_WEBHOOK_VIDEOS }}
           # true only when a human ticks "Force a full scan"; empty on cron and
           # on external workflow_dispatch pings (those do a normal gated run).
           FULL_SCAN: ${{ inputs.full_scan }}
