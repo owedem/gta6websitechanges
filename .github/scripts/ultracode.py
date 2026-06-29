@@ -680,28 +680,35 @@ def main():
                 add(1, "media counts increased", "\n".join(ups))
 
     # --- New media assets: post the actual image/video to its channel ---
-    if all_media:
-        cur = "\n".join(f"{n}|{p}" for n, p in sorted(all_media.items()))
-        old_raw = read_state("media-assets.txt")
-        write_state(cur, "media-assets.txt")
-        if old_raw is not None:  # None = first run -> baseline silently, no posting
-            old_names = {l.split("|", 1)[0] for l in old_raw.splitlines() if "|" in l}
-            new_names = [n for n in sorted(all_media) if n not in old_names]
-            imgs, vids = [], []
-            for n in new_names:
-                path = all_media[n]
-                is_video = path.lower().endswith(VIDEO_EXT)
-                post_media(n, f"{BASE}/VI{path}", is_video)
-                (vids if is_video else imgs).append(n)
-            bits = []
-            if imgs:
-                bits.append(f"{len(imgs)} new image(s) → images channel: "
-                            + ", ".join(imgs[:12]))
-            if vids:
-                bits.append(f"{len(vids)} new video(s) → videos channel: "
-                            + ", ".join(vids[:12]))
-            if bits:
-                add(2, "new media posted", "\n".join(f"- {b}" for b in bits))
+    # Fully isolated in try/except: this is an optional add-on, and a failure
+    # here must NEVER take down the core site monitor / AI alert below.
+    try:
+        if all_media:
+            cur = "\n".join(f"{n}|{p}" for n, p in sorted(all_media.items()))
+            old_raw = read_state("media-assets.txt")
+            write_state(cur, "media-assets.txt")
+            if old_raw is not None:  # None = first run -> baseline silently
+                old_names = {l.split("|", 1)[0] for l in old_raw.splitlines() if "|" in l}
+                new_names = [n for n in sorted(all_media) if n not in old_names]
+                imgs, vids = [], []
+                for n in new_names[:40]:  # cap a runaway drop (rate limits / latency)
+                    path = all_media[n]
+                    is_video = path.lower().endswith(VIDEO_EXT)
+                    post_media(n, f"{BASE}/VI{path}", is_video)
+                    (vids if is_video else imgs).append(n)
+                bits = []
+                if imgs:
+                    bits.append(f"{len(imgs)} new image(s) → images channel: "
+                                + ", ".join(imgs[:12]))
+                if vids:
+                    bits.append(f"{len(vids)} new video(s) → videos channel: "
+                                + ", ".join(vids[:12]))
+                if len(new_names) > 40:
+                    bits.append(f"(+{len(new_names) - 40} more new media not shown)")
+                if bits:
+                    add(2, "new media posted", "\n".join(f"- {b}" for b in bits))
+    except Exception as e:
+        sys.stderr.write(f"[warn] media posting failed (core monitor unaffected): {e}\n")
 
     # --- robots / sitemap ---
     for name, url, grep in RAW:
