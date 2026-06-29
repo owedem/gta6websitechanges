@@ -1,3 +1,4 @@
+Ambrosia_01|/_next/static/media/Ambrosia_01.0rqphs0gazkm..jpg
 Ambrosia_02|/_next/static/media/Ambrosia_02.0wtqs05ozl.ym.jpg
 Ambrosia_03|/_next/static/media/Ambrosia_03.0vt46a.1s.7-y.jpg
 Ambrosia_04|/_next/static/media/Ambrosia_04.0.2cefoguu-tt.jpg
@@ -65,6 +66,7 @@ Lucia_Caminos_03|/_next/static/media/Lucia_Caminos_03.14xgd2y_ymmeg.jpg
 Lucia_Caminos_04|/_next/static/media/Lucia_Caminos_04.04kb_~4ubn3wn.jpg
 Lucia_Caminos_05|/_next/static/media/Lucia_Caminos_05.0i5b7k6a7_w6p.jpg
 Lucia_Caminos_06|/_next/static/media/Lucia_Caminos_06.0fxbjfk0jakb3.jpg
+Lucia_Caminos_Video_Clip|/_next/static/media/Lucia_Caminos_Video_Clip.0g8.3fx84ixw..mp4
 Mount_Kalaga_National_Park_01|/_next/static/media/Mount_Kalaga_National_Park_01.0v5fl0f83hjv_.jpg
 Mount_Kalaga_National_Park_02|/_next/static/media/Mount_Kalaga_National_Park_02.0f24dhopdprvx.jpg
 Mount_Kalaga_National_Park_03|/_next/static/media/Mount_Kalaga_National_Park_03.037k2s87rwuxc.jpg
