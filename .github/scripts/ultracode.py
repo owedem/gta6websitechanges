@@ -543,6 +543,50 @@ def _claude(bundle):
 # --------------------------------------------------------------------------- #
 
 
+# Map a media filename to a friendly category tag (first substring match wins).
+CATEGORY_RULES = [
+    ("ultimate_edition", "Ultimate Edition"),
+    ("ultimateedition", "Ultimate Edition"),
+    ("standard_edition", "Standard Edition"),
+    ("standardedition", "Standard Edition"),
+    ("vintage_vice_city", "Vintage Vice City Pack"),
+    ("postcard", "Postcard"),
+    ("video_clip", "Video Clip"),
+    ("gtavi_fob", "Box Art"),
+]
+
+
+def category_match(name):
+    low = name.lower()
+    for key, label in CATEGORY_RULES:
+        if key in low:
+            return label
+    return None
+
+
+# Boilerplate tokens to drop from the displayed name (build/locale noise).
+_DROP_TOKENS = re.compile(
+    r"\b(gtavi|fob|desktop|mobile|en us|fr fr|ja jp|ko kr|zh hans|zh tw|"
+    r"de de|es es|pt br|it it)\b", re.I)
+
+
+def pretty_name(name):
+    s = re.sub(r"\s+", " ", name.replace("_", " ")).strip()
+    s = re.sub(r"\s+", " ", _DROP_TOKENS.sub("", s)).strip()
+    return s.title() or name
+
+
+def media_label(name):
+    """A '[Category] Pretty Name' label; the category words are removed from the
+    name to avoid repetition (e.g. '[Postcard] Vice City Landscape')."""
+    cat = category_match(name)
+    disp = pretty_name(name)
+    if cat:
+        disp = re.sub(r"\s+", " ", re.sub(re.escape(cat), "", disp, flags=re.I)).strip()
+        return f"**[{cat}]** {disp}" if disp else f"**[{cat}]**"
+    return disp
+
+
 def post_media(name, full_url, is_video):
     """Post a new media asset to its dedicated channel. Images go as an image
     embed (Discord fetches the URL); videos go as a link (Discord renders a
@@ -550,10 +594,11 @@ def post_media(name, full_url, is_video):
     webhook = VIDEOS_WEBHOOK if is_video else IMAGES_WEBHOOK
     if not webhook:
         return
+    label = media_label(name)
     if is_video:
-        payload = {"content": f"🎬 **New GTA VI video:** `{name}`\n{full_url}"}
+        payload = {"content": f"🎬 **New GTA VI video** — {label}\n{full_url}"}
     else:
-        payload = {"content": f"🖼️ **New GTA VI image:** `{name}`",
+        payload = {"content": f"🖼️ **New GTA VI image** — {label}",
                    "embeds": [{"image": {"url": full_url}}]}
     req = urllib.request.Request(
         webhook, data=json.dumps(payload).encode("utf-8"),
