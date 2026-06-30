@@ -50,6 +50,10 @@ jobs:
           # Dedicated webhook (its own Discord channel) — no fallback, so this
           # workflow stays cleanly separate for A/B comparison with the others.
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_ULTRACODE }}
+          # Mention prepended to MAJOR alerts only (new page, new route, launch
+          # keyword, sitemap). Change to a role like "<@&ROLE_ID>" if @everyone
+          # is too much, or blank it to disable hard pings.
+          MAJOR_PING: '@everyone'
           # Dedicated channels for posting the actual new media (optional; if
           # unset, media just gets named in the main alert as before).
           DISCORD_WEBHOOK_IMAGES: ${{ secrets.DISCORD_WEBHOOK_IMAGES }}

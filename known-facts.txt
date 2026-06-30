@@ -1,0 +1,9 @@
+# Known facts fed to the AI so it doesn't re-hype settled things.
+# Edit this freely — one fact per line. Keep it short and factual.
+# (Lines starting with # are fine; the AI just reads the whole file as context.)
+
+- Pre-orders are ALREADY LIVE (went live ~mid-June 2026). Do NOT report pre-order code, keywords, or pages as an "upcoming" or "imminent" signal — that ship has sailed.
+- Editions on sale: Standard Edition and Ultimate Edition. The Ultimate Edition includes the Vintage Vice City Pack bonus content.
+- The official site (rockstargames.com/VI) has been live for a long time with character pages, a media gallery, and editions/pre-order pages.
+- Main characters: Jason (Duval) and Lucia (Caminos). Setting: Vice City / state of Leonida.
+- Release date: NOT yet added here — update this line when Rockstar confirms it, so forecasts can reference it.

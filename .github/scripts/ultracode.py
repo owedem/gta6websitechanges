@@ -72,6 +72,12 @@ MODEL = os.environ.get("ANALYSIS_MODEL", "claude-opus-4-8")
 # don't re-download every JS chunk each time.
 FORCE_FULL = os.environ.get("FULL_SCAN", "").strip().lower() in ("1", "true", "yes")
 
+# Mention prepended to MAJOR alerts (new page, new route, launch keyword, sitemap)
+# so they can't be missed. e.g. "@everyone" or "<@&ROLE_ID>". Empty = no ping.
+MAJOR_PING = os.environ.get("MAJOR_PING", "").strip()
+# Periodic "still alive" heartbeat so silence never hides a dead bot.
+HEARTBEAT_INTERVAL = int(os.environ.get("HEARTBEAT_HOURS", "24")) * 3600
+
 USER_AGENT = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/124.0 Safari/537.36"
@@ -93,6 +99,20 @@ RAW = [
 # ~5-min ticks reliably cross the threshold despite scheduler jitter.
 CODESCAN_INTERVAL = 19 * 60   # ~20 min: download JS chunks and grep for clues
 PROBE_INTERVAL = 28 * 60      # ~30 min: probe candidate URLs for new live pages
+EXTRA_PAGES_INTERVAL = 28 * 60  # ~30 min: check the character/location pages
+
+# Secondary pages (characters/locations) watched on the ~30-min cadence for
+# text/head/route changes. Non-existent ones are skipped automatically.
+EXTRA_PAGE_PATHS = [
+    "jason", "lucia", "ambrosia", "boobie", "brian", "cal", "drequan", "raul",
+    "dimez", "vice-city", "port-gellhorn", "leonida-keys", "grassrivers",
+    "kalaga",
+]
+# A new code finding mentioning one of these is a MAJOR signal (pre-order is
+# excluded — it is already live and would be noise).
+MAJOR_KEYWORDS = ("countdown", "releasedate", "outnow", "launchday", "comingsoon",
+                  "worldpremiere", "gameplayreveal", "availablenow", "nowavailable",
+                  "wishlist")
 
 # Candidate paths the URL probe brute-forces (ported from probe.yml).
 PROBE_PATHS = [
@@ -625,13 +645,16 @@ def post_media(name, full_url, is_video):
     time.sleep(1)  # stay under Discord's webhook rate limit
 
 
-def post_discord(message):
+def post_discord(message, allow_mentions=False):
     if not DISCORD_WEBHOOK:
         sys.stderr.write("[info] DISCORD_WEBHOOK not set — printing instead:\n")
         safe_print(message)
         return
+    # By default suppress all mentions (so stray text can't ping); only major
+    # alerts opt in to actually pinging.
+    am = {"parse": ["everyone", "roles", "users"]} if allow_mentions else {"parse": []}
     for chunk in chunk_text(message, 1900):
-        payload = json.dumps({"content": chunk}).encode("utf-8")
+        payload = json.dumps({"content": chunk, "allowed_mentions": am}).encode("utf-8")
         req = urllib.request.Request(
             DISCORD_WEBHOOK, data=payload,
             headers={"Content-Type": "application/json", "User-Agent": USER_AGENT},
@@ -641,6 +664,21 @@ def post_discord(message):
         except Exception as e:
             sys.stderr.write(f"[warn] Discord post failed: {e}\n")
         time.sleep(1)
+
+
+def post_heartbeat(stamp):
+    """Periodic 'still alive' message. Its absence is the dead-man's switch:
+    if these stop arriving, something broke (token, pinger, workflow)."""
+    etag = ""
+    for line in (read_state("home", "headers.txt") or "").splitlines():
+        if line.lower().startswith("etag:"):
+            etag = line.split(":", 1)[1].strip()
+    post_discord(
+        f"✅ **Ultracode heartbeat — still watching** | {stamp}\n"
+        f"No meaningful changes to report. Current site build (ETag): "
+        f"`{etag or 'n/a'}`.\n"
+        f"_(Periodic alive-check. If these stop arriving, the bot has stopped — "
+        f"check the cron-job.org pinger and the GitHub token.)_")
 
 
 def chunk_text(text, size):
@@ -686,13 +724,13 @@ def main():
     baseline = is_baseline()
     stamp = datetime.now(timezone.utc).strftime("%d %b %Y at %H:%M UTC")
 
-    # Sections that raise an alert: (priority, title, body). Lower prio first.
+    # Sections that raise an alert: (priority, title, body, major). Lower prio first.
     sections = []
     context_changed = False
 
-    def add(prio, title, body):
+    def add(prio, title, body, major=False):
         if body and body.strip():
-            sections.append((prio, title, body))
+            sections.append((prio, title, body, major))
 
     # --- Per-page surface + chunks + headers ---
     media_html = None
@@ -713,8 +751,10 @@ def main():
             if old is None or old == new:
                 continue
             if name in TRIGGER_ARTIFACTS:
+                is_major = name == "routes" and bool(added_lines(old, new))
                 add(0 if name in ("head", "routes") else 1,
-                    f"{surface} {name} changed", unified(old, new, f"{surface}/{name}"))
+                    f"{surface} {name} changed", unified(old, new, f"{surface}/{name}"),
+                    major=is_major)
             elif name in CONTEXT_ARTIFACTS:
                 context_changed = True
 
@@ -781,7 +821,26 @@ def main():
         old = read_state(name, "raw.txt")
         write_state(new, name, "raw.txt")
         if old is not None and old != new:
-            add(0, f"{name} changed", unified(old, new, name))
+            add(0, f"{name} changed", unified(old, new, name), major=(name == "sitemap"))
+
+    # --- Secondary pages (characters/locations), cadence-gated ---
+    if FORCE_FULL or time.time() - last_run("extrapages.txt") >= EXTRA_PAGES_INTERVAL:
+        try:
+            for path in EXTRA_PAGE_PATHS:
+                r = fetch(f"{BASE}/VI/{path}")
+                if r is None or r[0] != 200 or "<html" not in r[2].lower():
+                    continue
+                for nm, val in (("text", x_text(r[2])), ("head", x_head(r[2])),
+                                ("routes", x_routes(r[2]))):
+                    old = read_state("pages", path, f"{nm}.txt")
+                    write_state(val, "pages", path, f"{nm}.txt")
+                    if old is not None and old != val:
+                        add(1, f"{path} page — {nm} changed",
+                            unified(old, val, f"{path}/{nm}"),
+                            major=(nm == "routes" and bool(added_lines(old, val))))
+            mark_run("extrapages.txt")
+        except Exception as e:
+            sys.stderr.write(f"[warn] extra pages check failed: {e}\n")
 
     # --- Heavy: code scan (cadence-gated) ---
     if FORCE_FULL or time.time() - last_run("codescan.txt") >= CODESCAN_INTERVAL:
@@ -793,7 +852,11 @@ def main():
             if old is not None:
                 new_f = added_lines(old, findings)
                 if new_f:
-                    add(0, "new clues in site code", "\n".join(f"- {x}" for x in new_f))
+                    blob = " ".join(new_f).lower()
+                    is_major = (any(k in blob for k in MAJOR_KEYWORDS)
+                                or "date:" in blob or "route:" in blob)
+                    add(0, "new clues in site code",
+                        "\n".join(f"- {x}" for x in new_f), major=is_major)
         except Exception as e:
             sys.stderr.write(f"[warn] code scan failed: {e}\n")
 
@@ -807,7 +870,7 @@ def main():
             mark_run("probe.txt")
             if old is not None and new_pages:
                 add(0, "new pages live",
-                    "\n".join(f"- {BASE}/VI/{p}" for p in new_pages))
+                    "\n".join(f"- {BASE}/VI/{p}" for p in new_pages), major=True)
         except Exception as e:
             sys.stderr.write(f"[warn] url probe failed: {e}\n")
 
@@ -823,14 +886,23 @@ def main():
         safe_print("Baseline established.")
         return
 
+    # --- Heartbeat (runs whether or not there's an alert) ---
+    try:
+        if time.time() - last_run("heartbeat.txt") >= HEARTBEAT_INTERVAL:
+            post_heartbeat(stamp)
+            mark_run("heartbeat.txt")
+    except Exception as e:
+        sys.stderr.write(f"[warn] heartbeat failed: {e}\n")
+
     if not sections:
         safe_print("Routine rebuild only." if context_changed else "No changes.")
         return
 
     # --- Build the bundle, analyse, post ---
     sections.sort(key=lambda s: s[0])
+    is_major = any(m for _p, _t, _b, m in sections)
     bundle, used = [], 0
-    for _p, title, body in sections:
+    for _p, title, body, _m in sections:
         block = f"=== {title.upper()} ===\n{body}"
         if used + len(block) > 28000:
             block = block[: max(0, 28000 - used)] + "\n[... truncated ...]"
@@ -839,9 +911,25 @@ def main():
         bundle.append(block)
         used += len(block) + 2
 
-    analysis = analyse("\n\n".join(bundle))
-    titles = sorted({t for _p, t, _b in sections})
-    header = f"🚨 **GTA Bot Ultracode — change detected** | {stamp}\n"
+    # Ground the AI in established facts (user-editable known-facts.txt) so it
+    # never re-hypes settled things (e.g. that pre-orders are already live).
+    facts = ""
+    try:
+        with open("known-facts.txt", encoding="utf-8") as f:
+            facts = f.read().strip()
+    except Exception:
+        pass
+    user_content = "\n\n".join(bundle)
+    if facts:
+        user_content = ("ESTABLISHED FACTS — already known and true; do NOT report "
+                        "these as new or upcoming, use them only to interpret the "
+                        "changes below:\n" + facts
+                        + "\n\n--- CHANGES DETECTED THIS SCAN ---\n\n" + user_content)
+
+    analysis = analyse(user_content)
+    titles = sorted({t for _p, t, _b, _m in sections})
+    header = (f"{'🔴' if is_major else '🚨'} **GTA Bot Ultracode — "
+              f"change detected** | {stamp}\n")
     if analysis:
         message = header + "\n" + analysis
     else:
@@ -849,9 +937,12 @@ def main():
         message = (header + f"\nChanges found in: {', '.join(titles)}\n"
                    f"AI write-up unavailable{reason} — see the snapshot diff.\n"
                    f"\n{BASE}/VI/")
-    post_discord(message)
-    append_log(stamp, [(t, b) for _p, t, b in sections], analysis)
-    safe_print(f"Alert posted. Sections: {', '.join(titles)}")
+    if is_major and MAJOR_PING:
+        message = f"{MAJOR_PING} **🔴 MAJOR signal**\n" + message
+    post_discord(message, allow_mentions=bool(is_major and MAJOR_PING))
+    append_log(stamp, [(t, b) for _p, t, b, _m in sections], analysis)
+    safe_print(f"Alert posted{' [MAJOR]' if is_major else ''}. "
+               f"Sections: {', '.join(titles)}")
 
 
 if __name__ == "__main__":
