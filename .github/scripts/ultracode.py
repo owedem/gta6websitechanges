@@ -330,6 +330,15 @@ KEYWORD_EXCLUDE = re.compile(
     r"pointerCapture|releaseProxy|releaseLock|onRelease|releasePointer|"
     r"unlockAudioContext|launchpad|launcher", re.I)
 
+# Distinctive launch-signal terms captured as full, stable identifiers (e.g.
+# "PreorderDrawerContent", "CountdownTimer"). Deliberately specific — generic
+# words like "release"/"launch"/"available" match too much minified noise.
+KEYWORD_RE = re.compile(
+    r"[A-Za-z0-9_$]*"
+    r"(?:preorder|wishlist|countdown|comingsoon|releasedate|launchday|outnow"
+    r"|nowavailable|availablenow|gameplayreveal|worldpremiere)"
+    r"[A-Za-z0-9_$]*", re.I)
+
 
 def code_scan():
     """Download JS chunk contents and grep for clues (ported from scan.yml).
@@ -360,7 +369,7 @@ def code_scan():
     # NOT 50-char minified code windows. Windows shift on every rebuild and caused
     # false "new pre-order feature" alerts even when nothing actually changed.
     kw = set()
-    for tok in re.findall(r"[A-Za-z0-9_$]*[Pp]re[Oo]rder[A-Za-z0-9_$]*", code):
+    for tok in KEYWORD_RE.findall(code):
         if not KEYWORD_EXCLUDE.search(tok):
             kw.add(tok)
     for tok in re.findall(r"pre[-_]order", code, re.I):
