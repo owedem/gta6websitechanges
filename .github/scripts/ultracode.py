@@ -356,12 +356,17 @@ def code_scan():
                 r"\d{1,2} (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]* 202[456789]"):
         for d in re.findall(pat, code):
             findings.add(f"date: {d}")
-    kw = []
-    for m in re.findall(r".{0,50}(?:preorder|pre-order|pre_order).{0,50}", code, re.I):
-        if not KEYWORD_EXCLUDE.search(m):
-            kw.append(m.strip())
-    for m in sorted(set(kw))[:20]:
-        findings.add(f"keyword: {m}")
+    # Capture stable identifiers containing "preorder" (e.g. "PreorderDrawerContent"),
+    # NOT 50-char minified code windows. Windows shift on every rebuild and caused
+    # false "new pre-order feature" alerts even when nothing actually changed.
+    kw = set()
+    for tok in re.findall(r"[A-Za-z0-9_$]*[Pp]re[Oo]rder[A-Za-z0-9_$]*", code):
+        if not KEYWORD_EXCLUDE.search(tok):
+            kw.add(tok)
+    for tok in re.findall(r"pre[-_]order", code, re.I):
+        kw.add(tok.lower())
+    for tok in sorted(kw):
+        findings.add(f"keyword: {tok}")
     for api in re.findall(r"https?://[^\"'\s]+rockstar[^\"'\s]+/VI/[^\"'\s]*", code):
         findings.add(f"api: {api}")
     return sorted(findings)
