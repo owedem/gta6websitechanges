@@ -99,10 +99,10 @@ RAW = [
 # ~5-min ticks reliably cross the threshold despite scheduler jitter.
 CODESCAN_INTERVAL = 19 * 60   # ~20 min: download JS chunks and grep for clues
 PROBE_INTERVAL = 28 * 60      # ~30 min: probe candidate URLs for new live pages
-EXTRA_PAGES_INTERVAL = 28 * 60  # ~30 min: check the character/location pages
 
-# Secondary pages (characters/locations) watched on the ~30-min cadence for
-# text/head/route changes. Non-existent ones are skipped automatically.
+# Secondary pages (characters/locations) watched EVERY run for text/head/route
+# changes and new media, same cadence as the main pages (cheap fetches).
+# Non-existent ones are skipped automatically.
 EXTRA_PAGE_PATHS = [
     "jason", "lucia", "ambrosia", "boobie", "brian", "cal", "drequan", "raul",
     "dimez", "vice-city", "port-gellhorn", "leonida-keys", "grassrivers",
@@ -732,10 +732,15 @@ def main():
         if body and body.strip():
             sections.append((prio, title, body, major))
 
-    # --- Per-page surface + chunks + headers ---
+    # --- Per-page surface (every run) ---
+    # Main pages get full artifacts (incl. chunks/headers deploy fingerprint);
+    # the secondary character/location pages get the lighter text/head/routes set
+    # (their chunks/headers would just duplicate the home page's deploy noise).
     media_html = None
-    all_media = {}  # name -> full asset path, unioned across pages
-    for surface, url in PAGES:
+    all_media = {}  # name -> full asset path, unioned across ALL pages
+    all_pages = ([(s, u, (s,), True) for s, u in PAGES]
+                 + [(p, f"{BASE}/VI/{p}", ("pages", p), False) for p in EXTRA_PAGE_PATHS])
+    for surface, url, parts, full in all_pages:
         r = fetch(url)
         if r is None:
             continue
@@ -744,10 +749,12 @@ def main():
             continue
         if surface == "media":
             media_html = body
-        all_media.update(media_assets(body))
-        for name, new in page_artifacts(body, headers).items():
-            old = read_state(surface, f"{name}.txt")
-            write_state(new, surface, f"{name}.txt")
+        all_media.update(media_assets(body))  # incl. character-page art
+        arts = (page_artifacts(body, headers) if full else
+                {"text": x_text(body), "head": x_head(body), "routes": x_routes(body)})
+        for name, new in arts.items():
+            old = read_state(*parts, f"{name}.txt")
+            write_state(new, *parts, f"{name}.txt")
             if old is None or old == new:
                 continue
             if name in TRIGGER_ARTIFACTS:
@@ -822,25 +829,6 @@ def main():
         write_state(new, name, "raw.txt")
         if old is not None and old != new:
             add(0, f"{name} changed", unified(old, new, name), major=(name == "sitemap"))
-
-    # --- Secondary pages (characters/locations), cadence-gated ---
-    if FORCE_FULL or time.time() - last_run("extrapages.txt") >= EXTRA_PAGES_INTERVAL:
-        try:
-            for path in EXTRA_PAGE_PATHS:
-                r = fetch(f"{BASE}/VI/{path}")
-                if r is None or r[0] != 200 or "<html" not in r[2].lower():
-                    continue
-                for nm, val in (("text", x_text(r[2])), ("head", x_head(r[2])),
-                                ("routes", x_routes(r[2]))):
-                    old = read_state("pages", path, f"{nm}.txt")
-                    write_state(val, "pages", path, f"{nm}.txt")
-                    if old is not None and old != val:
-                        add(1, f"{path} page — {nm} changed",
-                            unified(old, val, f"{path}/{nm}"),
-                            major=(nm == "routes" and bool(added_lines(old, val))))
-            mark_run("extrapages.txt")
-        except Exception as e:
-            sys.stderr.write(f"[warn] extra pages check failed: {e}\n")
 
     # --- Heavy: code scan (cadence-gated) ---
     if FORCE_FULL or time.time() - last_run("codescan.txt") >= CODESCAN_INTERVAL:
