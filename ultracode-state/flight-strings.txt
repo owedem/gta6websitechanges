@@ -1,0 +1,63 @@
+$","meta","35",{"name":"twitter:image:height","content":"630"}]
+19e:["$","link","36",{"rel":"icon","href":"https://www.rockstargames.com/favicon.ico","sizes":"48x48"}]
+19f:["$","$L1a0","37",{}]
+1a1:["locale"]
+f:"$W1a1"
+1a2:["locale"]
+9:"$W1a2"
+1a3:["locale"]
+a:"$W1a3"
+1a4:["locale"]
+b:"$W1a4"
+,"content":"1200"}]
+163:["$","meta","35",{"name":"twitter:image:height","content":"630"}]
+164:["$","link","36",{"rel":"icon","href":"https://www.rockstargames.com/favicon.ico","sizes":"48x48"}]
+165:["$","$L166","37",{}]
+167:["locale"]
+e:"$W167"
+168:["locale"]
+9:"$W168"
+169:["locale"]
+b:"$W169"
+,"content":"1200"}]
+1cd:["$","meta","35",{"name":"twitter:image:height","content":"630"}]
+1ce:["$","link","36",{"rel":"icon","href":"https://www.rockstargames.com/favicon.ico","sizes":"48x48"}]
+1cf:["$","$L1d0","37",{}]
+1d1:["locale"]
+e:"$W1d1"
+1d2:["locale"]
+9:"$W1d2"
+1d3:["locale"]
+b:"$W1d3"
+,"content":"1200"}]
+21b:["$","meta","35",{"name":"twitter:image:height","content":"630"}]
+21c:["$","link","36",{"rel":"icon","href":"https://www.rockstargames.com/favicon.ico","sizes":"48x48"}]
+21d:["$","$L21e","37",{}]
+21f:["locale"]
+d:"$W21f"
+220:["locale"]
+8:"$W220"
+221:["locale"]
+9:"$W221"
+,"rockstar",{"variant":"platform","label":"Open external link to Rockstar store","analytics":{"event":"cta_store_link","text":"rockstar","element_placement":"sku-selector - standard","link_url":"https://store.rockstargames.com/game/buy-gta-vi"},"asChild":true,"children":"$L128"}]]}],"$L129"]}]}]]
+,"rockstar",{"variant":"platform","label":"Open external link to Rockstar store","analytics":{"event":"cta_store_link","text":"rockstar","element_placement":"sku-selector - standard","link_url":"https://store.rockstargames.com/game/buy-gta-vi"},"asChild":true,"children":"$L149"}]]}],"$L14a"]}]}]]
+,"rockstar",{"variant":"platform","label":"Open external link to Rockstar store","analytics":{"event":"cta_store_link","text":"rockstar","element_placement":"sku-selector - standard","link_url":"https://store.rockstargames.com/game/buy-gta-vi"},"asChild":true,"children":"$L1c9"}]]}],"$L1ca"]}]}]]
+,"rockstar",{"variant":"platform","label":"Open external link to Rockstar store","analytics":{"event":"cta_store_link","text":"rockstar","element_placement":"sku-selector - standard","link_url":"https://store.rockstargames.com/game/buy-gta-vi"},"asChild":true,"children":"$L217"}]]}],"$L218"]}]}]]
+,"rockstar",{"variant":"platform","label":"Open external link to Rockstar store","analytics":{"event":"cta_store_link","text":"rockstar","element_placement":"sku-selector - standard","link_url":"https://store.rockstargames.com/game/buy-gta-vi"},"asChild":true,"children":"$La4"}]]}],"$La5"]}]}]]
+:"_blank","href":"https://store.rockstargames.com/game/buy-gta-vi","children":[["$","$L1c4",null,{"children":[["$","$L1c5",null,{"platform":"rockstar"}],["$","$L1c6",null,{}],["$","$L1bb",null,{"children":"Code in Box"}]]}],["$","$L1c7",null,{"external":true}]]}]
+1ca:["$","$L1c8",null,{}]
+12:null
+:"_blank","href":"https://store.rockstargames.com/game/buy-gta-vi","children":[["$","$L212",null,{"children":[["$","$L213",null,{"platform":"rockstar"}],["$","$L214",null,{}],["$","$L209",null,{"children":"Code in Box"}]]}],["$","$L215",null,{"external":true}]]}]
+218:["$","$L216",null,{}]
+11:null
+a",null,{"target":"_blank","href":"https://store.rockstargames.com/game/buy-gta-vi","children":[["$","$L9f",null,{"children":[["$","$La0",null,{"platform":"rockstar"}],["$","$La1",null,{}],["$","$L96",null,{"children":"Code in Box"}]]}],["$","$La2",null,{"external":true}]]}]
+a5:["$","$La3",null,{}]
+target":"_blank","href":"https://store.rockstargames.com/game/buy-gta-vi","children":[["$","$L123",null,{"children":[["$","$L124",null,{"platform":"rockstar"}],["$","$L125",null,{}],["$","$L11a",null,{"children":"Code in Box"}]]}],["$","$L126",null,{"external":true}]]}]
+129:["$","$L127",null,{}]
+target":"_blank","href":"https://store.rockstargames.com/game/buy-gta-vi","children":[["$","$L9f",null,{"children":[["$","$La0",null,{"platform":"rockstar"}],["$","$La1",null,{}],["$","$L96",null,{"children":"Code in Box"}]]}],["$","$La2",null,{"external":true}]]}]
+14a:["$","$La3",null,{}]
+12:null
+}],["$","meta","32",{"name":"twitter:image","content":"https://www.rockstargames.com/VI/-/twitter-image.jpg?twitter-image.0t8ty~nlmxq2s.jpg"}],"$L161","$L162","$L163","$L164","$L165"]
+}],["$","meta","32",{"name":"twitter:image","content":"https://www.rockstargames.com/VI/-/twitter-image.jpg?twitter-image.0t8ty~nlmxq2s.jpg"}],"$L19b","$L19c","$L19d","$L19e","$L19f"]
+}],["$","meta","32",{"name":"twitter:image","content":"https://www.rockstargames.com/VI/-/twitter-image.jpg?twitter-image.0t8ty~nlmxq2s.jpg"}],"$L1cb","$L1cc","$L1cd","$L1ce","$L1cf"]
+}],["$","meta","32",{"name":"twitter:image","content":"https://www.rockstargames.com/VI/-/twitter-image.jpg?twitter-image.0t8ty~nlmxq2s.jpg"}],"$L219","$L21a","$L21b","$L21c","$L21d"]
