@@ -360,15 +360,94 @@ KEYWORD_RE = re.compile(
     r"[A-Za-z0-9_$]*", re.I)
 
 
+# Anything looking like code — used to reject minified JS fragments that happen
+# to sit inside string literals (the source of the earlier 2,789-entry noise).
+CODE_ISH = re.compile(
+    r"[{}()\[\];=<>|&`\\]|=>|::|\bfunction\b|\breturn\b|\btypeof\b|\bvoid\b|"
+    r"\bthrow\b|\bconst\b|\bvar\b|\blet\b|\bnull\b|\bundefined\b|prototype|"
+    r"\bwindow\b|\bdocument\b|Symbol|RegExp")
+
+# Specific launch/content signal terms (compounds — avoids generic-word noise).
+INTEREST_KW = re.compile(
+    r"pre[- ]?order|wishlist|countdown|coming[ -]?soon|out[ -]?now|"
+    r"release[ -]?date|launch[ -]?day|early[ -]?access|world[ -]?premiere|"
+    r"gameplay[ -]?reveal|available[ -]?now|standard edition|ultimate edition", re.I)
+
+# Real date shapes (ISO or "19 November 2026" / "November 2026") — not bare years.
+DATE_RE = re.compile(
+    r"20(?:2[5-9]|3\d)[-/]\d{1,2}[-/]\d{1,2}|"
+    r"\b\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\.?\s+20\d\d|"
+    r"\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\.?\s+20\d\d", re.I)
+
+# GTA-VI vocabulary — a phrase must mention one of these to be kept, so we get
+# game content ("Jason and Lucia standing side by side...") not framework noise
+# ("Object already initialized", CSS class bundles, font names).
+GAME_TERMS = re.compile(
+    r"\b(jason|lucia|caminos|duval|vice\s?city|leonida|grand\s+theft|gta|rockstar|"
+    r"pre-?order|edition|trailer|gameplay|vinewood|ambrosia|gellhorn|boobie|drequan|"
+    r"dimez|grassrivers|kalaga|release|launch|countdown|wishlist|soundtrack|heist|"
+    r"collector|deluxe|bonus|midnight|reveal|premiere)\b", re.I)
+
+
+def is_meaningful(s):
+    """High-precision keep: real routes, dates, rockstar URLs, launch terms, or
+    GAME-relevant natural-language phrases. Rejects framework/library strings, CSS
+    class bundles, fonts, and minified code. String literals are stable across
+    rebuilds, so a kept string only alerts when its content genuinely appears."""
+    s = s.strip()
+    if len(s) < 4 or len(s) > 300 or not re.search(r"[A-Za-z]", s):
+        return False
+    if "_next" in s or "/_" in s or s.startswith(("data:", "#", ".", "@")):
+        return False
+    if KEYWORD_EXCLUDE.search(s):
+        return False
+    # High-value structural shapes (before code-rejection so URLs with '=' survive):
+    if re.match(r"^/[A-Za-z][A-Za-z0-9/_-]*[A-Za-z0-9]$", s) and len(s) >= 5:
+        return True                                           # a real /VI/... route
+    if "://" in s:
+        return "rockstar" in s.lower()                        # rockstar url only
+    if DATE_RE.search(s):
+        return True                                           # a real date
+    # Soft rules — reject code, then require a specific launch term OR game vocab:
+    if CODE_ISH.search(s):
+        return False
+    if INTEREST_KW.search(s):
+        return True
+    if GAME_TERMS.search(s) and len(re.findall(r"[A-Za-z]{3,}", s)) >= 2:
+        return True                                           # game-relevant phrase
+    return False
+
+
+def meaningful_strings(text):
+    """All human-meaningful quoted string literals in `text`, deduped. Handles
+    JSON-escaped strings (so game copy with \\' or \\" isn't truncated)."""
+    out = set()
+    for m in re.findall(r'"((?:[^"\\]|\\.){4,300})"', text):
+        try:
+            s = json.loads(f'"{m}"')          # unescape \\', \\", \\n, \\uXXXX ...
+        except Exception:
+            s = m
+        if is_meaningful(s):
+            out.add(s.strip())
+    return out
+
+
+def flight_strings(html):
+    """Meaningful strings from the App Router `self.__next_f` RSC payload — the
+    data layer behind the page (props/copy), which can carry staged content."""
+    payloads = re.findall(r"self\.__next_f\.push\((\[.*?\])\)", html, re.S)
+    return meaningful_strings("\n".join(payloads))
+
+
 def code_scan():
-    """Download JS chunk contents and grep for clues (ported from scan.yml).
-    Returns a sorted list of 'category: finding' strings."""
+    """Download JS chunk contents and mine them for clues (routes, dates, APIs,
+    and every meaningful string literal). Returns a sorted 'category: finding' list."""
     all_html = ""
     for _, url in PAGES:
         r = fetch(url)
         if r:
             all_html += r[2]
-    chunk_paths = sorted(set(CHUNK_PATH_RE.findall(all_html)))[:50]
+    chunk_paths = sorted(set(CHUNK_PATH_RE.findall(all_html)))[:120]
     blobs = []
     for cp in chunk_paths:
         r = fetch(f"{BASE}/VI/{cp}")
@@ -385,19 +464,14 @@ def code_scan():
                 r"\d{1,2} (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]* 202[456789]"):
         for d in re.findall(pat, code):
             findings.add(f"date: {d}")
-    # Capture stable identifiers containing "preorder" (e.g. "PreorderDrawerContent"),
-    # NOT 50-char minified code windows. Windows shift on every rebuild and caused
-    # false "new pre-order feature" alerts even when nothing actually changed.
-    kw = set()
-    for tok in KEYWORD_RE.findall(code):
-        if not KEYWORD_EXCLUDE.search(tok):
-            kw.add(tok)
-    for tok in re.findall(r"pre[-_]order", code, re.I):
-        kw.add(tok.lower())
-    for tok in sorted(kw):
-        findings.add(f"keyword: {tok}")
     for api in re.findall(r"https?://[^\"'\s]+rockstar[^\"'\s]+/VI/[^\"'\s]*", code):
         findings.add(f"api: {api}")
+    # Deep net: every meaningful string literal in the bundle. String literals are
+    # stable across rebuilds (minification renames variables, not string contents),
+    # so this catches feature names, unbuilt page slugs, CTA copy and config that
+    # the narrow patterns miss — without the false positives that code-windows had.
+    for s in meaningful_strings(code):
+        findings.add(f"string: {s}")
     return sorted(findings)
 
 
@@ -464,7 +538,13 @@ briefly. Never present speculation as fact.\
 LAST_AI_ERROR = None
 
 
-def analyse(bundle):
+def analyse(bundle, major=False):
+    # Major signals get the sharpest reasoning (Fable 5) when a key is available;
+    # everything else uses the free provider. Fable failing falls through to free.
+    if major and ANTHROPIC_API_KEY:
+        result = _fable(bundle)
+        if result:
+            return result
     if GROQ_API_KEY:
         return _groq(bundle)
     if GEMINI_API_KEY:
@@ -569,6 +649,36 @@ def _claude(bundle):
         return ("".join(b.text for b in resp.content if b.type == "text").strip() or None)
     except Exception as e:
         LAST_AI_ERROR = f"Claude failed — {e}"
+        return None
+
+
+def _fable(bundle):
+    """Premium interpretation via Claude Fable 5 — used only for MAJOR signals.
+    Fable 5 specifics: thinking is always on (omit the param), no temperature/
+    budget_tokens, effort via output_config, opt into server-side fallbacks so a
+    safety refusal auto-retries on Opus 4.8. Check stop_reason before reading."""
+    global LAST_AI_ERROR
+    try:
+        import anthropic
+    except Exception as e:
+        LAST_AI_ERROR = f"anthropic SDK unavailable: {e}"
+        return None
+    try:
+        client = anthropic.Anthropic()
+        resp = client.beta.messages.create(
+            model="claude-fable-5",
+            max_tokens=2000,
+            betas=["server-side-fallback-2026-06-01"],
+            fallbacks=[{"model": "claude-opus-4-8"}],
+            output_config={"effort": "high"},
+            system=SYSTEM_PROMPT,
+            messages=[{"role": "user", "content": bundle}])
+        if resp.stop_reason == "refusal":
+            LAST_AI_ERROR = "Fable 5 refused (whole chain)"
+            return None
+        return ("".join(b.text for b in resp.content if b.type == "text").strip() or None)
+    except Exception as e:
+        LAST_AI_ERROR = f"Fable 5 failed — {e}"
         return None
 
 
@@ -700,10 +810,15 @@ def chunk_text(text, size):
 
 def append_log(stamp, sections, analysis):
     titles = ", ".join(t for t, _ in sections)
-    body = f"\n## {stamp}\n\n**Found in:** {titles}\n\n"
-    body += (analysis + "\n") if analysis else "_(AI analysis unavailable.)_\n"
+    out = f"\n## {stamp}\n\n**Found in:** {titles}\n\n"
+    out += (analysis + "\n") if analysis else "_(AI analysis unavailable.)_\n"
+    # Raw findings (the actual new strings/diffs) for the audit trail.
+    out += "\n<details><summary>raw findings</summary>\n\n"
+    for title, body in sections:
+        out += f"**{title}**\n```\n{body[:1500]}\n```\n"
+    out += "</details>\n"
     with open(LOG_FILE, "a", encoding="utf-8", newline="\n") as f:
-        f.write(body)
+        f.write(out)
 
 
 # --------------------------------------------------------------------------- #
@@ -738,6 +853,8 @@ def main():
     # (their chunks/headers would just duplicate the home page's deploy noise).
     media_html = None
     all_media = {}  # name -> full asset path, unioned across ALL pages
+    all_flight = set()       # meaningful strings from the RSC data layer
+    all_text_strings = set()  # meaningful strings visible in rendered text
     all_pages = ([(s, u, (s,), True) for s, u in PAGES]
                  + [(p, f"{BASE}/VI/{p}", ("pages", p), False) for p in EXTRA_PAGE_PATHS])
     for surface, url, parts, full in all_pages:
@@ -750,8 +867,10 @@ def main():
         if surface == "media":
             media_html = body
         all_media.update(media_assets(body))  # incl. character-page art
+        all_flight |= flight_strings(body)
         arts = (page_artifacts(body, headers) if full else
                 {"text": x_text(body), "head": x_head(body), "routes": x_routes(body)})
+        all_text_strings |= meaningful_strings(arts["text"])
         for name, new in arts.items():
             old = read_state(*parts, f"{name}.txt")
             write_state(new, *parts, f"{name}.txt")
@@ -815,6 +934,22 @@ def main():
                     add(2, "new media posted", "\n".join(f"- {b}" for b in bits))
     except Exception as e:
         sys.stderr.write(f"[warn] media posting failed (core monitor unaffected): {e}\n")
+
+    # --- Data-layer strings: present in the RSC payload but NOT in visible text
+    # (staged/hidden props/copy). Isolated so it can never break the core. ---
+    try:
+        flight_only = "\n".join(sorted(all_flight - all_text_strings))
+        old_f = read_state("flight-strings.txt")
+        write_state(flight_only, "flight-strings.txt")
+        if old_f is not None:  # None = first run -> baseline silently
+            new_fs = added_lines(old_f, flight_only)
+            if new_fs:
+                blob = " ".join(new_fs).lower()
+                is_major = any(k in blob for k in MAJOR_KEYWORDS)
+                add(1, "new data-layer strings (in code, not yet visible)",
+                    "\n".join(f"- {x}" for x in new_fs[:40]), major=is_major)
+    except Exception as e:
+        sys.stderr.write(f"[warn] flight-strings check failed (core unaffected): {e}\n")
 
     # --- robots / sitemap ---
     for name, url, grep in RAW:
@@ -914,7 +1049,7 @@ def main():
                         "changes below:\n" + facts
                         + "\n\n--- CHANGES DETECTED THIS SCAN ---\n\n" + user_content)
 
-    analysis = analyse(user_content)
+    analysis = analyse(user_content, major=is_major)
     titles = sorted({t for _p, t, _b, _m in sections})
     header = (f"{'🔴' if is_major else '🚨'} **GTA Bot Ultracode — "
               f"change detected** | {stamp}\n")
