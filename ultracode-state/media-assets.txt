@@ -1,3 +1,5 @@
+3642a34ab778931f321cc65c7d870a090dcfd4a4|/_next/static/media/3642a34ab778931f321cc65c7d870a090dcfd4a4.0ia9.4vs63z~2.jpg
+5171972o3ak5oa|/_next/static/media/5171972o3ak5oa.15416o23e-~x2.jpg
 Ambrosia_01|/_next/static/media/Ambrosia_01.0rqphs0gazkm..jpg
 Ambrosia_02|/_next/static/media/Ambrosia_02.0wtqs05ozl.ym.jpg
 Ambrosia_03|/_next/static/media/Ambrosia_03.0vt46a.1s.7-y.jpg
@@ -49,12 +51,12 @@ Jason_Duval_04|/_next/static/media/Jason_Duval_04.16d-z2wa2s~bk.jpg
 Jason_Duval_05|/_next/static/media/Jason_Duval_05.0kxp6enhvzqka.jpg
 Jason_Duval_06|/_next/static/media/Jason_Duval_06.086o72llg6~1p.jpg
 Jason_Duval_Video_Clip|/_next/static/media/Jason_Duval_Video_Clip.10.gc09c9y-j9.mp4
-Jason_and_Lucia_03_landscape|/_next/static/media/Jason_and_Lucia_03_landscape.0419q._86ukpt.jpg
-Jason_and_Lucia_03_phone|/_next/static/media/Jason_and_Lucia_03_phone.0_stuhzopjvgo.jpg
-Jason_and_Lucia_03_portrait|/_next/static/media/Jason_and_Lucia_03_portrait.18bejba1ja2jn.jpg
-Jason_and_Lucia_03_square|/_next/static/media/Jason_and_Lucia_03_square.0nnxubu7dxqky.jpg
-Jason_and_Lucia_03_tablet|/_next/static/media/Jason_and_Lucia_03_tablet.0e8_56rl_k5mh.jpg
-Jason_and_Lucia_03_ultrawide|/_next/static/media/Jason_and_Lucia_03_ultrawide.0n9063mlg7f.u.jpg
+Jason_and_Lucia_Robbery_landscape|/_next/static/media/Jason_and_Lucia_Robbery_landscape.09c8a~do21h4p.jpg
+Jason_and_Lucia_Robbery_phone|/_next/static/media/Jason_and_Lucia_Robbery_phone.17u-34gj0wjex.jpg
+Jason_and_Lucia_Robbery_portrait|/_next/static/media/Jason_and_Lucia_Robbery_portrait.0fb~e1-td8xog.jpg
+Jason_and_Lucia_Robbery_square|/_next/static/media/Jason_and_Lucia_Robbery_square.0rt_3glri3.u-.jpg
+Jason_and_Lucia_Robbery_tablet|/_next/static/media/Jason_and_Lucia_Robbery_tablet.06d7zvwzu78d6.jpg
+Jason_and_Lucia_Robbery_ultrawide|/_next/static/media/Jason_and_Lucia_Robbery_ultrawide.0myxdwh7wkbwy.jpg
 Leonida_Keys_01|/_next/static/media/Leonida_Keys_01.0zgz7tveur6y8.jpg
 Leonida_Keys_02|/_next/static/media/Leonida_Keys_02.0~ptk-53gl0lq.jpg
 Leonida_Keys_03|/_next/static/media/Leonida_Keys_03.0v_3~-9ceyixc.jpg
@@ -171,8 +173,11 @@ Vice_City_Postcard_square|/_next/static/media/Vice_City_Postcard_square.0-3vs90o
 Vice_City_Postcard_tablet|/_next/static/media/Vice_City_Postcard_tablet.12oyphnnrf79_.jpg
 Vice_City_Postcard_ultrawide|/_next/static/media/Vice_City_Postcard_ultrawide.139b_8_c8jx~6.jpg
 Vintage_Vice_City_Pack_Bg|/_next/static/media/Vintage_Vice_City_Pack_Bg.0sr9f_qpgzybu.jpg
+ak3ak31a49a221|/_next/static/media/ak3ak31a49a221.01qomdzfhfg58.jpg
 background|/_next/static/media/background.0.~5i.gsehcb3.png
 desktop|/_next/static/media/desktop.0zwg6wdya.x1t.jpg
+featured|/_next/static/media/featured.0y5yxwenpsgc3.jpg
+featured-mobile|/_next/static/media/featured-mobile.14ok.safz3arg.jpg
 hero|/_next/static/media/hero.0q5-tr6h86ai7.jpg
 logo_gta|/_next/static/media/logo_gta.0_~y3s2ni8fbj.png
 logo_vi|/_next/static/media/logo_vi.02gnpy7k4ozcz.png
@@ -196,7 +201,8 @@ shard6|/_next/static/media/shard6.0m27xv.6a~.pk.png
 shard7|/_next/static/media/shard7.0r3-p5yp386ao.png
 shard8|/_next/static/media/shard8.0-nawcceg2vqw.png
 shard9|/_next/static/media/shard9.08p7clh5_sa.q.png
-trailerDesktop|/_next/static/media/trailerDesktop.0uzwsiu0bz4qr.jpg
-trailerMobile|/_next/static/media/trailerMobile.0~-fg~j1xd8hq.jpg
+skybox|/_next/static/media/skybox.0ggka1b4oc619.jpg
+trailer-1|/_next/static/media/trailer-1.06b6paykx247w.jpg
+trailer-2|/_next/static/media/trailer-2.0l.7aqib91fz6.jpg
 ultimate_desktop_en_us|/_next/static/media/ultimate_desktop_en_us.0~shc~hnjifzu.jpg
 ultimate_mobile_en_us|/_next/static/media/ultimate_mobile_en_us.03~7e7tlo4k4r.jpg

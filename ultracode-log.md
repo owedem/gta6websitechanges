@@ -61,3 +61,466 @@ These changes might be a routine update or a sign of upcoming content, but witho
 - ,"rockstar",{"variant":"platform","label":"Open external link to Rockstar store","analytics":{"event":"cta_store_link","text":"rockstar","element_placement":"sku-selector - standard","link_url":"https://store.rockstargames.com/game/buy-gta-vi"},"asChild":true,"children"
 ```
 </details>
+
+## 06 Aug 2026 at 12:05 UTC
+
+**Found in:** home routes changed, only-in-leonida routes changed, jason routes changed, lucia routes changed, ambrosia routes changed, boobie routes changed, brian routes changed, cal routes changed, drequan routes changed, raul routes changed, dimez routes changed, vice-city routes changed, port-gellhorn routes changed, leonida-keys routes changed, grassrivers routes changed, kalaga routes changed, home text changed, only-in-leonida text changed, media text changed, editions text changed, jason text changed, lucia text changed, ambrosia text changed, boobie text changed, brian text changed, cal text changed, drequan text changed, raul text changed, dimez text changed, vice-city text changed, port-gellhorn text changed, leonida-keys text changed, grassrivers text changed, kalaga text changed, media counts increased, new data-layer strings (in code, not yet visible), new media posted
+
+🚨 **New Grand Theft Auto VI Update: "An Extended Look" Coming August 27**
+
+**What changed:**
+- A new route "/VI/an-extended-look" has been added to multiple character pages, including Jason and Lucia.
+- The homepage and several character pages now mention "An Extended Look, Coming August 27" with a specific time of 3 PM ET.
+- The media page has been updated with 2 new artwork wallpapers, bringing the total to 22.
+- 14 new images have been posted, including "Jason_and_Lucia_Robbery" in various formats.
+- The text on several pages has been updated to remove redundant "Pre-Order Now" buttons and add the "An Extended Look" announcement.
+
+**What it likely means:**
+The changes suggest that Rockstar Games is preparing to release new content, possibly a trailer or gameplay video, on August 27. The addition of new images and updated text on the website indicates a marketing push to build hype for the game.
+
+**Could signal:** (confidence: medium) 
+A new trailer or gameplay reveal for Grand Theft Auto VI on August 27, providing fans with a deeper look into the game's story, characters, and gameplay mechanics.
+
+<details><summary>raw findings</summary>
+
+**home routes changed**
+```
+--- home/routes (before)
++++ home/routes (after)
+@@ -1,3 +1,4 @@
+ /VI/
++/VI/an-extended-look
+ /VI/media
+ /VI/only-in-leonida
+```
+**only-in-leonida routes changed**
+```
+--- only-in-leonida/routes (before)
++++ only-in-leonida/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/an-extended-look
+```
+**jason routes changed**
+```
+--- jason/routes (before)
++++ jason/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/an-extended-look
+```
+**lucia routes changed**
+```
+--- lucia/routes (before)
++++ lucia/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/an-extended-look
+```
+**ambrosia routes changed**
+```
+--- ambrosia/routes (before)
++++ ambrosia/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/an-extended-look
+```
+**boobie routes changed**
+```
+--- boobie/routes (before)
++++ boobie/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/an-extended-look
+```
+**brian routes changed**
+```
+--- brian/routes (before)
++++ brian/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/an-extended-look
+```
+**cal routes changed**
+```
+--- cal/routes (before)
++++ cal/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/an-extended-look
+```
+**drequan routes changed**
+```
+--- drequan/routes (before)
++++ drequan/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/an-extended-look
+```
+**raul routes changed**
+```
+--- raul/routes (before)
++++ raul/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/an-extended-look
+```
+**dimez routes changed**
+```
+--- dimez/routes (before)
++++ dimez/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/an-extended-look
+```
+**vice-city routes changed**
+```
+--- vice-city/routes (before)
++++ vice-city/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/an-extended-look
+```
+**port-gellhorn routes changed**
+```
+--- port-gellhorn/routes (before)
++++ port-gellhorn/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/an-extended-look
+```
+**leonida-keys routes changed**
+```
+--- leonida-keys/routes (before)
++++ leonida-keys/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/an-extended-look
+```
+**grassrivers routes changed**
+```
+--- grassrivers/routes (before)
++++ grassrivers/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/an-extended-look
+```
+**kalaga routes changed**
+```
+--- kalaga/routes (before)
++++ kalaga/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/an-extended-look
+```
+**home text changed**
+```
+--- home/text (before)
++++ home/text (after)
+@@ -3,6 +3,6 @@
+ Homepage
+ Pre-Order Now
+-Pre-Order Now
+ Expand Navigation Menu
++An Extended Look, Coming August 27
+ Coming
+ November 19, 2026
+@@ -21,4 +21,12 @@
+ PlayStation 5
+ Scroll for more content.
++An Extended Look
++August 27
++3 PM ET
++Remind Me
++Watch
++Trailer 2
++Watch
++Trailer 1
+ Ultimate Edition
+ An exclusive collection of items threaded across all aspects of Jason and Lucia’s story.
+@@ -31,8 +39,4 @@
+ Vice City, USA.
+ Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+-Videos
+-Trailer 2
+-The biggest, most immersive evolution of the Grand Theft Auto series yet.
+-Watch Now
+ People & Places
+ Only in Leonida
+@@ -43,4 +47,14 @@
+ Download and share official videos, screenshots, and more.
+ See All
++Featured News
++View all Newswire posts
++View all
++Newswire posts
++Grand Theft Auto VI: An Extended Look
++August 6, 2026
++Pre-Order Grand Theft Auto VI on June 25
++June 24, 2026
++Grand Theft Auto VI is Now Set to Launch November 19, 2026
++November 6, 2025
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**only-in-leonida text changed**
+```
+--- only-in-leonida/text (before)
++++ only-in-leonida/text (after)
+@@ -4,6 +4,6 @@
+ Only in Leonida
+ Pre-Order Now
+-Pre-Order Now
+ Expand Navigation Menu
++An Extended Look, Coming August 27
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**media text changed**
+```
+--- media/text (before)
++++ media/text (after)
+@@ -3,5 +3,4 @@
+ Homepage
+ Media
+-Pre-Order Now
+ Pre-Order Now
+ Expand Navigation Menu
+@@ -73,18 +72,18 @@
+ 12 Vintage Vice City Pack in a single zip file
+ Artwork & Wallpapers
+-20
++22
+ Download All
+-20 Artwork & Wallpapers in a single zip file
++22 Artwork & Wallpapers in a single zip file
+ See All
+-20 Artwork and Wallpapers
+-20 Artwork and Wallpapers
++22 Artwork and Wallpapers
++22 Artwork and Wallpapers
++Jason and Lucia Robbery
++6 sizes
+ Official Cover Art
+-6 sizes
+-Jason and Lucia 03
+ 6 sizes
+ Vice City Postcard
+ 6 sizes
+ Download All
+-20 Artwork & Wallpapers in a single zip file
++22 Artwork & Wallpapers in a single zip file
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**editions text changed**
+```
+--- editions/text (before)
++++ editions/text (after)
+@@ -2,5 +2,4 @@
+ Skip to Main Content
+ Homepage
+-Pre-Order Now
+ Pre-Order Now
+ Expand Navigation Menu
+```
+**jason text changed**
+```
+--- jason/text (before)
++++ jason/text (after)
+@@ -4,6 +4,6 @@
+ Only in Leonida
+ Pre-Order Now
+-Pre-Order Now
+ Expand Navigation Menu
++An Extended Look, Coming August 27
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**lucia text changed**
+```
+--- lucia/text (before)
++++ lucia/text (after)
+@@ -4,6 +4,6 @@
+ Only in Leonida
+ Pre-Order Now
+-Pre-Order Now
+ Expand Navigation Menu
++An Extended Look, Coming August 27
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**ambrosia text changed**
+```
+--- ambrosia/text (before)
++++ ambrosia/text (after)
+@@ -4,6 +4,6 @@
+ Only in Leonida
+ Pre-Order Now
+-Pre-Order Now
+ Expand Navigation Menu
++An Extended Look, Coming August 27
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**boobie text changed**
+```
+--- boobie/text (before)
++++ boobie/text (after)
+@@ -4,6 +4,6 @@
+ Only in Leonida
+ Pre-Order Now
+-Pre-Order Now
+ Expand Navigation Menu
++An Extended Look, Coming August 27
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**brian text changed**
+```
+--- brian/text (before)
++++ brian/text (after)
+@@ -4,6 +4,6 @@
+ Only in Leonida
+ Pre-Order Now
+-Pre-Order Now
+ Expand Navigation Menu
++An Extended Look, Coming August 27
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**cal text changed**
+```
+--- cal/text (before)
++++ cal/text (after)
+@@ -4,6 +4,6 @@
+ Only in Leonida
+ Pre-Order Now
+-Pre-Order Now
+ Expand Navigation Menu
++An Extended Look, Coming August 27
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**drequan text changed**
+```
+--- drequan/text (before)
++++ drequan/text (after)
+@@ -4,6 +4,6 @@
+ Only in Leonida
+ Pre-Order Now
+-Pre-Order Now
+ Expand Navigation Menu
++An Extended Look, Coming August 27
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**raul text changed**
+```
+--- raul/text (before)
++++ raul/text (after)
+@@ -4,6 +4,6 @@
+ Only in Leonida
+ Pre-Order Now
+-Pre-Order Now
+ Expand Navigation Menu
++An Extended Look, Coming August 27
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**dimez text changed**
+```
+--- dimez/text (before)
++++ dimez/text (after)
+@@ -4,6 +4,6 @@
+ Only in Leonida
+ Pre-Order Now
+-Pre-Order Now
+ Expand Navigation Menu
++An Extended Look, Coming August 27
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**vice-city text changed**
+```
+--- vice-city/text (before)
++++ vice-city/text (after)
+@@ -4,6 +4,6 @@
+ Only in Leonida
+ Pre-Order Now
+-Pre-Order Now
+ Expand Navigation Menu
++An Extended Look, Coming August 27
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**port-gellhorn text changed**
+```
+--- port-gellhorn/text (before)
++++ port-gellhorn/text (after)
+@@ -4,6 +4,6 @@
+ Only in Leonida
+ Pre-Order Now
+-Pre-Order Now
+ Expand Navigation Menu
++An Extended Look, Coming August 27
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**leonida-keys text changed**
+```
+--- leonida-keys/text (before)
++++ leonida-keys/text (after)
+@@ -4,6 +4,6 @@
+ Only in Leonida
+ Pre-Order Now
+-Pre-Order Now
+ Expand Navigation Menu
++An Extended Look, Coming August 27
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**grassrivers text changed**
+```
+--- grassrivers/text (before)
++++ grassrivers/text (after)
+@@ -4,6 +4,6 @@
+ Only in Leonida
+ Pre-Order Now
+-Pre-Order Now
+ Expand Navigation Menu
++An Extended Look, Coming August 27
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**kalaga text changed**
+```
+--- kalaga/text (before)
++++ kalaga/text (after)
+@@ -4,6 +4,6 @@
+ Only in Leonida
+ Pre-Order Now
+-Pre-Order Now
+ Expand Navigation Menu
++An Extended Look, Coming August 27
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**media counts increased**
+```
+- artwork wallpapers: 20 -> 22
+```
+**new data-layer strings (in code, not yet visible)**
+```
+- ,"rockstar",{"variant":"platform","label":"Open external link to Rockstar store","analytics":{"event":"cta_store_link","text":"rockstar","element_placement":"sku-selector - standard","link_url":"https://store.rockstargames.com/game/buy-gta-vi"},"asChild":true,"children":"$L12c"}]]}],"$L12d"]}]}]]
+- ,"rockstar",{"variant":"platform","label":"Open external link to Rockstar store","analytics":{"event":"cta_store_link","text":"rockstar","element_placement":"sku-selector - standard","link_url":"https://store.rockstargames.com/game/buy-gta-vi"},"asChild":true,"children":"$L14d"}]]}],"$L14e"]}]}]]
+- ,"rockstar",{"variant":"platform","label":"Open external link to Rockstar store","analytics":{"event":"cta_store_link","text":"rockstar","element_placement":"sku-selector - standard","link_url":"https://store.rockstargames.com/game/buy-gta-vi"},"asChild":true,"children":"$L1d6"}]]}],"$L1d7"]}]}]]
+- ,"rockstar",{"variant":"platform","label":"Open external link to Rockstar store","analytics":{"event":"cta_store_link","text":"rockstar","element_placement":"sku-selector - standard","link_url":"https://store.rockstargames.com/game/buy-gta-vi"},"asChild":true,"children":"$L246"}]]}],"$L247"]}]}]]
+- ,"rockstar",{"variant":"platform","label":"Open external link to Rockstar store","analytics":{"event":"cta_store_link","text":"rockstar","element_placement":"sku-selector - standard","link_url":"https://store.rockstargames.com/game/buy-gta-vi"},"asChild":true,"children":"$La8"}]]}],"$La9"]}]}]]
+- 
+```
+**new media posted**
+```
+- 14 new image(s) → images channel: 3642a34ab778931f321cc65c7d870a090dcfd4a4, 5171972o3ak5oa, Jason_and_Lucia_Robbery_landscape, Jason_and_Lucia_Robbery_phone, Jason_and_Lucia_Robbery_portrait, Jason_and_Lucia_Robbery_square, Jason_and_Lucia_Robbery_tablet, Jason_and_Lucia_Robbery_ultrawide, ak3ak31a49a221, featured, featured-mobile, skybox
+```
+</details>

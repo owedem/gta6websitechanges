@@ -1,3 +1,4 @@
 /VI/
+/VI/an-extended-look
 /VI/media
 /VI/only-in-leonida
