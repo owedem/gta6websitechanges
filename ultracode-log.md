@@ -524,3 +524,260 @@ A new trailer or gameplay reveal for Grand Theft Auto VI on August 27, providing
 - 14 new image(s) → images channel: 3642a34ab778931f321cc65c7d870a090dcfd4a4, 5171972o3ak5oa, Jason_and_Lucia_Robbery_landscape, Jason_and_Lucia_Robbery_phone, Jason_and_Lucia_Robbery_portrait, Jason_and_Lucia_Robbery_square, Jason_and_Lucia_Robbery_tablet, Jason_and_Lucia_Robbery_ultrawide, ak3ak31a49a221, featured, featured-mobile, skybox
 ```
 </details>
+
+## 27 Aug 2026 at 19:05 UTC
+
+**Found in:** new clues in site code, home text changed, only-in-leonida text changed, jason text changed, lucia text changed, ambrosia text changed, boobie text changed, brian text changed, cal text changed, drequan text changed, raul text changed, dimez text changed, vice-city text changed, port-gellhorn text changed, leonida-keys text changed, grassrivers text changed, kalaga text changed, new data-layer strings (in code, not yet visible), new media posted
+
+_(AI analysis unavailable.)_
+
+<details><summary>raw findings</summary>
+
+**new clues in site code**
+```
+- api: https://media-rockstargames-com.akamaized.net/VI/downloads
+- string: :1,kalaga:1,ambrosia:1,
+```
+**home text changed**
+```
+--- home/text (before)
++++ home/text (after)
+@@ -4,5 +4,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look, Coming August 27
++An Extended Look:
++Now Playing
+ Coming
+ November 19, 2026
+@@ -22,7 +23,6 @@
+ Scroll for more content.
+ An Extended Look
+-August 27
+-3 PM ET
+-Remind Me
++Now Playing
++Watch Now
+ Watch
+ Trailer 2
+@@ -51,6 +51,6 @@
+ View all
+ Newswire posts
+-Grand Theft Auto VI: An Extended Look
+-August 6, 2026
++Grand Theft Auto VI: An Extended Look — Watch Now
++August 27th, 2026
+ Pre-Order Grand Theft Auto VI on June 25
+ June 24, 2026
+```
+**only-in-leonida text changed**
+```
+--- only-in-leonida/text (before)
++++ only-in-leonida/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look, Coming August 27
++An Extended Look:
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**jason text changed**
+```
+--- jason/text (before)
++++ jason/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look, Coming August 27
++An Extended Look:
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**lucia text changed**
+```
+--- lucia/text (before)
++++ lucia/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look, Coming August 27
++An Extended Look:
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**ambrosia text changed**
+```
+--- ambrosia/text (before)
++++ ambrosia/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look, Coming August 27
++An Extended Look:
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**boobie text changed**
+```
+--- boobie/text (before)
++++ boobie/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look, Coming August 27
++An Extended Look:
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**brian text changed**
+```
+--- brian/text (before)
++++ brian/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look, Coming August 27
++An Extended Look:
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**cal text changed**
+```
+--- cal/text (before)
++++ cal/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look, Coming August 27
++An Extended Look:
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**drequan text changed**
+```
+--- drequan/text (before)
++++ drequan/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look, Coming August 27
++An Extended Look:
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**raul text changed**
+```
+--- raul/text (before)
++++ raul/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look, Coming August 27
++An Extended Look:
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**dimez text changed**
+```
+--- dimez/text (before)
++++ dimez/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look, Coming August 27
++An Extended Look:
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**vice-city text changed**
+```
+--- vice-city/text (before)
++++ vice-city/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look, Coming August 27
++An Extended Look:
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**port-gellhorn text changed**
+```
+--- port-gellhorn/text (before)
++++ port-gellhorn/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look, Coming August 27
++An Extended Look:
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**leonida-keys text changed**
+```
+--- leonida-keys/text (before)
++++ leonida-keys/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look, Coming August 27
++An Extended Look:
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**grassrivers text changed**
+```
+--- grassrivers/text (before)
++++ grassrivers/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look, Coming August 27
++An Extended Look:
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**kalaga text changed**
+```
+--- kalaga/text (before)
++++ kalaga/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look, Coming August 27
++An Extended Look:
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**new data-layer strings (in code, not yet visible)**
+```
+- ,"rockstar",{"variant":"platform","label":"Open external link to Rockstar store","analytics":{"event":"cta_store_link","text":"rockstar","element_placement":"sku-selector - standard","link_url":"https://store.rockstargames.com/game/buy-gta-vi"},"asChild":true,"children":"$L1d7"}]]}],"$L1d8"]}]}]]
+- 1d8:["$","$L1d6",null,{}]
+- 1da:["$","meta","34",{"name":"twitter:image:width","content":"1200"}]
+- 1db:["$","meta","35",{"name":"twitter:image:height","content":"630"}]
+- 1dc:["$","link","36",{"rel":"icon","href":"https://www.rockstargames.com/favicon.ico","sizes":"48x48"}]
+- 1dd:["$","$L1de","37",{}]
+- target":"_blank","href":"https://store.rockstargames.com/game/buy-gta-vi","children":[["$","$L1d2",null,{"children":[["$","$L1d3",null,{"platform":"rockstar"}],["$","$L1d4",null,{}],["$","$L1c9",null,{"children":"Code in Box"}]]}],["$","$L1d5",null,{"external":true}]]}]
+- }],["$","meta","32",{"name":"twitter:image","content":"https://www.rockstargames.com/VI/-/twitter-image.jpg?twitter-image.0t8ty~nlmxq2s.jpg"}],"$L1d9","$L1da","$L1db","$L1dc","$L1dd"]
+```
+**new media posted**
+```
+- 1 new image(s) → images channel: 9k2kaa1o3297k9
+```
+</details>
