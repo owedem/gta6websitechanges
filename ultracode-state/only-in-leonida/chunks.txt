@@ -19,12 +19,12 @@
 /_next/static/chunks/0e.jn87sg.ce4.css
 /_next/static/chunks/0f5295.l25mzi.css
 /_next/static/chunks/0fmo-r36__btw.css
+/_next/static/chunks/0fqq1nxrwznlz.js
 /_next/static/chunks/0h_40t2z85jto.js
 /_next/static/chunks/0i0wj-f-zd9ok.css
 /_next/static/chunks/0iv.c-kr-36dw.js
 /_next/static/chunks/0j6-5rgdciu-4.js
 /_next/static/chunks/0kd09bqoqv.k-.css
-/_next/static/chunks/0l0f12uxr2pmw.js
 /_next/static/chunks/0lw--wcgod93u.css
 /_next/static/chunks/0m4ld-wfl5~a1.js
 /_next/static/chunks/0mr_5m-a6kkfo.css

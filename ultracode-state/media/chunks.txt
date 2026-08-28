@@ -20,13 +20,13 @@
 /_next/static/chunks/0e.jn87sg.ce4.css
 /_next/static/chunks/0f5295.l25mzi.css
 /_next/static/chunks/0fmo-r36__btw.css
+/_next/static/chunks/0fqq1nxrwznlz.js
 /_next/static/chunks/0h_40t2z85jto.js
 /_next/static/chunks/0i0wj-f-zd9ok.css
 /_next/static/chunks/0j6-5rgdciu-4.js
 /_next/static/chunks/0jtm94t5ygcca.js
 /_next/static/chunks/0kd09bqoqv.k-.css
 /_next/static/chunks/0k~yh2_j56c9o.js
-/_next/static/chunks/0l0f12uxr2pmw.js
 /_next/static/chunks/0lw--wcgod93u.css
 /_next/static/chunks/0owtz6305b6ek.css
 /_next/static/chunks/0p44t~vza6ng0.css

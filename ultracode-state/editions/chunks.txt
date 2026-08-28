@@ -9,13 +9,13 @@
 /_next/static/chunks/04~53vjboas4z.css
 /_next/static/chunks/061kdr51uefki.js
 /_next/static/chunks/07k7q_4~9jg87.css
-/_next/static/chunks/07m6~296chk1-.js
 /_next/static/chunks/0_4if~e..jyi0.css
 /_next/static/chunks/0bysc3o1_urjw.css
 /_next/static/chunks/0cpx_0qtfvwkr.js
 /_next/static/chunks/0dmitufkus020.js
 /_next/static/chunks/0f5295.l25mzi.css
 /_next/static/chunks/0fmo-r36__btw.css
+/_next/static/chunks/0fqq1nxrwznlz.js
 /_next/static/chunks/0h_40t2z85jto.js
 /_next/static/chunks/0i0wj-f-zd9ok.css
 /_next/static/chunks/0j6-5rgdciu-4.js
