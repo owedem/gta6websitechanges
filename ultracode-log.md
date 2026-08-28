@@ -781,3 +781,84 @@ _(AI analysis unavailable.)_
 - 1 new image(s) → images channel: 9k2kaa1o3297k9
 ```
 </details>
+
+## 28 Aug 2026 at 01:10 UTC
+
+**Found in:** home text changed, media text changed, media counts increased, new data-layer strings (in code, not yet visible), new media posted
+
+_(AI analysis unavailable.)_
+
+<details><summary>raw findings</summary>
+
+**home text changed**
+```
+--- home/text (before)
++++ home/text (after)
+@@ -24,5 +24,5 @@
+ An Extended Look
+ Now Playing
+-Watch Now
++label
+ Watch
+ Trailer 2
+@@ -51,5 +51,5 @@
+ View all
+ Newswire posts
+-Grand Theft Auto VI: An Extended Look — Watch Now
++Grand Theft Auto VI: An Extended Look — Now Playing
+ August 27th, 2026
+ Pre-Order Grand Theft Auto VI on June 25
+```
+**media text changed**
+```
+--- media/text (before)
++++ media/text (after)
+@@ -12,10 +12,18 @@
+ Download and share trailers, imagery, and more.
+ Videos
+-11
++3
++Grand Theft Auto VI: An Extended Look
++1 size
++Grand Theft Auto VI Trailer 2
++1 size
++Grand Theft Auto VI Trailer 1
++1 size
++Clips
++9
+ Download All
+-11 Videos in a single zip file
++9 Clips in a single zip file
+ See All
+-11 Videos
+-11 Videos
++9 Clips
++9 Clips
+ Official Cover Art Animation
+ 1 size
+@@ -25,5 +33,5 @@
+ 1 size
+ Download All
+-11 Videos in a single zip file
++9 Clips in a single zip file
+ Screenshots
+ 70
+```
+**media counts increased**
+```
+- clips: 0 -> 9
+```
+**new data-layer strings (in code, not yet visible)**
+```
+- ,"rockstar",{"variant":"platform","label":"Open external link to Rockstar store","analytics":{"event":"cta_store_link","text":"rockstar","element_placement":"sku-selector - standard","link_url":"https://store.rockstargames.com/game/buy-gta-vi"},"asChild":true,"children":"$L139"}]]}],"$L13a"]}]}]]
+- ,"rockstar",{"variant":"platform","label":"Open external link to Rockstar store","analytics":{"event":"cta_store_link","text":"rockstar","element_placement":"sku-selector - standard","link_url":"https://store.rockstargames.com/game/buy-gta-vi"},"asChild":true,"children":"$L15b"}]]}],"$L15c"]}]}]]
+- ,"rockstar",{"variant":"platform","label":"Open external link to Rockstar store","analytics":{"event":"cta_store_link","text":"rockstar","element_placement":"sku-selector - standard","link_url":"https://store.rockstargames.com/game/buy-gta-vi"},"asChild":true,"children":"$L1e3"}]]}],"$L1e4"]}]}]]
+- ,"rockstar",{"variant":"platform","label":"Open external link to Rockstar store","analytics":{"event":"cta_store_link","text":"rockstar","element_placement":"sku-selector - standard","link_url":"https://store.rockstargames.com/game/buy-gta-vi"},"asChild":true,"children":"$L250"}]]}],"$L251"]}]}]]
+- ,"rockstar",{"variant":"platform","label":"Open external link to Rockstar store","analytics":{"event":"cta_store_link","text":"rockstar","element_placement":"sku-selector - standard","link_url":"https://store.rockstargames.com/game/buy-gta-vi"},"asChild":true,"children":"$La9"}]]}],"$Laa"]}]}]]
+- 
+```
+**new media posted**
+```
+- 4 new image(s) → images channel: GTAVI_An_Extended_Look_poster, GTAVI_Trailer1_poster, GTAVI_Trailer2_poster, an-extended-look
+```
+</details>

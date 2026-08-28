@@ -23,7 +23,7 @@ PlayStation 5
 Scroll for more content.
 An Extended Look
 Now Playing
-Watch Now
+label
 Watch
 Trailer 2
 Watch
@@ -50,7 +50,7 @@ Featured News
 View all Newswire posts
 View all
 Newswire posts
-Grand Theft Auto VI: An Extended Look — Watch Now
+Grand Theft Auto VI: An Extended Look — Now Playing
 August 27th, 2026
 Pre-Order Grand Theft Auto VI on June 25
 June 24, 2026

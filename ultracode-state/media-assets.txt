@@ -21,6 +21,7 @@ DreQuan_Priest_01|/_next/static/media/DreQuan_Priest_01.0_0~wi-ipdj35.jpg
 DreQuan_Priest_02|/_next/static/media/DreQuan_Priest_02.02u69e~nkk3eo.jpg
 DreQuan_Priest_03|/_next/static/media/DreQuan_Priest_03.0zbl4i_x_1biu.jpg
 DreQuan_Priest_04|/_next/static/media/DreQuan_Priest_04.0n~kj~px_fn8t.jpg
+GTAVI_An_Extended_Look_poster|/_next/static/media/GTAVI_An_Extended_Look_poster.0ijbsha5fo1te.jpg
 GTAVI_FOB_StandardEdition_Desktop|/_next/static/media/GTAVI_FOB_StandardEdition_Desktop.09clbpu8-nv8i.jpg
 GTAVI_FOB_StandardEdition_Mobile|/_next/static/media/GTAVI_FOB_StandardEdition_Mobile.12ekh4w.3qu1w.jpg
 GTAVI_FOB_UltimateEdition_Desktop_en_us|/_next/static/media/GTAVI_FOB_UltimateEdition_Desktop_en_us.04i20kdr.r_mm.jpg
@@ -36,6 +37,8 @@ GTAVI_FOB_UltimateEdition_Mobile_ko_kr|/_next/static/media/GTAVI_FOB_UltimateEdi
 GTAVI_FOB_UltimateEdition_Mobile_zh_hans|/_next/static/media/GTAVI_FOB_UltimateEdition_Mobile_zh_hans.08abxmj_fu4qg.jpg
 GTAVI_FOB_UltimateEdition_Mobile_zh_tw|/_next/static/media/GTAVI_FOB_UltimateEdition_Mobile_zh_tw.0hkm0xrv876xg.jpg
 GTAVI_Official_Cover_Art_Landscape|/_next/static/media/GTAVI_Official_Cover_Art_Landscape.03y6bcce9e2jr.jpg
+GTAVI_Trailer1_poster|/_next/static/media/GTAVI_Trailer1_poster.12x2gvspcm_3m.jpg
+GTAVI_Trailer2_poster|/_next/static/media/GTAVI_Trailer2_poster.0cosv-uzbpt91.jpg
 GTA_PLUS_DESKTOP|/_next/static/media/GTA_PLUS_DESKTOP.03ukoicd54pon.png
 GTA_PLUS_MOBILE|/_next/static/media/GTA_PLUS_MOBILE.0etigbsah204g.png
 Grassrivers_01|/_next/static/media/Grassrivers_01.1096rw4lbjur_.jpg
@@ -174,6 +177,7 @@ Vice_City_Postcard_tablet|/_next/static/media/Vice_City_Postcard_tablet.12oyphnn
 Vice_City_Postcard_ultrawide|/_next/static/media/Vice_City_Postcard_ultrawide.139b_8_c8jx~6.jpg
 Vintage_Vice_City_Pack_Bg|/_next/static/media/Vintage_Vice_City_Pack_Bg.0sr9f_qpgzybu.jpg
 ak3ak31a49a221|/_next/static/media/ak3ak31a49a221.01qomdzfhfg58.jpg
+an-extended-look|/_next/static/media/an-extended-look.0ijbsha5fo1te.jpg
 background|/_next/static/media/background.0.~5i.gsehcb3.png
 desktop|/_next/static/media/desktop.0zwg6wdya.x1t.jpg
 featured|/_next/static/media/featured.0y5yxwenpsgc3.jpg
