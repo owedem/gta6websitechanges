@@ -862,3 +862,53 @@ _(AI analysis unavailable.)_
 - 4 new image(s) → images channel: GTAVI_An_Extended_Look_poster, GTAVI_Trailer1_poster, GTAVI_Trailer2_poster, an-extended-look
 ```
 </details>
+
+## 31 Aug 2026 at 13:00 UTC
+
+**Found in:** media text changed, media counts increased, new media posted
+
+_(AI analysis unavailable.)_
+
+<details><summary>raw findings</summary>
+
+**media text changed**
+```
+--- media/text (before)
++++ media/text (after)
+@@ -35,18 +35,18 @@
+ 9 Clips in a single zip file
+ Screenshots
+-70
++99
+ Download All
+-70 Screenshots in a single zip file
++99 Screenshots in a single zip file
+ See All
+-70 Screenshots
+-70 Screenshots
+-Lucia Caminos 06
++99 Screenshots
++99 Screenshots
++Jason Duval 07
+ 1 size
+-Cal Hampton 03
++Lucia Caminos 09
+ 1 size
+-Vice City 01
++Vice City 11
+ 1 size
+ Download All
+-70 Screenshots in a single zip file
++99 Screenshots in a single zip file
+ Ultimate Edition Benefits
+ 51
+```
+**media counts increased**
+```
+- screenshots: 70 -> 99
+```
+**new media posted**
+```
+- 3 new image(s) → images channel: Jason_Duval_07, Lucia_Caminos_09, Vice_City_11
+```
+</details>

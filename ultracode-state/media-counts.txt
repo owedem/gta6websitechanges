@@ -1,6 +1,6 @@
 videos=3
 clips=9
-screenshots=70
+screenshots=99
 ultimate_edition_benefits=51
 vintage_vice_city_pack=12
 artwork_wallpapers=22

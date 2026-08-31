@@ -53,6 +53,7 @@ Jason_Duval_03|/_next/static/media/Jason_Duval_03.0-1vum7x-3vtp.jpg
 Jason_Duval_04|/_next/static/media/Jason_Duval_04.16d-z2wa2s~bk.jpg
 Jason_Duval_05|/_next/static/media/Jason_Duval_05.0kxp6enhvzqka.jpg
 Jason_Duval_06|/_next/static/media/Jason_Duval_06.086o72llg6~1p.jpg
+Jason_Duval_07|/_next/static/media/Jason_Duval_07.0ca326xbl~oyh.jpg
 Jason_Duval_Video_Clip|/_next/static/media/Jason_Duval_Video_Clip.10.gc09c9y-j9.mp4
 Jason_and_Lucia_Robbery_landscape|/_next/static/media/Jason_and_Lucia_Robbery_landscape.09c8a~do21h4p.jpg
 Jason_and_Lucia_Robbery_phone|/_next/static/media/Jason_and_Lucia_Robbery_phone.17u-34gj0wjex.jpg
@@ -71,6 +72,7 @@ Lucia_Caminos_03|/_next/static/media/Lucia_Caminos_03.14xgd2y_ymmeg.jpg
 Lucia_Caminos_04|/_next/static/media/Lucia_Caminos_04.04kb_~4ubn3wn.jpg
 Lucia_Caminos_05|/_next/static/media/Lucia_Caminos_05.0i5b7k6a7_w6p.jpg
 Lucia_Caminos_06|/_next/static/media/Lucia_Caminos_06.0fxbjfk0jakb3.jpg
+Lucia_Caminos_09|/_next/static/media/Lucia_Caminos_09.0pd.ppokmi8-n.jpg
 Lucia_Caminos_Video_Clip|/_next/static/media/Lucia_Caminos_Video_Clip.0g8.3fx84ixw..mp4
 Mount_Kalaga_National_Park_01|/_next/static/media/Mount_Kalaga_National_Park_01.0v5fl0f83hjv_.jpg
 Mount_Kalaga_National_Park_02|/_next/static/media/Mount_Kalaga_National_Park_02.0f24dhopdprvx.jpg
@@ -169,6 +171,7 @@ Vice_City_06|/_next/static/media/Vice_City_06.0_tdmr3u9w84x.jpg
 Vice_City_07|/_next/static/media/Vice_City_07.0b3mhak4k78oh.jpg
 Vice_City_08|/_next/static/media/Vice_City_08.0bbg_xp4hqdvz.jpg
 Vice_City_09|/_next/static/media/Vice_City_09.0~ng.c8ack3fp.jpg
+Vice_City_11|/_next/static/media/Vice_City_11.09paum3g942sc.jpg
 Vice_City_Postcard_landscape|/_next/static/media/Vice_City_Postcard_landscape.0v2njmlk2n-qm.jpg
 Vice_City_Postcard_phone|/_next/static/media/Vice_City_Postcard_phone.0s0gk7s4jw1l7.jpg
 Vice_City_Postcard_portrait|/_next/static/media/Vice_City_Postcard_portrait.0k63actg~87yd.jpg
@@ -185,8 +188,8 @@ featured-mobile|/_next/static/media/featured-mobile.14ok.safz3arg.jpg
 hero|/_next/static/media/hero.0q5-tr6h86ai7.jpg
 logo_gta|/_next/static/media/logo_gta.0_~y3s2ni8fbj.png
 logo_vi|/_next/static/media/logo_vi.02gnpy7k4ozcz.png
-mediaDesktop|/_next/static/media/mediaDesktop.06xrr56h6f14r.jpg
-mediaMobile|/_next/static/media/mediaMobile.0hq7kmd7niv7r.jpg
+mediaDesktop|/_next/static/media/mediaDesktop.11iioep6d3wsf.jpg
+mediaMobile|/_next/static/media/mediaMobile.0p_yfitphljim.jpg
 mobile|/_next/static/media/mobile.16wml24njlfle.jpg
 onlyInLeonidaDesktop|/_next/static/media/onlyInLeonidaDesktop.15y2n40f3axwo.jpg
 onlyInLeonidaMobile|/_next/static/media/onlyInLeonidaMobile.0mupfnk-x6x~r.jpg
