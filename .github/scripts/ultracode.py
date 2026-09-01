@@ -59,7 +59,9 @@ IMAGES_WEBHOOK = os.environ.get("DISCORD_WEBHOOK_IMAGES", "").strip()
 VIDEOS_WEBHOOK = os.environ.get("DISCORD_WEBHOOK_VIDEOS", "").strip()
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "").strip()
-GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+# Blank = auto-pick the best model Groq currently serves (and remember it). Set
+# an explicit id only to pin one; a pinned id that gets retired self-heals too.
+GROQ_MODEL = os.environ.get("GROQ_MODEL", "").strip()
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "").strip()
@@ -175,7 +177,15 @@ def safe_print(s):
 
 
 def fetch(url, retries=2):
-    """Return (status, headers_dict, body_text) or None on failure."""
+    """Return (status, headers_dict, body_text), or None only when the request
+    never completed.
+
+    An HTTP error status is a real answer and is returned like any other: a 404
+    means "this page does not exist" (normal for the speculative character/
+    location pages), which is a different thing from "we could not reach the
+    site at all". Callers must be able to tell them apart, because a missing
+    page is routine while an unreachable site means this run saw an incomplete
+    view of the world. 5xx is treated as transient and retried."""
     last = None
     for attempt in range(retries + 1):
         try:
@@ -184,6 +194,17 @@ def fetch(url, retries=2):
                 body = resp.read().decode("utf-8", "replace")
                 headers = {k.lower(): v for k, v in resp.headers.items()}
                 return resp.status, headers, body
+        except urllib.error.HTTPError as e:
+            if e.code >= 500 and attempt < retries:
+                last = e
+                time.sleep(2 * (attempt + 1))
+                continue
+            try:
+                body = e.read().decode("utf-8", "replace")
+            except Exception:
+                body = ""
+            headers = {k.lower(): v for k, v in (e.headers or {}).items()}
+            return e.code, headers, body
         except Exception as e:
             last = e
             if attempt < retries:
@@ -445,13 +466,13 @@ def code_scan():
     all_html = ""
     for _, url in PAGES:
         r = fetch(url)
-        if r:
+        if r and r[0] == 200:          # never mine an error page's body
             all_html += r[2]
     chunk_paths = sorted(set(CHUNK_PATH_RE.findall(all_html)))[:120]
     blobs = []
     for cp in chunk_paths:
         r = fetch(f"{BASE}/VI/{cp}")
-        if r:
+        if r and r[0] == 200:
             blobs.append(r[2])
     code = "\n".join(blobs)
 
@@ -539,19 +560,37 @@ LAST_AI_ERROR = None
 
 
 def analyse(bundle, major=False):
-    # Major signals get the sharpest reasoning (Fable 5) when a key is available;
-    # everything else uses the free provider. Fable failing falls through to free.
+    """Try every configured provider in turn until one actually returns text.
+
+    The chain cascades on FAILURE, not merely on a missing key — a rate-limited
+    or decommissioned provider must not swallow the write-up while a working
+    fallback key sits unused. Major signals get the sharpest reasoning (Fable 5)
+    first when an Anthropic key is available."""
+    global LAST_AI_ERROR
+    LAST_AI_ERROR = None
+    chain = []
     if major and ANTHROPIC_API_KEY:
-        result = _fable(bundle)
+        chain.append(("Fable 5", _fable))
+    if GROQ_API_KEY:
+        chain.append(("Groq", _groq))
+    if GEMINI_API_KEY:
+        chain.append(("Gemini", _gemini))
+    if ANTHROPIC_API_KEY:
+        chain.append(("Claude", _claude))
+    if not chain:
+        sys.stderr.write("[info] No LLM key set — skipping AI analysis.\n")
+        return None
+
+    errors = []
+    for name, provider in chain:
+        LAST_AI_ERROR = None
+        result = provider(bundle)
         if result:
             return result
-    if GROQ_API_KEY:
-        return _groq(bundle)
-    if GEMINI_API_KEY:
-        return _gemini(bundle)
-    if ANTHROPIC_API_KEY:
-        return _claude(bundle)
-    sys.stderr.write("[info] No LLM key set — skipping AI analysis.\n")
+        errors.append(f"{name}: {LAST_AI_ERROR or 'no output'}")
+        sys.stderr.write(f"[warn] {name} unavailable — trying the next provider.\n")
+    # Report every failure, so a dead provider is diagnosable from Discord alone.
+    LAST_AI_ERROR = "; ".join(errors)
     return None
 
 
@@ -567,10 +606,44 @@ def _http_error_reason(e):
         return body[:240]
 
 
-def _groq(bundle):
-    global LAST_AI_ERROR
+# Groq retires models regularly (a hardcoded id eventually 404s and silently
+# kills every write-up). Preference order for auto-picking a live chat model;
+# the first available match wins. Non-chat models are excluded outright.
+GROQ_PREFER = ("llama-3.3-70b", "llama-3.1-70b", "llama-4-maverick", "llama-4-scout",
+               "gpt-oss-120b", "qwen", "kimi", "llama-3.1-8b", "gemma")
+GROQ_SKIP = ("whisper", "tts", "guard", "embed", "vision", "prompt-guard")
+
+
+def _groq_live_models():
+    """Chat-capable model ids Groq currently offers ([] if the list call fails)."""
+    try:
+        req = urllib.request.Request(
+            "https://api.groq.com/openai/v1/models",
+            headers={"User-Agent": USER_AGENT,
+                     "Authorization": f"Bearer {GROQ_API_KEY}"})
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            data = json.loads(resp.read())
+    except Exception as e:
+        sys.stderr.write(f"[warn] Groq model list failed: {e}\n")
+        return []
+    return [m["id"] for m in data.get("data", [])
+            if m.get("id") and not any(s in m["id"].lower() for s in GROQ_SKIP)]
+
+
+def _groq_choose():
+    """Best available Groq model, or None."""
+    ids = _groq_live_models()
+    for pref in GROQ_PREFER:
+        for mid in ids:
+            if pref in mid.lower():
+                return mid
+    return ids[0] if ids else None
+
+
+def _groq_call(model, bundle):
+    """One Groq request. Returns (text, error) — exactly one is non-None."""
     payload = {
-        "model": GROQ_MODEL,
+        "model": model,
         "messages": [{"role": "system", "content": SYSTEM_PROMPT},
                      {"role": "user", "content": bundle}],
         "temperature": 0.7, "max_tokens": 1500,
@@ -584,18 +657,48 @@ def _groq(bundle):
         with urllib.request.urlopen(req, timeout=60) as resp:
             data = json.loads(resp.read())
     except urllib.error.HTTPError as e:
-        LAST_AI_ERROR = f"HTTP {e.code} — {_http_error_reason(e)}"
-        sys.stderr.write(f"[warn] Groq: {LAST_AI_ERROR}\n")
-        return None
+        return None, f"HTTP {e.code} — {_http_error_reason(e)}"
     except Exception as e:
-        LAST_AI_ERROR = f"request failed — {e}"
-        sys.stderr.write(f"[warn] Groq: {LAST_AI_ERROR}\n")
-        return None
+        return None, f"request failed — {e}"
     try:
-        return (data["choices"][0]["message"]["content"].strip() or None)
+        text = (data["choices"][0]["message"]["content"] or "").strip()
     except Exception:
-        LAST_AI_ERROR = f"unexpected response: {json.dumps(data)[:200]}"
-        return None
+        return None, f"unexpected response: {json.dumps(data)[:200]}"
+    return (text, None) if text else (None, "empty response")
+
+
+def _groq(bundle):
+    """Groq call that survives a decommissioned model: on a model-shaped error it
+    asks Groq what it actually serves, retries once, and remembers the winner in
+    the committed state so later runs go straight to a model that works."""
+    global LAST_AI_ERROR
+    model = (read_state("_meta", "groq-model.txt") or "").strip() or GROQ_MODEL
+    if not model:
+        model = _groq_choose()
+        if not model:
+            LAST_AI_ERROR = "no usable model offered by Groq"
+            return None
+
+    text, err = _groq_call(model, bundle)
+    if text:
+        return text
+
+    # 404 / "model does not exist" / "decommissioned" — rediscover and retry once.
+    low = (err or "").lower()
+    if "404" in low or "model" in low or "decommission" in low:
+        alt = _groq_choose()
+        if alt and alt != model:
+            sys.stderr.write(f"[info] Groq model '{model}' unusable "
+                             f"({err}); switching to '{alt}'.\n")
+            text, err2 = _groq_call(alt, bundle)
+            if text:
+                write_state(alt, "_meta", "groq-model.txt")
+                return text
+            err = err2 or err
+
+    LAST_AI_ERROR = err or "no output"
+    sys.stderr.write(f"[warn] Groq: {LAST_AI_ERROR}\n")
+    return None
 
 
 def _gemini(bundle):
@@ -855,14 +958,27 @@ def main():
     all_media = {}  # name -> full asset path, unioned across ALL pages
     all_flight = set()       # meaningful strings from the RSC data layer
     all_text_strings = set()  # meaningful strings visible in rendered text
+    # True when this run could not see the whole site (a page we normally read
+    # was unreachable, or a main page did not come back 200). The site-wide
+    # aggregates below are unioned across every page, so an incomplete view
+    # makes them look SMALLER than reality — which would then read as "these
+    # assets/strings are new" on the next healthy run. Never trust them here.
+    incomplete = False
     all_pages = ([(s, u, (s,), True) for s, u in PAGES]
                  + [(p, f"{BASE}/VI/{p}", ("pages", p), False) for p in EXTRA_PAGE_PATHS])
     for surface, url, parts, full in all_pages:
         r = fetch(url)
-        if r is None:
+        if r is None:  # could not reach the site — not the same as a 404
+            sys.stderr.write(f"[warn] {surface}: unreachable, site view is incomplete\n")
+            incomplete = True
             continue
         status, headers, body = r
         if status != 200 or "<html" not in body.lower():
+            # A main page that is not 200 is a problem; a speculative character/
+            # location page that 404s is simply not there yet, which is normal.
+            if full:
+                sys.stderr.write(f"[warn] {surface}: HTTP {status}, view is incomplete\n")
+                incomplete = True
             continue
         if surface == "media":
             media_html = body
@@ -909,11 +1025,18 @@ def main():
     # here must NEVER take down the core site monitor / AI alert below.
     try:
         if all_media:
-            cur = "\n".join(f"{n}|{p}" for n, p in sorted(all_media.items()))
             old_raw = read_state("media-assets.txt")
-            write_state(cur, "media-assets.txt")
+            old_map = dict(l.split("|", 1) for l in (old_raw or "").splitlines()
+                           if "|" in l)
+            # Merge rather than replace: this snapshot is an "everything ever
+            # seen" ledger, so a page that failed to load can never delete a
+            # known asset and make it look new again on the next run.
+            merged = dict(old_map)
+            merged.update(all_media)
+            write_state("\n".join(f"{n}|{p}" for n, p in sorted(merged.items())),
+                        "media-assets.txt")
             if old_raw is not None:  # None = first run -> baseline silently
-                old_names = {l.split("|", 1)[0] for l in old_raw.splitlines() if "|" in l}
+                old_names = set(old_map)
                 new_names = [n for n in sorted(all_media) if n not in old_names]
                 imgs, vids = [], []
                 for n in new_names[:40]:  # cap a runaway drop (rate limits / latency)
@@ -937,24 +1060,32 @@ def main():
 
     # --- Data-layer strings: present in the RSC payload but NOT in visible text
     # (staged/hidden props/copy). Isolated so it can never break the core. ---
-    try:
-        flight_only = "\n".join(sorted(all_flight - all_text_strings))
-        old_f = read_state("flight-strings.txt")
-        write_state(flight_only, "flight-strings.txt")
-        if old_f is not None:  # None = first run -> baseline silently
-            new_fs = added_lines(old_f, flight_only)
-            if new_fs:
-                blob = " ".join(new_fs).lower()
-                is_major = any(k in blob for k in MAJOR_KEYWORDS)
-                add(1, "new data-layer strings (in code, not yet visible)",
-                    "\n".join(f"- {x}" for x in new_fs[:40]), major=is_major)
-    except Exception as e:
-        sys.stderr.write(f"[warn] flight-strings check failed (core unaffected): {e}\n")
+    # This set is a subtraction across every page, so an unreachable page removes
+    # its visible text from the right-hand side — promoting ordinary on-page copy
+    # into "hidden string" findings and corrupting the snapshot. Skip the whole
+    # check (compare AND write) until the view is good again; a genuinely staged
+    # string is still there to be found on the next healthy run.
+    if incomplete:
+        sys.stderr.write("[info] incomplete site view — skipping flight-strings\n")
+    else:
+        try:
+            flight_only = "\n".join(sorted(all_flight - all_text_strings))
+            old_f = read_state("flight-strings.txt")
+            write_state(flight_only, "flight-strings.txt")
+            if old_f is not None:  # None = first run -> baseline silently
+                new_fs = added_lines(old_f, flight_only)
+                if new_fs:
+                    blob = " ".join(new_fs).lower()
+                    is_major = any(k in blob for k in MAJOR_KEYWORDS)
+                    add(1, "new data-layer strings (in code, not yet visible)",
+                        "\n".join(f"- {x}" for x in new_fs[:40]), major=is_major)
+        except Exception as e:
+            sys.stderr.write(f"[warn] flight-strings check failed (core unaffected): {e}\n")
 
     # --- robots / sitemap ---
     for name, url, grep in RAW:
         r = fetch(url)
-        if r is None:
+        if r is None or r[0] != 200:  # an error page's body is not the sitemap
             continue
         body = r[2]
         if grep:

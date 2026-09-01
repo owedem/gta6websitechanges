@@ -39,7 +39,10 @@ jobs:
           # FREE option (preferred): Groq — generous free tier, no card, works
           # everywhere. Key: https://console.groq.com/keys
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          GROQ_MODEL: llama-3.3-70b-versatile
+          # Blank = ask Groq which models it currently serves and pick the best
+          # one (remembered in ultracode-state/_meta/groq-model.txt). Groq retires
+          # models regularly, so pinning an id here eventually 404s every run.
+          GROQ_MODEL: ''
           # FREE option: Google Gemini (low/regional free limits). Key:
           # https://aistudio.google.com/apikey
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
