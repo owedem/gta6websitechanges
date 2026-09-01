@@ -926,3 +926,29 @@ _(AI analysis unavailable.)_
 - string: :1,kalaga:1,ambrosia:1,
 ```
 </details>
+
+## 01 Sep 2026 at 17:35 UTC
+
+**Found in:** new data-layer strings (in code, not yet visible)
+
+**🚀 Possible new GTA VI trailer page spotted in the code**
+
+**What changed**
+- The site’s JavaScript now contains hidden data‑layer entries that read **“Grand Theft Auto VI Trailer 1”**.
+- Alongside the trailer label the code also includes the date **“December 4, 2023.”** (the same string appears twice in separate bundles).
+- These strings are not yet visible on any public page – they’re only present in the underlying code.
+
+**What it likely means**
+- Rockstar appears to have a dedicated trailer component baked into the site, ready to be displayed when they choose to push it live. The date tag is probably a placeholder from an earlier build, not a confirmed release schedule.
+
+**Could signal:** _(confidence: low)_
+- A new trailer (or a re‑upload of the first trailer) could drop soon, perhaps tied to a marketing push or a special event. The exact timing is unclear; the “December 4, 2023” tag is likely legacy data rather than a future release date. Keep an eye on the media gallery and social channels over the next few weeks for any fresh video drop.
+
+<details><summary>raw findings</summary>
+
+**new data-layer strings (in code, not yet visible)**
+```
+- hideWhen":"idle","children":"Now Playing"}],["$","$L57",null,{}]]}],["$","$L58",null,{"children":[["$","$L59",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L5a",null,{"children":"December 4, 2023"}]]}]]}]],"ref":null,"className":"_1gtjwe72"}]]}]]}]]}]}],["$","$L5b",null,{}]]}]]}]]}]}]
+- hideWhen":"idle","children":"Now Playing"}],["$","$Ldb",null,{}]]}],["$","$Ldc",null,{"children":[["$","$Ldd",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$Lde",null,{"children":"December 4, 2023"}]]}]]}]],"ref":null,"className":"_1gtjwe72"}]]}]]}]]}]}],["$","$Ldf",null,{}]]}]]}]]}]}]
+```
+</details>

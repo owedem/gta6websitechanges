@@ -3,7 +3,6 @@ string: /VI/:locale/only-in-leonida
 string: /marketing/status
 string: /marketing/update
 string: /npm-monitoring
-string: :1,kalaga:1,ambrosia:1,
 string: Discarded session because of missing or non-string release
 string: PreorderDrawerContent
 string: PreorderDrawerOverlay
