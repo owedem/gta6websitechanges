@@ -154,7 +154,14 @@ MEDIA_ASSET_RE = re.compile(
     r"/_next/static/media/([A-Za-z0-9_.~\-]+\.(?:jpg|jpeg|png|webp|avif|gif|mp4|webm|mov))"
 )
 VIDEO_EXT = (".mp4", ".webm", ".mov")
-MEDIA_SKIP_NAMES = {"esrb", "vi", "t1", "t2"}  # tiny UI/logo assets, not content
+# Chrome/UI assets that are not content, and so should never reach the channels.
+MEDIA_SKIP_NAMES = {"esrb", "vi", "t1", "t2", "featured", "featured-mobile",
+                    "skybox", "placeholder", "fallback", "default", "logo"}
+# Build-generated ids rather than named content — content hashes and random
+# slugs like "3642a34ab778931f..." or "9k2kaa1o3297k9". Real assets always carry
+# a word separator ("Jason_Duval_07", "an-extended-look") or read as a word, so
+# requiring letters+digits with no separator at length isolates the junk.
+MEDIA_ID_RE = re.compile(r"(?=.*\d)[a-z0-9]{12,}")
 CHUNK_RE = re.compile(r"/_next/static/chunks/(?!turbopack)[^\"?\s]+\.(?:js|css)")
 CHUNK_PATH_RE = re.compile(r"_next/static/chunks/[^\"?\s]+\.js")
 
@@ -286,7 +293,7 @@ def media_assets(html):
     out = {}
     for fname in MEDIA_ASSET_RE.findall(html):
         name = fname.split(".")[0]
-        if name.lower() in MEDIA_SKIP_NAMES:
+        if name.lower() in MEDIA_SKIP_NAMES or MEDIA_ID_RE.fullmatch(name.lower()):
             continue
         out[name] = f"/_next/static/media/{fname}"
     return out
@@ -394,11 +401,19 @@ INTEREST_KW = re.compile(
     r"release[ -]?date|launch[ -]?day|early[ -]?access|world[ -]?premiere|"
     r"gameplay[ -]?reveal|available[ -]?now|standard edition|ultimate edition", re.I)
 
-# Real date shapes (ISO or "19 November 2026" / "November 2026") — not bare years.
+MONTH = r"(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\.?"
+# Dated shapes carrying a YEAR (ISO, "19 November 2026", "November 2026", and
+# "November 19, 2026" — the US form Rockstar actually writes on the site). Strong
+# enough to keep even inside a code blob, so a hardcoded launch date is never
+# lost to the minified-code filter. Bare years do not qualify.
 DATE_RE = re.compile(
     r"20(?:2[5-9]|3\d)[-/]\d{1,2}[-/]\d{1,2}|"
-    r"\b\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\.?\s+20\d\d|"
-    r"\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\.?\s+20\d\d", re.I)
+    rf"\b\d{{1,2}}\s+{MONTH}\s+20\d\d|"
+    rf"\b{MONTH}\s+\d{{1,2}}(?:st|nd|rd|th)?,\s*20\d\d|"
+    rf"\b{MONTH}\s+20\d\d", re.I)
+# A day-and-month with no year ("Coming August 27", "August 27th"). Real, but weak
+# enough that it is only trusted once the string has cleared the code filter.
+SOFT_DATE_RE = re.compile(rf"\b{MONTH}\s+\d{{1,2}}(?:st|nd|rd|th)?\b", re.I)
 
 # GTA-VI vocabulary — a phrase must mention one of these to be kept, so we get
 # game content ("Jason and Lucia standing side by side...") not framework noise
@@ -422,16 +437,27 @@ def is_meaningful(s):
         return False
     if KEYWORD_EXCLUDE.search(s):
         return False
+    # A standalone string never begins with a separator or trails a comma; those
+    # are slices out of the middle of a minified blob.
+    if s[0] in ",:;|" or s.endswith(","):
+        return False
     # High-value structural shapes (before code-rejection so URLs with '=' survive):
     if re.match(r"^/[A-Za-z][A-Za-z0-9/_-]*[A-Za-z0-9]$", s) and len(s) >= 5:
         return True                                           # a real /VI/... route
-    if "://" in s:
+    # The string must BE a url, not merely contain one. The RSC payload embeds
+    # the store link inside minified component blobs whose reference ids ($L12c)
+    # change on every deploy — accepting those re-reported the same non-finding
+    # every rebuild. Anything else containing a url falls through to the checks
+    # below, so a blob carrying a real date is still caught by DATE_RE.
+    if re.fullmatch(r"https?://[^\s\"']+", s):
         return "rockstar" in s.lower()                        # rockstar url only
     if DATE_RE.search(s):
         return True                                           # a real date
     # Soft rules — reject code, then require a specific launch term OR game vocab:
     if CODE_ISH.search(s):
         return False
+    if SOFT_DATE_RE.search(s):
+        return True                                           # "Coming August 27"
     if INTEREST_KW.search(s):
         return True
     if GAME_TERMS.search(s) and len(re.findall(r"[A-Za-z]{3,}", s)) >= 2:
@@ -480,11 +506,10 @@ def code_scan():
     for route in re.findall(r'"(/VI/[a-zA-Z0-9_\-/]+)"', code):
         if "_next" not in route:
             findings.add(f"route: {route}")
-    for pat in (r"202[456789]-\d{2}-\d{2}", r"202[456789]/\d{2}/\d{2}",
-                r"(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]* 202[456789]",
-                r"\d{1,2} (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]* 202[456789]"):
-        for d in re.findall(pat, code):
-            findings.add(f"date: {d}")
+    # One shared definition of "a date" (DATE_RE) rather than a second, narrower
+    # list — the old patterns here could not see "November 19, 2026".
+    for d in DATE_RE.findall(code):
+        findings.add(f"date: {d}")
     for api in re.findall(r"https?://[^\"'\s]+rockstar[^\"'\s]+/VI/[^\"'\s]*", code):
         findings.add(f"api: {api}")
     # Deep net: every meaningful string literal in the bundle. String literals are
@@ -1101,8 +1126,17 @@ def main():
         if old is not None and old != new:
             add(0, f"{name} changed", unified(old, new, name), major=(name == "sitemap"))
 
-    # --- Heavy: code scan (cadence-gated) ---
-    if FORCE_FULL or time.time() - last_run("codescan.txt") >= CODESCAN_INTERVAL:
+    # The heavy checks below normally run on their own slower cadence, which means
+    # a single real event (say a screenshot drop) surfaces on the pages now and in
+    # the code scan up to 20 minutes later — two alerts, minutes apart, for one
+    # piece of news. When the visible surface has ALREADY moved this run, run them
+    # now instead so everything lands in one message. Real changes are rare, so
+    # this costs little; the cadence timer still covers quiet periods.
+    surface_moved = bool(sections)
+
+    # --- Heavy: code scan (cadence-gated, or forced by a surface change) ---
+    if (FORCE_FULL or surface_moved
+            or time.time() - last_run("codescan.txt") >= CODESCAN_INTERVAL):
         try:
             findings = "\n".join(code_scan())
             old = read_state("code-findings.txt")
@@ -1119,8 +1153,11 @@ def main():
         except Exception as e:
             sys.stderr.write(f"[warn] code scan failed: {e}\n")
 
-    # --- Heavy: URL probe (cadence-gated) ---
-    if FORCE_FULL or time.time() - last_run("probe.txt") >= PROBE_INTERVAL:
+    # --- Heavy: URL probe (cadence-gated, or forced by a surface change) ---
+    # Same reasoning: when a new route appears in the nav, confirming whether the
+    # page is actually live belongs in that alert, not a separate one later.
+    if (FORCE_FULL or surface_moved
+            or time.time() - last_run("probe.txt") >= PROBE_INTERVAL):
         try:
             old = read_state("probe-known.txt")
             known = set(old.splitlines()) if old else set(PROBE_SEED)
