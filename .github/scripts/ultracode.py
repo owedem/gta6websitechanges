@@ -743,7 +743,7 @@ def _claude(bundle):
     try:
         client = anthropic.Anthropic()
         resp = client.messages.create(
-            model=MODEL, max_tokens=4000,
+            model=MODEL, max_tokens=16000,   # see the budget note in _fable()
             thinking={"type": "adaptive"}, output_config={"effort": "medium"},
             system=SYSTEM_PROMPT, messages=[{"role": "user", "content": bundle}])
         if resp.stop_reason == "refusal":
@@ -770,7 +770,12 @@ def _fable(bundle):
         client = anthropic.Anthropic()
         resp = client.beta.messages.create(
             model="claude-fable-5",
-            max_tokens=2000,
+            # Thinking is billed against max_tokens, and on a major signal — the
+            # one case this path exists for — reasoning runs longest. A tight cap
+            # gets spent thinking, returns no text, and silently hands the write-up
+            # down the chain to the free tier. Only tokens actually used are
+            # billed, so a high ceiling costs nothing on ordinary runs.
+            max_tokens=16000,
             betas=["server-side-fallback-2026-06-01"],
             fallbacks=[{"model": "claude-opus-4-8"}],
             output_config={"effort": "high"},
