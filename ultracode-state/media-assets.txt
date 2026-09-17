@@ -37,6 +37,7 @@ GTAVI_FOB_UltimateEdition_Mobile_ko_kr|/_next/static/media/GTAVI_FOB_UltimateEdi
 GTAVI_FOB_UltimateEdition_Mobile_zh_hans|/_next/static/media/GTAVI_FOB_UltimateEdition_Mobile_zh_hans.08abxmj_fu4qg.jpg
 GTAVI_FOB_UltimateEdition_Mobile_zh_tw|/_next/static/media/GTAVI_FOB_UltimateEdition_Mobile_zh_tw.0hkm0xrv876xg.jpg
 GTAVI_Official_Cover_Art_Landscape|/_next/static/media/GTAVI_Official_Cover_Art_Landscape.03y6bcce9e2jr.jpg
+GTAVI_Soundtrack_Newswire|/_next/static/media/GTAVI_Soundtrack_Newswire.01z2azm37u9oe.jpg
 GTAVI_Trailer1_poster|/_next/static/media/GTAVI_Trailer1_poster.12x2gvspcm_3m.jpg
 GTAVI_Trailer2_poster|/_next/static/media/GTAVI_Trailer2_poster.0cosv-uzbpt91.jpg
 GTA_PLUS_DESKTOP|/_next/static/media/GTA_PLUS_DESKTOP.03ukoicd54pon.png
@@ -99,6 +100,9 @@ Real_Dimez_01|/_next/static/media/Real_Dimez_01.0djwwboo8-glx.jpg
 Real_Dimez_02|/_next/static/media/Real_Dimez_02.1366u9.x.yp0_.jpg
 Real_Dimez_03|/_next/static/media/Real_Dimez_03.02o2si7.op.ye.jpg
 Real_Dimez_04|/_next/static/media/Real_Dimez_04.0wa3vo07lz4e2.jpg
+The_Album_Cover_Art_landscape|/_next/static/media/The_Album_Cover_Art_landscape.000ifb9a.j-gp.jpg
+The_Album_Cover_Art_portrait|/_next/static/media/The_Album_Cover_Art_portrait.10ymqbh.qytj7.jpg
+The_Album_Cover_Art_square|/_next/static/media/The_Album_Cover_Art_square.0s5-7fm8xnns8.jpg
 ULTIMATE_EDITION_01|/_next/static/media/ULTIMATE_EDITION_01.16qc1xq5nigg1.jpg
 ULTIMATE_EDITION_02|/_next/static/media/ULTIMATE_EDITION_02.0q-6.nrtf~jj0.jpg
 ULTIMATE_EDITION_ELECTRIC_FANG_01|/_next/static/media/ULTIMATE_EDITION_ELECTRIC_FANG_01.04tsytu7qp2b-.jpg
@@ -191,6 +195,8 @@ logo_vi|/_next/static/media/logo_vi.02gnpy7k4ozcz.png
 mediaDesktop|/_next/static/media/mediaDesktop.11iioep6d3wsf.jpg
 mediaMobile|/_next/static/media/mediaMobile.0p_yfitphljim.jpg
 mobile|/_next/static/media/mobile.16wml24njlfle.jpg
+musicDesktop|/_next/static/media/musicDesktop.0zwcbzhynnsc-.jpg
+musicMobile|/_next/static/media/musicMobile.16pdg34v6lit..jpg
 onlyInLeonidaDesktop|/_next/static/media/onlyInLeonidaDesktop.15y2n40f3axwo.jpg
 onlyInLeonidaMobile|/_next/static/media/onlyInLeonidaMobile.0mupfnk-x6x~r.jpg
 outro|/_next/static/media/outro.0e9ko9mexi~1m.jpg

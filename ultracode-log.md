@@ -952,3 +952,116 @@ _(AI analysis unavailable.)_
 - hideWhen":"idle","children":"Now Playing"}],["$","$Ldb",null,{}]]}],["$","$Ldc",null,{"children":[["$","$Ldd",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$Lde",null,{"children":"December 4, 2023"}]]}]]}]],"ref":null,"className":"_1gtjwe72"}]]}]]}]]}]}],["$","$Ldf",null,{}]]}]]}]]}]}]
 ```
 </details>
+
+## 17 Sep 2026 at 12:10 UTC
+
+**Found in:** home routes changed, new pages live, home text changed, media text changed, media counts increased, new data-layer strings (in code, not yet visible), new media posted
+
+**🎵 New “Grand Theft Auto VI: The Album” page & soundtrack teased**
+
+**What changed**
+- A brand‑new route **/VI/music** is now live and linked from the home page.  
+- The home page now has a **“GRAND THEFT AUTO VI: THE ALBUM”** section, touting **34 original tracks** and a “Explore More” button.  
+- A newswire post was added: **“Announcing Grand Theft Auto VI: The Album, Coming November 19”** (dated September 17 2026).  
+- The media gallery got **one more item** (now 23 pieces) – the **Album Cover Art** appears in three sizes (landscape, portrait, square).  
+- Six new image assets were uploaded, all related to the soundtrack (album cover art and desktop/mobile music banners).  
+
+**What it likely means**
+Rockstar is officially rolling out a full GTA VI soundtrack album that will drop alongside the game on November 19, 2026. The dedicated music page and new cover‑art assets suggest the album will be available for streaming or purchase.
+
+**Could signal:** _(confidence: medium)_  
+- A **soundtrack release** timed with launch day, possibly with a separate digital/physical album offering.  
+- Early promotion may hint at future music‑related marketing (e.g., playlist collaborations, in‑game radio stations being highlighted).  
+
+Stay tuned for any links to streaming platforms or pre‑order bundles that include the album!
+
+<details><summary>raw findings</summary>
+
+**home routes changed**
+```
+--- home/routes (before)
++++ home/routes (after)
+@@ -2,3 +2,4 @@
+ /VI/an-extended-look
+ /VI/media
++/VI/music
+ /VI/only-in-leonida
+```
+**new pages live**
+```
+- https://www.rockstargames.com/VI/music
+```
+**home text changed**
+```
+--- home/text (before)
++++ home/text (after)
+@@ -39,4 +39,8 @@
+ Vice City, USA.
+ Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
++MUSIC
++GRAND THEFT AUTO VI: THE ALBUM
++Featuring a genre-defying artist roster with 34 original tracks that capture the electric energy of Vice City and Leonida.
++Explore More
+ People & Places
+ Only in Leonida
+@@ -51,10 +55,10 @@
+ View all
+ Newswire posts
++Announcing Grand Theft Auto VI: The Album, Coming November 19
++September 17, 2026
+ Grand Theft Auto VI: An Extended Look — Now Playing
+-August 27th, 2026
++August 27, 2026
+ Pre-Order Grand Theft Auto VI on June 25
+ June 24, 2026
+-Grand Theft Auto VI is Now Set to Launch November 19, 2026
+-November 6, 2025
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**media text changed**
+```
+--- media/text (before)
++++ media/text (after)
+@@ -80,12 +80,12 @@
+ 12 Vintage Vice City Pack in a single zip file
+ Artwork & Wallpapers
+-22
++23
+ Download All
+-22 Artwork & Wallpapers in a single zip file
++23 Artwork & Wallpapers in a single zip file
+ See All
+-22 Artwork and Wallpapers
+-22 Artwork and Wallpapers
+-Jason and Lucia Robbery
+-6 sizes
++23 Artwork and Wallpapers
++23 Artwork and Wallpapers
++The Album Cover Art
++3 sizes
+ Official Cover Art
+ 6 sizes
+@@ -93,5 +93,5 @@
+ 6 sizes
+ Download All
+-22 Artwork & Wallpapers in a single zip file
++23 Artwork & Wallpapers in a single zip file
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**media counts increased**
+```
+- artwork wallpapers: 22 -> 23
+```
+**new data-layer strings (in code, not yet visible)**
+```
+- hideWhen":"idle","children":"Now Playing"}],["$","$L58",null,{}]]}],["$","$L59",null,{"children":[["$","$L5a",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L5b",null,{"children":"December 4, 2023"}]]}]]}]],"ref":null,"className":"_1gtjwe72"}]]}]]}]]}]}],["$","$L5c",null,{}]]}]]}]]}]}]
+- hideWhen":"idle","children":"Now Playing"}],["$","$Ldc",null,{}]]}],["$","$Ldd",null,{"children":[["$","$Lde",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$Ldf",null,{"children":"December 4, 2023"}]]}]]}]],"ref":null,"className":"_1gtjwe72"}]]}]]}]]}]}],["$","$Le0",null,{}]]}]]}]]}]}]
+- }}]}],["$","$L6e",null,{"children":[["$","$L6f",null,{"children":"Pre-Order Grand Theft Auto VI on June 25"}],["$","$L70",null,{"children":"June 24, 2026"}]]}]]}]}]
+```
+**new media posted**
+```
+- 6 new image(s) → images channel: GTAVI_Soundtrack_Newswire, The_Album_Cover_Art_landscape, The_Album_Cover_Art_portrait, The_Album_Cover_Art_square, musicDesktop, musicMobile
+```
+</details>

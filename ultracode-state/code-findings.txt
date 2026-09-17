@@ -8,7 +8,6 @@ string: PreorderDrawerContent
 string: PreorderDrawerOverlay
 string: PreorderDrawerPortal
 string: PreorderDrawerRoot
-string: PreorderDrawerTitle
 string: PreorderDrawerTrigger
 string: PreorderDrawerTriggerContainer
 string: ambrosia/libsvtav1/1280.mp4
