@@ -28,6 +28,7 @@ string: boobie/libx264/1080.mp4
 string: boobie/libx264/1440.mp4
 string: boobie/libx264/400.mp4
 string: boobie/libx264/768.mp4
+string: collectors-edition
 string: dimez/libsvtav1/1080.mp4
 string: dimez/libsvtav1/1440.mp4
 string: dimez/libsvtav1/400.mp4

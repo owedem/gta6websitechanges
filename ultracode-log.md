@@ -1065,3 +1065,386 @@ Stay tuned for any links to streaming platforms or pre‑order bundles that incl
 - 6 new image(s) → images channel: GTAVI_Soundtrack_Newswire, The_Album_Cover_Art_landscape, The_Album_Cover_Art_portrait, The_Album_Cover_Art_square, musicDesktop, musicMobile
 ```
 </details>
+
+## 24 Sep 2026 at 15:05 UTC
+
+**Found in:** home routes changed, only-in-leonida routes changed, jason routes changed, lucia routes changed, ambrosia routes changed, boobie routes changed, brian routes changed, cal routes changed, drequan routes changed, raul routes changed, dimez routes changed, vice-city routes changed, port-gellhorn routes changed, leonida-keys routes changed, grassrivers routes changed, kalaga routes changed, new clues in site code, home text changed, only-in-leonida text changed, jason text changed, lucia text changed, ambrosia text changed, boobie text changed, brian text changed, cal text changed, drequan text changed, raul text changed, dimez text changed, vice-city text changed, port-gellhorn text changed, leonida-keys text changed, grassrivers text changed, kalaga text changed, new data-layer strings (in code, not yet visible), new media posted
+
+**🗞️ “An Extended Look” disappears, Collector’s Box appears – new merch on the horizon?**  
+
+**What changed:**  
+- The route “/VI/an-extended-look” was removed from the home page and every character/location navigation list.  
+- The home page text no longer shows the “An Extended Look” banner; instead it now promotes a **“Collector’s Box – The Vice City Collection”** with a short description and a “Learn More” link.  
+- A fresh news‑feed entry was added: **“Pre‑Order The Goodtime State – Vice City Collection Now While Supplies Last” (Sept 24 2026)**.  
+- A hidden code string **“collectors‑edition”** shows up in the site’s JavaScript bundle.  
+- Thirteen brand‑new images (e.g., wm‑Bag, wm‑Cap, wm‑Map, wm‑Mirror) and four new video assets were uploaded to the media library.  
+
+**What it likely means:**  
+Rockstar appears to be pulling the “An Extended Look” teaser and swapping it for a new physical‑goods push – a limited‑edition Collector’s Box that bundles Vice City‑themed items. The added media assets are probably the product shots for that box.
+
+**Could signal:** _(confidence: medium)_  
+A limited‑edition **Collector’s Box** (or similar physical merch) is now being marketed and may ship shortly after the current pre‑order window closes. Expect a dedicated product page to go live soon, along with more detailed images and possibly a short promo video. No direct indication that the game release date is shifting.
+
+<details><summary>raw findings</summary>
+
+**home routes changed**
+```
+--- home/routes (before)
++++ home/routes (after)
+@@ -1,4 +1,3 @@
+ /VI/
+-/VI/an-extended-look
+ /VI/media
+ /VI/music
+```
+**only-in-leonida routes changed**
+```
+--- only-in-leonida/routes (before)
++++ only-in-leonida/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/an-extended-look
+```
+**jason routes changed**
+```
+--- jason/routes (before)
++++ jason/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/an-extended-look
+```
+**lucia routes changed**
+```
+--- lucia/routes (before)
++++ lucia/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/an-extended-look
+```
+**ambrosia routes changed**
+```
+--- ambrosia/routes (before)
++++ ambrosia/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/an-extended-look
+```
+**boobie routes changed**
+```
+--- boobie/routes (before)
++++ boobie/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/an-extended-look
+```
+**brian routes changed**
+```
+--- brian/routes (before)
++++ brian/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/an-extended-look
+```
+**cal routes changed**
+```
+--- cal/routes (before)
++++ cal/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/an-extended-look
+```
+**drequan routes changed**
+```
+--- drequan/routes (before)
++++ drequan/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/an-extended-look
+```
+**raul routes changed**
+```
+--- raul/routes (before)
++++ raul/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/an-extended-look
+```
+**dimez routes changed**
+```
+--- dimez/routes (before)
++++ dimez/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/an-extended-look
+```
+**vice-city routes changed**
+```
+--- vice-city/routes (before)
++++ vice-city/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/an-extended-look
+```
+**port-gellhorn routes changed**
+```
+--- port-gellhorn/routes (before)
++++ port-gellhorn/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/an-extended-look
+```
+**leonida-keys routes changed**
+```
+--- leonida-keys/routes (before)
++++ leonida-keys/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/an-extended-look
+```
+**grassrivers routes changed**
+```
+--- grassrivers/routes (before)
++++ grassrivers/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/an-extended-look
+```
+**kalaga routes changed**
+```
+--- kalaga/routes (before)
++++ kalaga/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/an-extended-look
+```
+**new clues in site code**
+```
+- string: collectors-edition
+```
+**home text changed**
+```
+--- home/text (before)
++++ home/text (after)
+@@ -4,6 +4,4 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look:
+-Now Playing
+ Coming
+ November 19, 2026
+@@ -37,4 +35,8 @@
+ Pre-order to get unique benefits that flash back to when the neon burned brightest.
+ Learn More
++Collector's Box
++The Vice City Collection
++A premium, limited-edition collectible set featuring all the essentials for a good time, inspired by Leonida’s hit TV show, Macca the Gator.
++Learn More
+ Vice City, USA.
+ Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+@@ -55,10 +57,10 @@
+ View all
+ Newswire posts
++Pre-Order The Goodtime State – Vice City Collection Now While Supplies Last
++September 24, 2026
+ Announcing Grand Theft Auto VI: The Album, Coming November 19
+ September 17, 2026
+ Grand Theft Auto VI: An Extended Look — Now Playing
+ August 27, 2026
+-Pre-Order Grand Theft Auto VI on June 25
+-June 24, 2026
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**only-in-leonida text changed**
+```
+--- only-in-leonida/text (before)
++++ only-in-leonida/text (after)
+@@ -5,6 +5,4 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look:
+-Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**jason text changed**
+```
+--- jason/text (before)
++++ jason/text (after)
+@@ -5,6 +5,4 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look:
+-Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**lucia text changed**
+```
+--- lucia/text (before)
++++ lucia/text (after)
+@@ -5,6 +5,4 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look:
+-Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**ambrosia text changed**
+```
+--- ambrosia/text (before)
++++ ambrosia/text (after)
+@@ -5,6 +5,4 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look:
+-Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**boobie text changed**
+```
+--- boobie/text (before)
++++ boobie/text (after)
+@@ -5,6 +5,4 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look:
+-Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**brian text changed**
+```
+--- brian/text (before)
++++ brian/text (after)
+@@ -5,6 +5,4 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look:
+-Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**cal text changed**
+```
+--- cal/text (before)
++++ cal/text (after)
+@@ -5,6 +5,4 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look:
+-Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**drequan text changed**
+```
+--- drequan/text (before)
++++ drequan/text (after)
+@@ -5,6 +5,4 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look:
+-Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**raul text changed**
+```
+--- raul/text (before)
++++ raul/text (after)
+@@ -5,6 +5,4 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look:
+-Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**dimez text changed**
+```
+--- dimez/text (before)
++++ dimez/text (after)
+@@ -5,6 +5,4 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look:
+-Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**vice-city text changed**
+```
+--- vice-city/text (before)
++++ vice-city/text (after)
+@@ -5,6 +5,4 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look:
+-Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**port-gellhorn text changed**
+```
+--- port-gellhorn/text (before)
++++ port-gellhorn/text (after)
+@@ -5,6 +5,4 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look:
+-Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**leonida-keys text changed**
+```
+--- leonida-keys/text (before)
++++ leonida-keys/text (after)
+@@ -5,6 +5,4 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look:
+-Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**grassrivers text changed**
+```
+--- grassrivers/text (before)
++++ grassrivers/text (after)
+@@ -5,6 +5,4 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look:
+-Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**kalaga text changed**
+```
+--- kalaga/text (before)
++++ kalaga/text (after)
+@@ -5,6 +5,4 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-An Extended Look:
+-Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**new data-layer strings (in code, not yet visible)**
+```
+- hideWhen":"idle","children":"Now Playing"}],["$","$L57",null,{}]]}],["$","$L58",null,{"children":[["$","$L59",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L5a",null,{"children":"December 4, 2023"}]]}]]}]],"ref":null,"className":"_1gtjwe72"}]]}]]}]]}]}],["$","$L5b",null,{}]]}]]}]]}]}]
+- hideWhen":"idle","children":"Now Playing"}],["$","$Ldb",null,{}]]}],["$","$Ldc",null,{"children":[["$","$Ldd",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$Lde",null,{"children":"December 4, 2023"}]]}]]}]],"ref":null,"className":"_1gtjwe72"}]]}]]}]]}]}],["$","$Ldf",null,{}]]}]]}]]}]}]
+- hideWhen":"idle","children":"Now Playing"}],["$","$Lf9",null,{}]]}],["$","$Lfa",null,{"children":[["$","$Lfb",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$Lfc",null,{"children":"December 4, 2023"}]]}]]}]],"ref":null,"className":"_1gtjwe72"}]]}]]}]]}]}],["$","$Lfd",null,{}]]}]]}]]}]}]
+- }}]}],["$","$L66",null,{"children":[["$","$L67",null,{"children":"Grand Theft Auto VI: An Extended Look — Now Playing"}],["$","$L68",null,{"children":"August 27, 2026"}]]}]]}]}]
+```
+**new media posted**
+```
+- 13 new image(s) → images channel: intro, intro-mobile, wm-Bag, wm-Cap, wm-Maca, wm-Map, wm-Mirror, wm-Oakleys, wm-Pins, wm-Razor, wm-Shots, wm-Spoon
+- 4 new video(s) → videos channel: 1280_av1, 1280_hvec, 1920_av1, 1920_hvec
+```
+</details>

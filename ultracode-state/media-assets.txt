@@ -1,3 +1,7 @@
+1280_av1|/_next/static/media/1280_av1.0srvws2jsz1mc.mp4
+1280_hvec|/_next/static/media/1280_hvec.0aemakwwnou9_.mp4
+1920_av1|/_next/static/media/1920_av1.0dbzy7h~h9e1q.mp4
+1920_hvec|/_next/static/media/1920_hvec.0gyb6md9cezo~.mp4
 5171972o3ak5oa|/_next/static/media/5171972o3ak5oa.15416o23e-~x2.jpg
 9k2kaa1o3297k9|/_next/static/media/9k2kaa1o3297k9.0ux_qup1vxl7o.jpg
 Ambrosia_01|/_next/static/media/Ambrosia_01.0rqphs0gazkm..jpg
@@ -190,6 +194,8 @@ desktop|/_next/static/media/desktop.0zwg6wdya.x1t.jpg
 featured|/_next/static/media/featured.0y5yxwenpsgc3.jpg
 featured-mobile|/_next/static/media/featured-mobile.14ok.safz3arg.jpg
 hero|/_next/static/media/hero.0q5-tr6h86ai7.jpg
+intro|/_next/static/media/intro.081gaz4~3wox-.png
+intro-mobile|/_next/static/media/intro-mobile.0.97ufm766d4x.png
 logo_gta|/_next/static/media/logo_gta.0_~y3s2ni8fbj.png
 logo_vi|/_next/static/media/logo_vi.02gnpy7k4ozcz.png
 mediaDesktop|/_next/static/media/mediaDesktop.11iioep6d3wsf.jpg
@@ -219,3 +225,14 @@ trailer-1|/_next/static/media/trailer-1.06b6paykx247w.jpg
 trailer-2|/_next/static/media/trailer-2.0l.7aqib91fz6.jpg
 ultimate_desktop_en_us|/_next/static/media/ultimate_desktop_en_us.0~shc~hnjifzu.jpg
 ultimate_mobile_en_us|/_next/static/media/ultimate_mobile_en_us.03~7e7tlo4k4r.jpg
+wm-Bag|/_next/static/media/wm-Bag.0u9s0s0gqklw9.png
+wm-Cap|/_next/static/media/wm-Cap.0ysk2b4egnoj_.png
+wm-Maca|/_next/static/media/wm-Maca.158blbrh-wvzv.png
+wm-Map|/_next/static/media/wm-Map.0jmhhbywjx7n4.png
+wm-Mirror|/_next/static/media/wm-Mirror.0nacs141cjh8q.png
+wm-Oakleys|/_next/static/media/wm-Oakleys.0pnjsicgj3kzo.png
+wm-Pins|/_next/static/media/wm-Pins.0o.x6_09~ykv9.png
+wm-Razor|/_next/static/media/wm-Razor.077.jm-vs58y4.png
+wm-Shots|/_next/static/media/wm-Shots.0w9xxbxvq2-bq.png
+wm-Spoon|/_next/static/media/wm-Spoon.0ie8.fa4lt807.png
+wm-Stickers|/_next/static/media/wm-Stickers.0ca1tdvx-q544.png
