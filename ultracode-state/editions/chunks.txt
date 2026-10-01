@@ -1,5 +1,4 @@
 /_next/static/chunks/0-atb342mnkb2.js
-/_next/static/chunks/0-jfdep7ss4uw.js
 /_next/static/chunks/0.wrkicgxvn-k.js
 /_next/static/chunks/020ay.5n~jfkz.css
 /_next/static/chunks/027irf6~i3get.css
@@ -20,6 +19,7 @@
 /_next/static/chunks/0ep5efrojkt80.js
 /_next/static/chunks/0f5295.l25mzi.css
 /_next/static/chunks/0g352._3qlyk-.js
+/_next/static/chunks/0g~7hkq5rq74i.js
 /_next/static/chunks/0h_40t2z85jto.js
 /_next/static/chunks/0jo2garha~5y1.css
 /_next/static/chunks/0nqyau91a9fz-.css

@@ -1448,3 +1448,266 @@ A limited‑edition **Collector’s Box** (or similar physical merch) is now bei
 - 4 new video(s) → videos channel: 1280_av1, 1280_hvec, 1920_av1, 1920_hvec
 ```
 </details>
+
+## 01 Oct 2026 at 15:05 UTC
+
+**Found in:** home text changed, only-in-leonida text changed, media text changed, jason text changed, lucia text changed, ambrosia text changed, boobie text changed, brian text changed, cal text changed, drequan text changed, raul text changed, dimez text changed, vice-city text changed, port-gellhorn text changed, leonida-keys text changed, grassrivers text changed, kalaga text changed, new data-layer strings (in code, not yet visible)
+
+**📰 Updated rating info appears site‑wide**
+
+**What changed:**
+- Every page (Home, “Only‑in‑Leonida”, Media, character bios – Jason, Lucia, etc.) swapped the old ESRB disclaimer (“May contain content inappropriate for children…”) for a full rating list: **“Blood and Gore, Intense Violence, Mature Humor, Nudage, Strong Language, Strong Sexual Content, Use of Drugs and Alcohol.”**  
+- The same pages now also show **“In‑Game Purchases.”** – a clear label that the game will contain micro‑transactions.
+- In the site’s JavaScript data layer we found a hidden string: **“Grand Theft Auto VI Trailer 1”** followed by **“December 4, 2023.”** This text isn’t displayed on any page yet.
+
+**What it likely means:**  
+Rockstar is polishing the legal footer to meet rating‑board requirements and to be transparent about micro‑transactions before the launch window closes. The stray “Trailer 1 – December 4 2023” entry is probably a leftover from an older build or a test placeholder rather than a live schedule.
+
+**Could signal:** _(confidence: low)_  
+- The site is in a final‑polish stage; no new trailer or release‑date info can be confirmed from these changes. The December 2023 date is historic, so it’s unlikely to indicate an upcoming reveal. Keep an eye on the site for any fresh media assets, but for now there’s nothing concrete pointing to a new announcement.
+
+<details><summary>raw findings</summary>
+
+**home text changed**
+```
+--- home/text (before)
++++ home/text (after)
+@@ -80,6 +80,4 @@
+ Legal
+ Do Not Sell or Share My Personal Information
+-May contain content inappropriate for children.
+-Visit
+-esrb.org
+-for rating information.
++Blood and Gore, Intense Violence, Mature Humor, Nudity, Strong Language, Strong Sexual Content, Use of Drugs and Alcohol.
++In-Game Purchases.
+```
+**only-in-leonida text changed**
+```
+--- only-in-leonida/text (before)
++++ only-in-leonida/text (after)
+@@ -139,6 +139,4 @@
+ Legal
+ Do Not Sell or Share My Personal Information
+-May contain content inappropriate for children.
+-Visit
+-esrb.org
+-for rating information.
++Blood and Gore, Intense Violence, Mature Humor, Nudity, Strong Language, Strong Sexual Content, Use of Drugs and Alcohol.
++In-Game Purchases.
+```
+**media text changed**
+```
+--- media/text (before)
++++ media/text (after)
+@@ -111,6 +111,4 @@
+ Legal
+ Do Not Sell or Share My Personal Information
+-May contain content inappropriate for children.
+-Visit
+-esrb.org
+-for rating information.
++Blood and Gore, Intense Violence, Mature Humor, Nudity, Strong Language, Strong Sexual Content, Use of Drugs and Alcohol.
++In-Game Purchases.
+```
+**jason text changed**
+```
+--- jason/text (before)
++++ jason/text (after)
+@@ -139,6 +139,4 @@
+ Legal
+ Do Not Sell or Share My Personal Information
+-May contain content inappropriate for children.
+-Visit
+-esrb.org
+-for rating information.
++Blood and Gore, Intense Violence, Mature Humor, Nudity, Strong Language, Strong Sexual Content, Use of Drugs and Alcohol.
++In-Game Purchases.
+```
+**lucia text changed**
+```
+--- lucia/text (before)
++++ lucia/text (after)
+@@ -139,6 +139,4 @@
+ Legal
+ Do Not Sell or Share My Personal Information
+-May contain content inappropriate for children.
+-Visit
+-esrb.org
+-for rating information.
++Blood and Gore, Intense Violence, Mature Humor, Nudity, Strong Language, Strong Sexual Content, Use of Drugs and Alcohol.
++In-Game Purchases.
+```
+**ambrosia text changed**
+```
+--- ambrosia/text (before)
++++ ambrosia/text (after)
+@@ -139,6 +139,4 @@
+ Legal
+ Do Not Sell or Share My Personal Information
+-May contain content inappropriate for children.
+-Visit
+-esrb.org
+-for rating information.
++Blood and Gore, Intense Violence, Mature Humor, Nudity, Strong Language, Strong Sexual Content, Use of Drugs and Alcohol.
++In-Game Purchases.
+```
+**boobie text changed**
+```
+--- boobie/text (before)
++++ boobie/text (after)
+@@ -139,6 +139,4 @@
+ Legal
+ Do Not Sell or Share My Personal Information
+-May contain content inappropriate for children.
+-Visit
+-esrb.org
+-for rating information.
++Blood and Gore, Intense Violence, Mature Humor, Nudity, Strong Language, Strong Sexual Content, Use of Drugs and Alcohol.
++In-Game Purchases.
+```
+**brian text changed**
+```
+--- brian/text (before)
++++ brian/text (after)
+@@ -139,6 +139,4 @@
+ Legal
+ Do Not Sell or Share My Personal Information
+-May contain content inappropriate for children.
+-Visit
+-esrb.org
+-for rating information.
++Blood and Gore, Intense Violence, Mature Humor, Nudity, Strong Language, Strong Sexual Content, Use of Drugs and Alcohol.
++In-Game Purchases.
+```
+**cal text changed**
+```
+--- cal/text (before)
++++ cal/text (after)
+@@ -139,6 +139,4 @@
+ Legal
+ Do Not Sell or Share My Personal Information
+-May contain content inappropriate for children.
+-Visit
+-esrb.org
+-for rating information.
++Blood and Gore, Intense Violence, Mature Humor, Nudity, Strong Language, Strong Sexual Content, Use of Drugs and Alcohol.
++In-Game Purchases.
+```
+**drequan text changed**
+```
+--- drequan/text (before)
++++ drequan/text (after)
+@@ -139,6 +139,4 @@
+ Legal
+ Do Not Sell or Share My Personal Information
+-May contain content inappropriate for children.
+-Visit
+-esrb.org
+-for rating information.
++Blood and Gore, Intense Violence, Mature Humor, Nudity, Strong Language, Strong Sexual Content, Use of Drugs and Alcohol.
++In-Game Purchases.
+```
+**raul text changed**
+```
+--- raul/text (before)
++++ raul/text (after)
+@@ -139,6 +139,4 @@
+ Legal
+ Do Not Sell or Share My Personal Information
+-May contain content inappropriate for children.
+-Visit
+-esrb.org
+-for rating information.
++Blood and Gore, Intense Violence, Mature Humor, Nudity, Strong Language, Strong Sexual Content, Use of Drugs and Alcohol.
++In-Game Purchases.
+```
+**dimez text changed**
+```
+--- dimez/text (before)
++++ dimez/text (after)
+@@ -139,6 +139,4 @@
+ Legal
+ Do Not Sell or Share My Personal Information
+-May contain content inappropriate for children.
+-Visit
+-esrb.org
+-for rating information.
++Blood and Gore, Intense Violence, Mature Humor, Nudity, Strong Language, Strong Sexual Content, Use of Drugs and Alcohol.
++In-Game Purchases.
+```
+**vice-city text changed**
+```
+--- vice-city/text (before)
++++ vice-city/text (after)
+@@ -139,6 +139,4 @@
+ Legal
+ Do Not Sell or Share My Personal Information
+-May contain content inappropriate for children.
+-Visit
+-esrb.org
+-for rating information.
++Blood and Gore, Intense Violence, Mature Humor, Nudity, Strong Language, Strong Sexual Content, Use of Drugs and Alcohol.
++In-Game Purchases.
+```
+**port-gellhorn text changed**
+```
+--- port-gellhorn/text (before)
++++ port-gellhorn/text (after)
+@@ -139,6 +139,4 @@
+ Legal
+ Do Not Sell or Share My Personal Information
+-May contain content inappropriate for children.
+-Visit
+-esrb.org
+-for rating information.
++Blood and Gore, Intense Violence, Mature Humor, Nudity, Strong Language, Strong Sexual Content, Use of Drugs and Alcohol.
++In-Game Purchases.
+```
+**leonida-keys text changed**
+```
+--- leonida-keys/text (before)
++++ leonida-keys/text (after)
+@@ -139,6 +139,4 @@
+ Legal
+ Do Not Sell or Share My Personal Information
+-May contain content inappropriate for children.
+-Visit
+-esrb.org
+-for rating information.
++Blood and Gore, Intense Violence, Mature Humor, Nudity, Strong Language, Strong Sexual Content, Use of Drugs and Alcohol.
++In-Game Purchases.
+```
+**grassrivers text changed**
+```
+--- grassrivers/text (before)
++++ grassrivers/text (after)
+@@ -139,6 +139,4 @@
+ Legal
+ Do Not Sell or Share My Personal Information
+-May contain content inappropriate for children.
+-Visit
+-esrb.org
+-for rating information.
++Blood and Gore, Intense Violence, Mature Humor, Nudity, Strong Language, Strong Sexual Content, Use of Drugs and Alcohol.
++In-Game Purchases.
+```
+**kalaga text changed**
+```
+--- kalaga/text (before)
++++ kalaga/text (after)
+@@ -139,6 +139,4 @@
+ Legal
+ Do Not Sell or Share My Personal Information
+-May contain content inappropriate for children.
+-Visit
+-esrb.org
+-for rating information.
++Blood and Gore, Intense Violence, Mature Humor, Nudity, Strong Language, Strong Sexual Content, Use of Drugs and Alcohol.
++In-Game Purchases.
+```
+**new data-layer strings (in code, not yet visible)**
+```
+- hideWhen":"idle","children":"Now Playing"}],["$","$Lfb",null,{}]]}],["$","$Lfc",null,{"children":[["$","$Lfd",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$Lfe",null,{"children":"December 4, 2023"}]]}]]}]],"ref":null,"className":"_1gtjwe72"}]]}]]}]]}]}],["$","$Lff",null,{}]]}]]}]]}]}]
+```
+</details>
