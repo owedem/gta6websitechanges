@@ -2486,3 +2486,73 @@ Rockstar has updated the social‑share thumbnail that appears when the site is 
  twitter:image:type: image/jpeg
 ```
 </details>
+
+## 08 Oct 2026 at 16:05 UTC
+
+**Found in:** home text changed, new data-layer strings (in code, not yet visible), new media posted
+
+**🛍️ New “Vice City Collection” merch now live on the Rockstar Store**
+
+**What changed:**
+- The home page’s hero text was trimmed and a brand‑new **Shop** section was added, featuring buttons for **Collector’s Box** and **The Vice City Collection** with “Explore Now” links.  
+- A fresh news entry appears: **“Grand Theft Auto VI Collection Now at the Rockstar Store”** dated **October 8 2026**.  
+- Two new promotional images have been uploaded to the site’s media library – **GTAVI_Merch_PromoCard** and **collectorsMobile** – clearly tied to the merchandise push.  
+- Hidden data‑layer strings in the page code now reference the same “Vice City Collection” pre‑order text that was previously only on the pre‑order page.
+
+**What it likely means:**
+Rockstar has officially opened a storefront for the **Vice City Collection** (the Collector’s Box and related apparel), and the site is now highlighting it prominently on the homepage and news feed.
+
+**Could signal:** _(confidence: medium)_
+- Expect the collection to be purchasable right now through the Rockstar Store, with possible limited‑time offers or bundles. No new gameplay content is hinted at, but the added shop UI suggests they’ll continue rolling out merch updates leading up to the November 19 launch.
+
+<details><summary>raw findings</summary>
+
+**home text changed**
+```
+--- home/text (before)
++++ home/text (after)
+@@ -35,8 +35,4 @@
+ Pre-order to get unique benefits that flash back to when the neon burned brightest.
+ Learn More
+-Collector's Box
+-The Vice City Collection
+-A premium, limited-edition collectible set featuring all the essentials for a good time, inspired by Leonida’s hit TV show, Macca the Gator.
+-Learn More
+ Vice City, USA.
+ Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+@@ -53,14 +49,23 @@
+ Download and share official videos, screenshots, and more.
+ See All
++Shop
++View All
++View All
++Merchandise
++Premium apparel, collectibles, and more
++Shop Now
++Collector’s Box
++The Vice City Collection
++Explore Now
+ Featured News
+ View all Newswire posts
+ View all
+ Newswire posts
++Grand Theft Auto VI Collection Now at the Rockstar Store
++October 8, 2026
+ The Music of Grand Theft Auto VI: In-Game Radio Stations
+ October 8, 2026
+ Pre-Order The Goodtime State – Vice City Collection Now While Supplies Last
+ September 24, 2026
+-Announcing Grand Theft Auto VI: The Album, Coming November 19
+-September 17, 2026
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**new data-layer strings (in code, not yet visible)**
+```
+- }}]}],["$","$L7c",null,{"children":[["$","$L7d",null,{"children":"Pre-Order The Goodtime State – Vice City Collection Now While Supplies Last"}],["$","$L7e",null,{"children":"September 24, 2026"}]]}]]}]}]
+```
+**new media posted**
+```
+- 2 new image(s) → images channel: GTAVI_Merch_PromoCard, collectorsMobile
+```
+</details>

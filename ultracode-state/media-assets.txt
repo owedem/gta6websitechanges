@@ -40,6 +40,7 @@ GTAVI_FOB_UltimateEdition_Mobile_ja_jp|/_next/static/media/GTAVI_FOB_UltimateEdi
 GTAVI_FOB_UltimateEdition_Mobile_ko_kr|/_next/static/media/GTAVI_FOB_UltimateEdition_Mobile_ko_kr.12vnpw.48ocz6.jpg
 GTAVI_FOB_UltimateEdition_Mobile_zh_hans|/_next/static/media/GTAVI_FOB_UltimateEdition_Mobile_zh_hans.08abxmj_fu4qg.jpg
 GTAVI_FOB_UltimateEdition_Mobile_zh_tw|/_next/static/media/GTAVI_FOB_UltimateEdition_Mobile_zh_tw.0hkm0xrv876xg.jpg
+GTAVI_Merch_PromoCard|/_next/static/media/GTAVI_Merch_PromoCard.0_k5n2lk~h9h~.jpg
 GTAVI_Official_Cover_Art_Landscape|/_next/static/media/GTAVI_Official_Cover_Art_Landscape.03y6bcce9e2jr.jpg
 GTAVI_Soundtrack_Newswire|/_next/static/media/GTAVI_Soundtrack_Newswire.01z2azm37u9oe.jpg
 GTAVI_Trailer1_poster|/_next/static/media/GTAVI_Trailer1_poster.12x2gvspcm_3m.jpg
@@ -190,6 +191,7 @@ Vintage_Vice_City_Pack_Bg|/_next/static/media/Vintage_Vice_City_Pack_Bg.0sr9f_qp
 ak3ak31a49a221|/_next/static/media/ak3ak31a49a221.01qomdzfhfg58.jpg
 an-extended-look|/_next/static/media/an-extended-look.0ijbsha5fo1te.jpg
 background|/_next/static/media/background.0.~5i.gsehcb3.png
+collectorsMobile|/_next/static/media/collectorsMobile.09~60xnm5q~pr.png
 desktop|/_next/static/media/desktop.0zwg6wdya.x1t.jpg
 featured|/_next/static/media/featured.0y5yxwenpsgc3.jpg
 featured-mobile|/_next/static/media/featured-mobile.14ok.safz3arg.jpg

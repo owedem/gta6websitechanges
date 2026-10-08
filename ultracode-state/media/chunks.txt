@@ -49,12 +49,12 @@
 /_next/static/chunks/0vs2p36-_pqsc.css
 /_next/static/chunks/0whu4ywn_r45a.css
 /_next/static/chunks/0x4q0f-5trxp3.css
-/_next/static/chunks/0xnl85gll5uka.js
 /_next/static/chunks/0ylf2dc6bac~o.css
 /_next/static/chunks/0yov~~mkk11ss.css
 /_next/static/chunks/0z3ycbsqd.yrm.css
 /_next/static/chunks/0zfk_lpf585.5.css
 /_next/static/chunks/0zh6i4-xsikt1.js
+/_next/static/chunks/0~ujr2usmvkhd.js
 /_next/static/chunks/0~wq1e~f8.dyj.js
 /_next/static/chunks/12gvsv7psyzmm.js
 /_next/static/chunks/12~7oi-itpmj2.css
