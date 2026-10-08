@@ -2312,3 +2312,177 @@ _(AI analysis unavailable.)_
 - 1 new image(s) → images channel: meta
 ```
 </details>
+
+## 08 Oct 2026 at 15:35 UTC
+
+**Found in:** home head changed, only-in-leonida head changed, media head changed, editions head changed, jason head changed, lucia head changed, ambrosia head changed, boobie head changed
+
+**🟢 Meta‑image overhaul across the GTA VI site**
+
+**What changed:**
+- Every main page (Home, “Only in Leonida”, Media, Editions, Jason, Lucia, Ambrosia, Boobie) now serves a **new Open‑Graph/Twitter image** – the URL switched from `…/-/opengraph-image-1dtlbo.jpg` to `…/_next/static/media/meta.0t8ty~nlmxq2s.jpg`.
+- The description text and all other meta tags stayed exactly the same; only the image file was swapped.
+- No new routes, dates, or pre‑order wording appeared – just the shared “meta” image.
+
+**What it likely means:**
+Rockstar has updated the social‑share thumbnail that appears when the site is linked on platforms like Twitter, Discord, or Facebook. This is a typical step right before a big public push (e.g., a final trailer drop, launch‑day announcement, or countdown start).
+
+**Could signal:** _(confidence: medium)_
+- The fresh meta image is probably the final “official” artwork or a teaser screenshot they want everyone to see when the game is shared.  
+- Updating it now suggests a near‑term publicity move – perhaps a new trailer or a reminder about the November 19 release – but the change alone doesn’t confirm any specific event or date.
+
+<details><summary>raw findings</summary>
+
+**home head changed**
+```
+--- home/head (before)
++++ home/head (after)
+@@ -4,5 +4,5 @@
+ next-size-adjust: 
+ og:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+-og:image: https://www.rockstargames.com/VI/-/opengraph-image-1dtlbo.jpg?opengraph-image.0t8ty~nlmxq2s.jpg
++og:image: https://www.rockstargames.com/VI/_next/static/media/meta.0t8ty~nlmxq2s.jpg
+ og:image:height: 630
+ og:image:type: image/jpeg
+@@ -17,5 +17,5 @@
+ twitter:creator:id: 29758446
+ twitter:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+-twitter:image: https://www.rockstargames.com/VI/-/twitter-image-1dtlbo.jpg?twitter-image.0t8ty~nlmxq2s.jpg
++twitter:image: https://www.rockstargames.com/VI/_next/static/media/meta.0t8ty~nlmxq2s.jpg
+ twitter:image:height: 630
+ twitter:image:type: image/jpeg
+```
+**only-in-leonida head changed**
+```
+--- only-in-leonida/head (before)
++++ only-in-leonida/head (after)
+@@ -4,5 +4,5 @@
+ next-size-adjust: 
+ og:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+-og:image: https://www.rockstargames.com/VI/-/opengraph-image-1dtlbo.jpg?opengraph-image.0t8ty~nlmxq2s.jpg
++og:image: https://www.rockstargames.com/VI/_next/static/media/meta.0t8ty~nlmxq2s.jpg
+ og:image:height: 630
+ og:image:type: image/jpeg
+@@ -17,5 +17,5 @@
+ twitter:creator:id: 29758446
+ twitter:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+-twitter:image: https://www.rockstargames.com/VI/-/twitter-image-1dtlbo.jpg?twitter-image.0t8ty~nlmxq2s.jpg
++twitter:image: https://www.rockstargames.com/VI/_next/static/media/meta.0t8ty~nlmxq2s.jpg
+ twitter:image:height: 630
+ twitter:image:type: image/jpeg
+```
+**media head changed**
+```
+--- media/head (before)
++++ media/head (after)
+@@ -4,5 +4,5 @@
+ next-size-adjust: 
+ og:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+-og:image: https://www.rockstargames.com/VI/-/opengraph-image-1dtlbo.jpg?opengraph-image.0t8ty~nlmxq2s.jpg
++og:image: https://www.rockstargames.com/VI/_next/static/media/meta.0t8ty~nlmxq2s.jpg
+ og:image:height: 630
+ og:image:type: image/jpeg
+@@ -17,5 +17,5 @@
+ twitter:creator:id: 29758446
+ twitter:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+-twitter:image: https://www.rockstargames.com/VI/-/twitter-image-1dtlbo.jpg?twitter-image.0t8ty~nlmxq2s.jpg
++twitter:image: https://www.rockstargames.com/VI/_next/static/media/meta.0t8ty~nlmxq2s.jpg
+ twitter:image:height: 630
+ twitter:image:type: image/jpeg
+```
+**editions head changed**
+```
+--- editions/head (before)
++++ editions/head (after)
+@@ -4,5 +4,5 @@
+ next-size-adjust: 
+ og:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+-og:image: https://www.rockstargames.com/VI/-/opengraph-image-1dtlbo.jpg?opengraph-image.0t8ty~nlmxq2s.jpg
++og:image: https://www.rockstargames.com/VI/_next/static/media/meta.0t8ty~nlmxq2s.jpg
+ og:image:height: 630
+ og:image:type: image/jpeg
+@@ -17,5 +17,5 @@
+ twitter:creator:id: 29758446
+ twitter:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+-twitter:image: https://www.rockstargames.com/VI/-/twitter-image-1dtlbo.jpg?twitter-image.0t8ty~nlmxq2s.jpg
++twitter:image: https://www.rockstargames.com/VI/_next/static/media/meta.0t8ty~nlmxq2s.jpg
+ twitter:image:height: 630
+ twitter:image:type: image/jpeg
+```
+**jason head changed**
+```
+--- jason/head (before)
++++ jason/head (after)
+@@ -4,5 +4,5 @@
+ next-size-adjust: 
+ og:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+-og:image: https://www.rockstargames.com/VI/-/opengraph-image-1dtlbo.jpg?opengraph-image.0t8ty~nlmxq2s.jpg
++og:image: https://www.rockstargames.com/VI/_next/static/media/meta.0t8ty~nlmxq2s.jpg
+ og:image:height: 630
+ og:image:type: image/jpeg
+@@ -17,5 +17,5 @@
+ twitter:creator:id: 29758446
+ twitter:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+-twitter:image: https://www.rockstargames.com/VI/-/twitter-image-1dtlbo.jpg?twitter-image.0t8ty~nlmxq2s.jpg
++twitter:image: https://www.rockstargames.com/VI/_next/static/media/meta.0t8ty~nlmxq2s.jpg
+ twitter:image:height: 630
+ twitter:image:type: image/jpeg
+```
+**lucia head changed**
+```
+--- lucia/head (before)
++++ lucia/head (after)
+@@ -4,5 +4,5 @@
+ next-size-adjust: 
+ og:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+-og:image: https://www.rockstargames.com/VI/-/opengraph-image-1dtlbo.jpg?opengraph-image.0t8ty~nlmxq2s.jpg
++og:image: https://www.rockstargames.com/VI/_next/static/media/meta.0t8ty~nlmxq2s.jpg
+ og:image:height: 630
+ og:image:type: image/jpeg
+@@ -17,5 +17,5 @@
+ twitter:creator:id: 29758446
+ twitter:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+-twitter:image: https://www.rockstargames.com/VI/-/twitter-image-1dtlbo.jpg?twitter-image.0t8ty~nlmxq2s.jpg
++twitter:image: https://www.rockstargames.com/VI/_next/static/media/meta.0t8ty~nlmxq2s.jpg
+ twitter:image:height: 630
+ twitter:image:type: image/jpeg
+```
+**ambrosia head changed**
+```
+--- ambrosia/head (before)
++++ ambrosia/head (after)
+@@ -4,5 +4,5 @@
+ next-size-adjust: 
+ og:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+-og:image: https://www.rockstargames.com/VI/-/opengraph-image-1dtlbo.jpg?opengraph-image.0t8ty~nlmxq2s.jpg
++og:image: https://www.rockstargames.com/VI/_next/static/media/meta.0t8ty~nlmxq2s.jpg
+ og:image:height: 630
+ og:image:type: image/jpeg
+@@ -17,5 +17,5 @@
+ twitter:creator:id: 29758446
+ twitter:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+-twitter:image: https://www.rockstargames.com/VI/-/twitter-image-1dtlbo.jpg?twitter-image.0t8ty~nlmxq2s.jpg
++twitter:image: https://www.rockstargames.com/VI/_next/static/media/meta.0t8ty~nlmxq2s.jpg
+ twitter:image:height: 630
+ twitter:image:type: image/jpeg
+```
+**boobie head changed**
+```
+--- boobie/head (before)
++++ boobie/head (after)
+@@ -4,5 +4,5 @@
+ next-size-adjust: 
+ og:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+-og:image: https://www.rockstargames.com/VI/-/opengraph-image-1dtlbo.jpg?opengraph-image.0t8ty~nlmxq2s.jpg
++og:image: https://www.rockstargames.com/VI/_next/static/media/meta.0t8ty~nlmxq2s.jpg
+ og:image:height: 630
+ og:image:type: image/jpeg
+@@ -17,5 +17,5 @@
+ twitter:creator:id: 29758446
+ twitter:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+-twitter:image: https://www.rockstargames.com/VI/-/twitter-image-1dtlbo.jpg?twitter-image.0t8ty~nlmxq2s.jpg
++twitter:image: https://www.rockstargames.com/VI/_next/static/media/meta.0t8ty~nlmxq2s.jpg
+ twitter:image:height: 630
+ twitter:image:type: image/jpeg
+```
+</details>
