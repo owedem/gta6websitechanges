@@ -3,7 +3,7 @@ description: Vice City, USA. Jason and Lucia have always known the deck is stack
 format-detection: telephone=no, date=no, address=no, email=no
 next-size-adjust: 
 og:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
-og:image: https://www.rockstargames.com/VI/-/opengraph-image.jpg?opengraph-image.0t8ty~nlmxq2s.jpg
+og:image: https://www.rockstargames.com/VI/-/opengraph-image-1dtlbo.jpg?opengraph-image.0t8ty~nlmxq2s.jpg
 og:image:height: 630
 og:image:type: image/jpeg
 og:image:width: 1200
@@ -16,7 +16,7 @@ twitter:card: summary
 twitter:creator: @rockstargames
 twitter:creator:id: 29758446
 twitter:description: Vice City, USA. Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
-twitter:image: https://www.rockstargames.com/VI/-/twitter-image.jpg?twitter-image.0t8ty~nlmxq2s.jpg
+twitter:image: https://www.rockstargames.com/VI/-/twitter-image-1dtlbo.jpg?twitter-image.0t8ty~nlmxq2s.jpg
 twitter:image:height: 630
 twitter:image:type: image/jpeg
 twitter:image:width: 1200
