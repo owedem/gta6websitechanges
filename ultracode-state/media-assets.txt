@@ -200,6 +200,7 @@ logo_gta|/_next/static/media/logo_gta.0_~y3s2ni8fbj.png
 logo_vi|/_next/static/media/logo_vi.02gnpy7k4ozcz.png
 mediaDesktop|/_next/static/media/mediaDesktop.11iioep6d3wsf.jpg
 mediaMobile|/_next/static/media/mediaMobile.0p_yfitphljim.jpg
+meta|/_next/static/media/meta.0t8ty~nlmxq2s.jpg
 mobile|/_next/static/media/mobile.16wml24njlfle.jpg
 musicDesktop|/_next/static/media/musicDesktop.0zwcbzhynnsc-.jpg
 musicMobile|/_next/static/media/musicMobile.16pdg34v6lit..jpg
