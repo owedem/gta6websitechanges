@@ -2556,3 +2556,440 @@ Rockstar has officially opened a storefront for the **Vice City Collection** (th
 - 2 new image(s) → images channel: GTAVI_Merch_PromoCard, collectorsMobile
 ```
 </details>
+
+## 15 Oct 2026 at 13:05 UTC
+
+**Found in:** home routes changed, only-in-leonida routes changed, jason routes changed, lucia routes changed, ambrosia routes changed, boobie routes changed, brian routes changed, cal routes changed, drequan routes changed, raul routes changed, dimez routes changed, vice-city routes changed, port-gellhorn routes changed, leonida-keys routes changed, grassrivers routes changed, kalaga routes changed, home text changed, only-in-leonida text changed, media text changed, jason text changed, lucia text changed, ambrosia text changed, boobie text changed, brian text changed, cal text changed, drequan text changed, raul text changed, dimez text changed, vice-city text changed, port-gellhorn text changed, leonida-keys text changed, grassrivers text changed, kalaga text changed, media counts increased, new data-layer strings (in code, not yet visible), new media posted
+
+**🚀 “Launch Trailer” suddenly shows up everywhere on the GTAV VI site**
+
+**What changed**
+- A brand‑new route **/VI/launch‑trailer** was added to the home page, the “Only‑in‑Leonida” section, and every character‑specific page (Jason, Lucia, etc.).  
+- The navigation menu now includes a **“Launch Trailer”** button and a **“Watch”** label on the home page.  
+- In the news feed the entry **“Watch the Grand Theft Auto VI Launch Trailer – October 15, 2026”** appears (previously there was no trailer entry).  
+- The media gallery now lists **4 videos** (up from 3) and the “Grand Theft Auto VI Launch Trailer” is the newest video entry.  
+- Two more artwork‑wallpaper files were added (23 → 25).  
+- Nine fresh image assets were uploaded, all named around the launch trailer and a “Jason & Lucia – Lock and Load” set (poster, landscape, portrait, phone, tablet, ultrawide, etc.).  
+
+**What it likely means**  
+Rockstar has finished wiring a dedicated launch‑trailer page and is loading the trailer assets. The site is being pre‑pped for the trailer to go live soon.
+
+**Could signal:** _(confidence: high)_  
+- The official GTA VI launch trailer will probably drop on **October 15, 2026**, as the date now appears next to the “Watch the Grand Theft Auto VI Launch Trailer” entry.  
+- Expect the trailer to be viewable on the new **/VI/launch‑trailer** page and through the “Watch” button on the home page within the next few days.
+
+<details><summary>raw findings</summary>
+
+**home routes changed**
+```
+--- home/routes (before)
++++ home/routes (after)
+@@ -1,3 +1,4 @@
+ /VI/
++/VI/launch-trailer
+ /VI/media
+ /VI/music
+```
+**only-in-leonida routes changed**
+```
+--- only-in-leonida/routes (before)
++++ only-in-leonida/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/launch-trailer
+```
+**jason routes changed**
+```
+--- jason/routes (before)
++++ jason/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/launch-trailer
+```
+**lucia routes changed**
+```
+--- lucia/routes (before)
++++ lucia/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/launch-trailer
+```
+**ambrosia routes changed**
+```
+--- ambrosia/routes (before)
++++ ambrosia/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/launch-trailer
+```
+**boobie routes changed**
+```
+--- boobie/routes (before)
++++ boobie/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/launch-trailer
+```
+**brian routes changed**
+```
+--- brian/routes (before)
++++ brian/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/launch-trailer
+```
+**cal routes changed**
+```
+--- cal/routes (before)
++++ cal/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/launch-trailer
+```
+**drequan routes changed**
+```
+--- drequan/routes (before)
++++ drequan/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/launch-trailer
+```
+**raul routes changed**
+```
+--- raul/routes (before)
++++ raul/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/launch-trailer
+```
+**dimez routes changed**
+```
+--- dimez/routes (before)
++++ dimez/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/launch-trailer
+```
+**vice-city routes changed**
+```
+--- vice-city/routes (before)
++++ vice-city/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/launch-trailer
+```
+**port-gellhorn routes changed**
+```
+--- port-gellhorn/routes (before)
++++ port-gellhorn/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/launch-trailer
+```
+**leonida-keys routes changed**
+```
+--- leonida-keys/routes (before)
++++ leonida-keys/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/launch-trailer
+```
+**grassrivers routes changed**
+```
+--- grassrivers/routes (before)
++++ grassrivers/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/launch-trailer
+```
+**kalaga routes changed**
+```
+--- kalaga/routes (before)
++++ kalaga/routes (after)
+@@ -1 +1,2 @@
+ /VI/
++/VI/launch-trailer
+```
+**home text changed**
+```
+--- home/text (before)
++++ home/text (after)
+@@ -4,4 +4,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
++Launch Trailer
++Now Playing
+ Coming
+ November 19, 2026
+@@ -20,7 +22,9 @@
+ PlayStation 5
+ Scroll for more content.
++Watch
++Launch Trailer
++label
++Watch
+ An Extended Look
+-Now Playing
+-label
+ Watch
+ Trailer 2
+@@ -62,10 +66,10 @@
+ View all
+ Newswire posts
++Watch the Grand Theft Auto VI Launch Trailer
++October 15, 2026
+ Grand Theft Auto VI Collection Now at the Rockstar Store
+ October 8, 2026
+ The Music of Grand Theft Auto VI: In-Game Radio Stations
+ October 8, 2026
+-Pre-Order The Goodtime State – Vice City Collection Now While Supplies Last
+-September 24, 2026
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**only-in-leonida text changed**
+```
+--- only-in-leonida/text (before)
++++ only-in-leonida/text (after)
+@@ -5,4 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
++Launch Trailer
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**media text changed**
+```
+--- media/text (before)
++++ media/text (after)
+@@ -12,10 +12,13 @@
+ Download and share trailers, imagery, and more.
+ Videos
+-3
++4
++See All
++4 Videos
++4 Videos
++Grand Theft Auto VI Launch Trailer
++1 size
+ Grand Theft Auto VI: An Extended Look
+ 1 size
+ Grand Theft Auto VI Trailer 2
+-1 size
+-Grand Theft Auto VI Trailer 1
+ 1 size
+ Clips
+@@ -80,18 +83,18 @@
+ 12 Vintage Vice City Pack in a single zip file
+ Artwork & Wallpapers
+-23
++25
+ Download All
+-23 Artwork & Wallpapers in a single zip file
++25 Artwork & Wallpapers in a single zip file
+ See All
+-23 Artwork and Wallpapers
+-23 Artwork and Wallpapers
++25 Artwork and Wallpapers
++25 Artwork and Wallpapers
++Jason and Lucia Lock and Load
++6 sizes
+ The Album Cover Art
+ 3 sizes
+ Official Cover Art
+ 6 sizes
+-Vice City Postcard
+-6 sizes
+ Download All
+-23 Artwork & Wallpapers in a single zip file
++25 Artwork & Wallpapers in a single zip file
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**jason text changed**
+```
+--- jason/text (before)
++++ jason/text (after)
+@@ -5,4 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
++Launch Trailer
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**lucia text changed**
+```
+--- lucia/text (before)
++++ lucia/text (after)
+@@ -5,4 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
++Launch Trailer
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**ambrosia text changed**
+```
+--- ambrosia/text (before)
++++ ambrosia/text (after)
+@@ -5,4 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
++Launch Trailer
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**boobie text changed**
+```
+--- boobie/text (before)
++++ boobie/text (after)
+@@ -5,4 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
++Launch Trailer
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**brian text changed**
+```
+--- brian/text (before)
++++ brian/text (after)
+@@ -5,4 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
++Launch Trailer
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**cal text changed**
+```
+--- cal/text (before)
++++ cal/text (after)
+@@ -5,4 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
++Launch Trailer
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**drequan text changed**
+```
+--- drequan/text (before)
++++ drequan/text (after)
+@@ -5,4 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
++Launch Trailer
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**raul text changed**
+```
+--- raul/text (before)
++++ raul/text (after)
+@@ -5,4 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
++Launch Trailer
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**dimez text changed**
+```
+--- dimez/text (before)
++++ dimez/text (after)
+@@ -5,4 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
++Launch Trailer
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**vice-city text changed**
+```
+--- vice-city/text (before)
++++ vice-city/text (after)
+@@ -5,4 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
++Launch Trailer
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**port-gellhorn text changed**
+```
+--- port-gellhorn/text (before)
++++ port-gellhorn/text (after)
+@@ -5,4 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
++Launch Trailer
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**leonida-keys text changed**
+```
+--- leonida-keys/text (before)
++++ leonida-keys/text (after)
+@@ -5,4 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
++Launch Trailer
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**grassrivers text changed**
+```
+--- grassrivers/text (before)
++++ grassrivers/text (after)
+@@ -5,4 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
++Launch Trailer
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**kalaga text changed**
+```
+--- kalaga/text (before)
++++ kalaga/text (after)
+@@ -5,4 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
++Launch Trailer
++Now Playing
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**media counts increased**
+```
+- videos: 3 -> 4
+- artwork wallpapers: 23 -> 25
+```
+**new data-layer strings (in code, not yet visible)**
+```
+- 116:["$","$L117",null,{}]
+- 1e2:["$","$L1e3",null,{}]
+- children":"1:31"}],"$undefined",["$","$L10c",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L10d",null,{}]]}],["$","$L10e",null,{"children":[["$","$L10f",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L110",null,{"children":"December 4, 2023"}]]}]]}]
+- children":"1:31"}],"$undefined",["$","$L1d8",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L1d9",null,{}]]}],["$","$L1da",null,{"children":[["$","$L1db",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L1dc",null,{"children":"December 4, 2023"}]]}]]}]
+- }}]}],["$","$L83",null,{"children":[["$","$L84",null,{"children":"The Music of Grand Theft Auto VI: In-Game Radio Stations"}],["$","$L85",null,{"children":"October 8, 2026"}]]}]]}]}]
+```
+**new media posted**
+```
+- 9 new image(s) → images channel: GTAVI_Launch_Trailer_poster, Jason_Lucia_Lock_And_Load_landscape, Jason_Lucia_Lock_And_Load_phone, Jason_Lucia_Lock_And_Load_portrait, Jason_Lucia_Lock_And_Load_square, Jason_Lucia_Lock_And_Load_tablet, Jason_Lucia_Lock_And_Load_ultrawide, extended-look, launch-trailer
+```
+</details>

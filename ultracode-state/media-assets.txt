@@ -40,6 +40,7 @@ GTAVI_FOB_UltimateEdition_Mobile_ja_jp|/_next/static/media/GTAVI_FOB_UltimateEdi
 GTAVI_FOB_UltimateEdition_Mobile_ko_kr|/_next/static/media/GTAVI_FOB_UltimateEdition_Mobile_ko_kr.12vnpw.48ocz6.jpg
 GTAVI_FOB_UltimateEdition_Mobile_zh_hans|/_next/static/media/GTAVI_FOB_UltimateEdition_Mobile_zh_hans.08abxmj_fu4qg.jpg
 GTAVI_FOB_UltimateEdition_Mobile_zh_tw|/_next/static/media/GTAVI_FOB_UltimateEdition_Mobile_zh_tw.0hkm0xrv876xg.jpg
+GTAVI_Launch_Trailer_poster|/_next/static/media/GTAVI_Launch_Trailer_poster.0_q-sdrgufc.s.jpg
 GTAVI_Merch_PromoCard|/_next/static/media/GTAVI_Merch_PromoCard.0_k5n2lk~h9h~.jpg
 GTAVI_Official_Cover_Art_Landscape|/_next/static/media/GTAVI_Official_Cover_Art_Landscape.03y6bcce9e2jr.jpg
 GTAVI_Soundtrack_Newswire|/_next/static/media/GTAVI_Soundtrack_Newswire.01z2azm37u9oe.jpg
@@ -61,6 +62,12 @@ Jason_Duval_05|/_next/static/media/Jason_Duval_05.0kxp6enhvzqka.jpg
 Jason_Duval_06|/_next/static/media/Jason_Duval_06.086o72llg6~1p.jpg
 Jason_Duval_07|/_next/static/media/Jason_Duval_07.0ca326xbl~oyh.jpg
 Jason_Duval_Video_Clip|/_next/static/media/Jason_Duval_Video_Clip.10.gc09c9y-j9.mp4
+Jason_Lucia_Lock_And_Load_landscape|/_next/static/media/Jason_Lucia_Lock_And_Load_landscape.0l9s5w7ih9p~3.jpg
+Jason_Lucia_Lock_And_Load_phone|/_next/static/media/Jason_Lucia_Lock_And_Load_phone.0ie39e_.q3v2a.jpg
+Jason_Lucia_Lock_And_Load_portrait|/_next/static/media/Jason_Lucia_Lock_And_Load_portrait.05rn1s.i1yaqj.jpg
+Jason_Lucia_Lock_And_Load_square|/_next/static/media/Jason_Lucia_Lock_And_Load_square.04ut.a_s8vsi_.jpg
+Jason_Lucia_Lock_And_Load_tablet|/_next/static/media/Jason_Lucia_Lock_And_Load_tablet.0wvpvig400.um.jpg
+Jason_Lucia_Lock_And_Load_ultrawide|/_next/static/media/Jason_Lucia_Lock_And_Load_ultrawide.03-p3fc2s8owz.jpg
 Jason_and_Lucia_Robbery_landscape|/_next/static/media/Jason_and_Lucia_Robbery_landscape.09c8a~do21h4p.jpg
 Jason_and_Lucia_Robbery_phone|/_next/static/media/Jason_and_Lucia_Robbery_phone.17u-34gj0wjex.jpg
 Jason_and_Lucia_Robbery_portrait|/_next/static/media/Jason_and_Lucia_Robbery_portrait.0fb~e1-td8xog.jpg
@@ -193,11 +200,13 @@ an-extended-look|/_next/static/media/an-extended-look.0ijbsha5fo1te.jpg
 background|/_next/static/media/background.0.~5i.gsehcb3.png
 collectorsMobile|/_next/static/media/collectorsMobile.09~60xnm5q~pr.png
 desktop|/_next/static/media/desktop.0zwg6wdya.x1t.jpg
+extended-look|/_next/static/media/extended-look.0f0-3vo3w9u26.jpg
 featured|/_next/static/media/featured.0y5yxwenpsgc3.jpg
 featured-mobile|/_next/static/media/featured-mobile.14ok.safz3arg.jpg
 hero|/_next/static/media/hero.0q5-tr6h86ai7.jpg
 intro|/_next/static/media/intro.081gaz4~3wox-.png
 intro-mobile|/_next/static/media/intro-mobile.0.97ufm766d4x.png
+launch-trailer|/_next/static/media/launch-trailer.0_q-sdrgufc.s.jpg
 logo_gta|/_next/static/media/logo_gta.0_~y3s2ni8fbj.png
 logo_vi|/_next/static/media/logo_vi.02gnpy7k4ozcz.png
 mediaDesktop|/_next/static/media/mediaDesktop.11iioep6d3wsf.jpg
