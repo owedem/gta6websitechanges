@@ -238,6 +238,7 @@ trailer-2|/_next/static/media/trailer-2.0l.7aqib91fz6.jpg
 ultimate_desktop_en_us|/_next/static/media/ultimate_desktop_en_us.0~shc~hnjifzu.jpg
 ultimate_mobile_en_us|/_next/static/media/ultimate_mobile_en_us.03~7e7tlo4k4r.jpg
 video:GTAVI_An_Extended_Look|https://media-rockstargames-com.akamaized.net/VI/downloads/videos/GTAVI_An_Extended_Look/GTAVI_An_Extended_Look.mp4
+video:GTAVI_Launch_Trailer|https://media-rockstargames-com.akamaized.net/VI/downloads/videos/GTAVI_Launch_Trailer/GTAVI_Launch_Trailer.mp4
 video:GTAVI_Official_Cover_Art_Landscape|https://media-rockstargames-com.akamaized.net/VI/downloads/videos/GTAVI_Official_Cover_Art_Landscape/GTAVI_Official_Cover_Art_Landscape.mp4
 video:GTAVI_Trailer_2|https://media-rockstargames-com.akamaized.net/VI/downloads/videos/GTAVI_Trailer_2/GTAVI_Trailer_2.mp4
 wm-Bag|/_next/static/media/wm-Bag.0u9s0s0gqklw9.png

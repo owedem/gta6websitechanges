@@ -3345,3 +3345,27 @@ _(AI analysis unavailable.)_
  twitter:image:type: image/jpeg
 ```
 </details>
+
+## 15 Oct 2026 at 23:10 UTC
+
+**Found in:** new media posted
+
+**🚀 New GTA VI launch trailer uploaded!**
+
+**What changed:**
+- A brand‑new video appeared in the site’s media channel titled **“GTAVI_Launch_Trailer.”**  
+- The file is listed under the videos section of rockstargames.com/VI, indicating it’s now publicly accessible.
+
+**What it likely means:**
+- Rockstar has just released an official trailer that’s meant to hype the upcoming launch of GTA VI. It’s the first “launch‑style” video we’ve seen on the site.
+
+**Could signal:** _(confidence: medium)_
+- Expect the trailer to showcase final gameplay footage, story hints, or a countdown to the November 19 release. It may also be used in upcoming marketing pushes on social media and TV spots over the next few weeks.
+
+<details><summary>raw findings</summary>
+
+**new media posted**
+```
+- 1 new video(s) → videos channel: video:GTAVI_Launch_Trailer
+```
+</details>
