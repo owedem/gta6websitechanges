@@ -41,6 +41,7 @@
 /_next/static/chunks/0mftu034~hj4l.css
 /_next/static/chunks/0nmz~lcnpfs39.css
 /_next/static/chunks/0qhmwh2-63zdx.css
+/_next/static/chunks/0rfqhiqub1c~u.js
 /_next/static/chunks/0rpg6im~8t3-y.js
 /_next/static/chunks/0sloivz1o5j~9.js
 /_next/static/chunks/0tagymzeldgff.css
@@ -50,7 +51,6 @@
 /_next/static/chunks/0wig2t544agl6.js
 /_next/static/chunks/0x4q0f-5trxp3.css
 /_next/static/chunks/0xcbfz0yygr.2.js
-/_next/static/chunks/0xkxnk1ydc4wf.js
 /_next/static/chunks/0z3ycbsqd.yrm.css
 /_next/static/chunks/0zfk_lpf585.5.css
 /_next/static/chunks/0zh6i4-xsikt1.js
