@@ -328,6 +328,29 @@ def x_head(html):
     return "\n".join(sorted(set(lines)))
 
 
+# Share-image tags (og:image, twitter:image, ...:url, ...:secure_url).
+SHARE_IMAGE_RE = re.compile(r"^((?:og|twitter):image(?::url|:secure_url)?): (.+)$")
+# The content hash Next.js puts in an image filename ("meta.0t8ty~nlmxq2s.jpg").
+IMAGE_HASH_RE = re.compile(r"\.([0-9a-z~_]{8,})\.(?:jpe?g|png|webp|gif|avif)", re.I)
+
+
+def head_key(head):
+    """The head as compared for alerts: share-image URLs reduced to the image's
+    content hash. Rockstar re-routed the same og/twitter image from
+    /VI/-/opengraph-image.jpg?... to /VI/_next/static/media/meta.<hash>.jpg on
+    every page at once — same picture, same hash, a pure URL move. A new image
+    gets a new hash, so it still alerts."""
+    out = []
+    for line in (head or "").splitlines():
+        m = SHARE_IMAGE_RE.match(line)
+        if m:
+            hashes = IMAGE_HASH_RE.findall(m.group(2))
+            line = f"{m.group(1)}: " + (f"#{hashes[-1]}" if hashes
+                                         else m.group(2).split("?", 1)[0])
+        out.append(line)
+    return "\n".join(sorted(set(out)))
+
+
 def x_text(html):
     html = re.sub(r"<script\b[^>]*>.*?</script>", "", html, flags=re.S | re.I)
     html = re.sub(r"<style\b[^>]*>.*?</style>", "", html, flags=re.S | re.I)
@@ -665,13 +688,31 @@ def _groq_choose():
     return ids[0] if ids else None
 
 
+# Groq's free tier allows 8000 tokens per minute, and a single request counts
+# its prompt PLUS max_tokens against that. A full 28k-char bundle asked for
+# ~8400 and was refused with HTTP 413. Budget, at a pessimistic 3.5 chars/token:
+# 1200 out + (system ~2.3k chars + 20k user chars) / 3.5 ≈ 7600 tokens.
+GROQ_MAX_TOKENS = 1200
+GROQ_MAX_USER_CHARS = 20000
+
+
+def groq_fit(bundle):
+    """Trim the user content so one request fits the free-tier TPM limit. The
+    established facts come first in the bundle and the highest-priority changes
+    right after, so cutting from the end loses the least."""
+    if len(bundle) <= GROQ_MAX_USER_CHARS:
+        return bundle
+    note = "\n[... truncated to fit the AI provider's size limit ...]"
+    return bundle[: GROQ_MAX_USER_CHARS - len(note)] + note
+
+
 def _groq_call(model, bundle):
     """One Groq request. Returns (text, error) — exactly one is non-None."""
     payload = {
         "model": model,
         "messages": [{"role": "system", "content": SYSTEM_PROMPT},
-                     {"role": "user", "content": bundle}],
-        "temperature": 0.7, "max_tokens": 1500,
+                     {"role": "user", "content": groq_fit(bundle)}],
+        "temperature": 0.7, "max_tokens": GROQ_MAX_TOKENS,
     }
     try:
         req = urllib.request.Request(
@@ -1022,6 +1063,8 @@ def main():
             write_state(new, *parts, f"{name}.txt")
             if old is None or old == new:
                 continue
+            if name == "head" and head_key(old) == head_key(new):
+                continue  # share-image URL moved, same image
             if name in TRIGGER_ARTIFACTS:
                 is_major = name == "routes" and bool(added_lines(old, new))
                 add(0 if name in ("head", "routes") else 1,
