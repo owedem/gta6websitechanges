@@ -153,6 +153,14 @@ ASSET_RE = re.compile(
 MEDIA_ASSET_RE = re.compile(
     r"/_next/static/media/([A-Za-z0-9_.~\-]+\.(?:jpg|jpeg|png|webp|avif|gif|mp4|webm|mov))"
 )
+# Trailers are NOT under /_next/static/media: the media page links their
+# downloads on Rockstar's CDN, one folder per video, e.g.
+# //media-rockstargames-com.akamaized.net/VI/downloads/videos/GTAVI_Launch_Trailer/GTAVI_Launch_Trailer.mp4
+# Missing this is why the Launch Trailer never reached the videos channel.
+CDN_VIDEO_RE = re.compile(
+    r"(?:https?:)?//(media-rockstargames-com\.akamaized\.net/VI/downloads/videos/"
+    r"([A-Za-z0-9_\-]+)/[A-Za-z0-9_.\-]+\.(?:mp4|webm|mov))"
+)
 VIDEO_EXT = (".mp4", ".webm", ".mov")
 # Chrome/UI assets that are not content, and so should never reach the channels.
 MEDIA_SKIP_NAMES = {"esrb", "vi", "t1", "t2", "featured", "featured-mobile",
@@ -296,6 +304,11 @@ def media_assets(html):
         if name.lower() in MEDIA_SKIP_NAMES or MEDIA_ID_RE.fullmatch(name.lower()):
             continue
         out[name] = f"/_next/static/media/{fname}"
+    for path, name in CDN_VIDEO_RE.findall(html):
+        # Own key space: a video can share its name with a still image
+        # (GTAVI_Official_Cover_Art_Landscape is both). Absolute URL: it lives
+        # off-site, on the CDN.
+        out[f"video:{name}"] = f"https://{path}"
     return out
 
 
@@ -912,7 +925,7 @@ def post_media(name, full_url, is_video):
     webhook = VIDEOS_WEBHOOK if is_video else IMAGES_WEBHOOK
     if not webhook:
         return
-    label = media_label(name)
+    label = media_label(name.split(":", 1)[-1])
     if is_video:
         payload = {"content": f"🎬 **New GTA VI video** — {label}\n{full_url}"}
     else:
@@ -1111,11 +1124,17 @@ def main():
             if old_raw is not None:  # None = first run -> baseline silently
                 old_names = set(old_map)
                 new_names = [n for n in sorted(all_media) if n not in old_names]
+                # CDN videos are a newer source: the first time the ledger has
+                # none, baseline them silently rather than re-post old trailers.
+                if not any(p.startswith("http") for p in old_map.values()):
+                    new_names = [n for n in new_names
+                                 if not all_media[n].startswith("http")]
                 imgs, vids = [], []
                 for n in new_names[:40]:  # cap a runaway drop (rate limits / latency)
                     path = all_media[n]
                     is_video = path.lower().endswith(VIDEO_EXT)
-                    post_media(n, f"{BASE}/VI{path}", is_video)
+                    url = path if path.startswith("http") else f"{BASE}/VI{path}"
+                    post_media(n, url, is_video)
                     (vids if is_video else imgs).append(n)
                 bits = []
                 if imgs:

@@ -61,6 +61,17 @@ for name in JUNK_MEDIA + REAL_MEDIA:
     want = name in REAL_MEDIA
     checks.append((f"media {'keeps  ' if want else 'skips  '}: {name}", kept == want))
 
+# Trailers live on the CDN, not /_next/static/media — the Launch Trailer
+# (15 Oct 2026) was missed because only the latter was scanned. Escaped the way
+# the RSC payload carries it.
+cdn = ('\\"src\\":\\"//media-rockstargames-com.akamaized.net/VI/downloads/videos/'
+       'GTAVI_Launch_Trailer/GTAVI_Launch_Trailer.mp4\\"')
+got = uc.media_assets(cdn).get("video:GTAVI_Launch_Trailer", "")
+checks.append(("media keeps  : CDN trailer video",
+               got == "https://media-rockstargames-com.akamaized.net/VI/downloads/"
+                      "videos/GTAVI_Launch_Trailer/GTAVI_Launch_Trailer.mp4"
+               and got.lower().endswith(uc.VIDEO_EXT)))
+
 # Date shapes: every form the site uses, and no bare years.
 for text, want in [("November 19, 2026", True), ("19 November 2026", True),
                    ("2026-11-19", True), ("2026/11/19", True),
