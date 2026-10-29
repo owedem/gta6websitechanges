@@ -3369,3 +3369,57 @@ _(AI analysis unavailable.)_
 - 1 new video(s) → videos channel: video:GTAVI_Launch_Trailer
 ```
 </details>
+
+## 29 Oct 2026 at 12:55 UTC
+
+**Found in:** home text changed, new data-layer strings (in code, not yet visible)
+
+**🎶 New music spotlight added to the GTA VI homepage**
+
+**What changed**
+- The home page’s “Music” section was rewritten: it now says “In‑Game Radio, Soundtrack, and Score” and invites fans to “Listen to the Official Score and Soundtrack, plus select in‑game radio stations.”
+- A brand‑new news entry appears: **“Grand Theft Auto VI: Original Score by Justice” – October 29, 2026**.
+- The same “Grand Theft Auto VI Collection Now at the Rockstar Store – October 8, 2026” line shows up in hidden data‑layer code (not yet visible on the page), indicating a collection page is being prepared.
+
+**What it likely means**
+Rockstar is pushing the game’s music assets forward, teasing an official score release by Justice later this month and getting a merchandise collection ready on the Rockstar Store.
+
+**Could signal:** _(confidence: medium)_
+- A dedicated soundtrack/score launch (likely a streaming or download release) around **late October 2026**.  
+- A new “GTA VI Collection” of merch or digital items that may go live soon on the Rockstar Store.  
+
+*No concrete evidence of a launch‑date shift or new gameplay content yet.*
+
+<details><summary>raw findings</summary>
+
+**home text changed**
+```
+--- home/text (before)
++++ home/text (after)
+@@ -42,6 +42,6 @@
+ Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+ MUSIC
+-In-Game Radio and Music
+-Preview hand-picked stations from the biggest and widest-ranging selection of in-game radio yet, pre-order GTAVI: The Album, and more.
++In-Game Radio, Soundtrack, and Score
++Listen to the Official Score and Soundtrack, plus select in-game radio stations.
+ Explore More
+ People & Places
+@@ -66,9 +66,9 @@
+ View all
+ Newswire posts
++Grand Theft Auto VI: Original Score by Justice
++October 29, 2026
+ Watch the Grand Theft Auto VI Launch Trailer
+ October 15, 2026
+ Grand Theft Auto VI Collection Now at the Rockstar Store
+-October 8, 2026
+-The Music of Grand Theft Auto VI: In-Game Radio Stations
+ October 8, 2026
+ For more on PlayStation benefits, see
+```
+**new data-layer strings (in code, not yet visible)**
+```
+- }}]}],["$","$L83",null,{"children":[["$","$L84",null,{"children":"Grand Theft Auto VI Collection Now at the Rockstar Store"}],["$","$L85",null,{"children":"October 8, 2026"}]]}]]}]}]
+```
+</details>

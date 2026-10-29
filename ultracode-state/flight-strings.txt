@@ -2,4 +2,4 @@ children":"1:31"}],"$undefined",["$","$L10c",null,{"hideWhen":"idle","children":
 116:["$","$L117",null,{}]
 children":"1:31"}],"$undefined",["$","$L1d8",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L1d9",null,{}]]}],["$","$L1da",null,{"children":[["$","$L1db",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L1dc",null,{"children":"December 4, 2023"}]]}]]}]
 1e2:["$","$L1e3",null,{}]
-}}]}],["$","$L83",null,{"children":[["$","$L84",null,{"children":"The Music of Grand Theft Auto VI: In-Game Radio Stations"}],["$","$L85",null,{"children":"October 8, 2026"}]]}]]}]}]
+}}]}],["$","$L83",null,{"children":[["$","$L84",null,{"children":"Grand Theft Auto VI Collection Now at the Rockstar Store"}],["$","$L85",null,{"children":"October 8, 2026"}]]}]]}]}]
