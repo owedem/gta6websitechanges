@@ -3423,3 +3423,403 @@ Rockstar is pushing the game’s music assets forward, teasing an official score
 - }}]}],["$","$L83",null,{"children":[["$","$L84",null,{"children":"Grand Theft Auto VI Collection Now at the Rockstar Store"}],["$","$L85",null,{"children":"October 8, 2026"}]]}]]}]}]
 ```
 </details>
+
+## 03 Nov 2026 at 15:05 UTC
+
+**Found in:** home routes changed, only-in-leonida routes changed, jason routes changed, lucia routes changed, ambrosia routes changed, boobie routes changed, brian routes changed, cal routes changed, drequan routes changed, raul routes changed, dimez routes changed, vice-city routes changed, port-gellhorn routes changed, leonida-keys routes changed, grassrivers routes changed, kalaga routes changed, home text changed, only-in-leonida text changed, jason text changed, lucia text changed, ambrosia text changed, boobie text changed, brian text changed, cal text changed, drequan text changed, raul text changed, dimez text changed, vice-city text changed, port-gellhorn text changed, leonida-keys text changed, grassrivers text changed, kalaga text changed, new data-layer strings (in code, not yet visible)
+
+**🚀 “Pre‑Load Begins” – GTA VI’s first playable window?**
+
+**What changed**
+- The “Launch Trailer” link has vanished from **every** route (home, character pages, location pages, etc.) – the `/VI/launch-trailer` path is gone.
+- All those pages now show **“Pre‑Load Begins”** and a date **“November 10”** instead of the old “Launch Trailer / Now Playing” text.
+- A fresh news entry appears on the home page: **“Grand Theft Auto VI Pre‑Load Begins on November 10”** (posted Nov 3, 2026).
+- The same wording (“Pre‑Load Begins / November 10”) is mirrored on every character/location page (Jason, Lucia, Vice‑City, etc.).
+- In the site’s JavaScript bundle there are still hidden strings referencing a “Grand Theft Auto VI Trailer 1” dated **December 4, 2023**, but they’re not visible on the live UI.
+
+**What it likely means**
+Rockstar has removed the public launch‑trailer page and swapped it for a “pre‑load” announcement, pointing to a new **pre‑load window starting on Nov 10**—seven days before the scheduled full release on Nov 19.
+
+**Could signal:** _(confidence: medium)_
+- A **pre‑load** (early access) period where owners can start playing a limited portion of GTA VI ahead of the global launch.  
+- The removal of the trailer route suggests the trailer is either already out everywhere or being retired in favor of the pre‑load experience.  
+- If the pre‑load truly opens on Nov 10, we can expect a “play‑now” button or download prompt to appear on the site around that date, with possible further updates (e.g., a “Start Playing” banner) in the days leading up to the full release.
+
+<details><summary>raw findings</summary>
+
+**home routes changed**
+```
+--- home/routes (before)
++++ home/routes (after)
+@@ -1,4 +1,3 @@
+ /VI/
+-/VI/launch-trailer
+ /VI/media
+ /VI/music
+```
+**only-in-leonida routes changed**
+```
+--- only-in-leonida/routes (before)
++++ only-in-leonida/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/launch-trailer
+```
+**jason routes changed**
+```
+--- jason/routes (before)
++++ jason/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/launch-trailer
+```
+**lucia routes changed**
+```
+--- lucia/routes (before)
++++ lucia/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/launch-trailer
+```
+**ambrosia routes changed**
+```
+--- ambrosia/routes (before)
++++ ambrosia/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/launch-trailer
+```
+**boobie routes changed**
+```
+--- boobie/routes (before)
++++ boobie/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/launch-trailer
+```
+**brian routes changed**
+```
+--- brian/routes (before)
++++ brian/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/launch-trailer
+```
+**cal routes changed**
+```
+--- cal/routes (before)
++++ cal/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/launch-trailer
+```
+**drequan routes changed**
+```
+--- drequan/routes (before)
++++ drequan/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/launch-trailer
+```
+**raul routes changed**
+```
+--- raul/routes (before)
++++ raul/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/launch-trailer
+```
+**dimez routes changed**
+```
+--- dimez/routes (before)
++++ dimez/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/launch-trailer
+```
+**vice-city routes changed**
+```
+--- vice-city/routes (before)
++++ vice-city/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/launch-trailer
+```
+**port-gellhorn routes changed**
+```
+--- port-gellhorn/routes (before)
++++ port-gellhorn/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/launch-trailer
+```
+**leonida-keys routes changed**
+```
+--- leonida-keys/routes (before)
++++ leonida-keys/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/launch-trailer
+```
+**grassrivers routes changed**
+```
+--- grassrivers/routes (before)
++++ grassrivers/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/launch-trailer
+```
+**kalaga routes changed**
+```
+--- kalaga/routes (before)
++++ kalaga/routes (after)
+@@ -1,2 +1 @@
+ /VI/
+-/VI/launch-trailer
+```
+**home text changed**
+```
+--- home/text (before)
++++ home/text (after)
+@@ -4,6 +4,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Launch Trailer
+-Now Playing
++Pre-Load Begins
++November 10
+ Coming
+ November 19, 2026
+@@ -66,10 +66,10 @@
+ View all
+ Newswire posts
++Grand Theft Auto VI Pre-Load Begins on November 10
++November 3, 2026
+ Grand Theft Auto VI: Original Score by Justice
+ October 29, 2026
+ Watch the Grand Theft Auto VI Launch Trailer
+ October 15, 2026
+-Grand Theft Auto VI Collection Now at the Rockstar Store
+-October 8, 2026
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**only-in-leonida text changed**
+```
+--- only-in-leonida/text (before)
++++ only-in-leonida/text (after)
+@@ -5,6 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Launch Trailer
+-Now Playing
++Pre-Load Begins
++November 10
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**jason text changed**
+```
+--- jason/text (before)
++++ jason/text (after)
+@@ -5,6 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Launch Trailer
+-Now Playing
++Pre-Load Begins
++November 10
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**lucia text changed**
+```
+--- lucia/text (before)
++++ lucia/text (after)
+@@ -5,6 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Launch Trailer
+-Now Playing
++Pre-Load Begins
++November 10
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**ambrosia text changed**
+```
+--- ambrosia/text (before)
++++ ambrosia/text (after)
+@@ -5,6 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Launch Trailer
+-Now Playing
++Pre-Load Begins
++November 10
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**boobie text changed**
+```
+--- boobie/text (before)
++++ boobie/text (after)
+@@ -5,6 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Launch Trailer
+-Now Playing
++Pre-Load Begins
++November 10
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**brian text changed**
+```
+--- brian/text (before)
++++ brian/text (after)
+@@ -5,6 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Launch Trailer
+-Now Playing
++Pre-Load Begins
++November 10
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**cal text changed**
+```
+--- cal/text (before)
++++ cal/text (after)
+@@ -5,6 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Launch Trailer
+-Now Playing
++Pre-Load Begins
++November 10
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**drequan text changed**
+```
+--- drequan/text (before)
++++ drequan/text (after)
+@@ -5,6 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Launch Trailer
+-Now Playing
++Pre-Load Begins
++November 10
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**raul text changed**
+```
+--- raul/text (before)
++++ raul/text (after)
+@@ -5,6 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Launch Trailer
+-Now Playing
++Pre-Load Begins
++November 10
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**dimez text changed**
+```
+--- dimez/text (before)
++++ dimez/text (after)
+@@ -5,6 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Launch Trailer
+-Now Playing
++Pre-Load Begins
++November 10
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**vice-city text changed**
+```
+--- vice-city/text (before)
++++ vice-city/text (after)
+@@ -5,6 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Launch Trailer
+-Now Playing
++Pre-Load Begins
++November 10
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**port-gellhorn text changed**
+```
+--- port-gellhorn/text (before)
++++ port-gellhorn/text (after)
+@@ -5,6 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Launch Trailer
+-Now Playing
++Pre-Load Begins
++November 10
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**leonida-keys text changed**
+```
+--- leonida-keys/text (before)
++++ leonida-keys/text (after)
+@@ -5,6 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Launch Trailer
+-Now Playing
++Pre-Load Begins
++November 10
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**grassrivers text changed**
+```
+--- grassrivers/text (before)
++++ grassrivers/text (after)
+@@ -5,6 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Launch Trailer
+-Now Playing
++Pre-Load Begins
++November 10
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**kalaga text changed**
+```
+--- kalaga/text (before)
++++ kalaga/text (after)
+@@ -5,6 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Launch Trailer
+-Now Playing
++Pre-Load Begins
++November 10
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**new data-layer strings (in code, not yet visible)**
+```
+- 118:["$","$L119",null,{}]
+- 1e4:["$","$L1e5",null,{}]
+- children":"1:31"}],"$undefined",["$","$L10e",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L10f",null,{}]]}],["$","$L110",null,{"children":[["$","$L111",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L112",null,{"children":"December 4, 2023"}]]}]]}]
+- children":"1:31"}],"$undefined",["$","$L1da",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L1db",null,{}]]}],["$","$L1dc",null,{"children":[["$","$L1dd",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L1de",null,{"children":"December 4, 2023"}]]}]]}]
+- }}]}],["$","$L85",null,{"children":[["$","$L86",null,{"children":"Watch the Grand Theft Auto VI Launch Trailer"}],["$","$L87",null,{"children":"October 15, 2026"}]]}]]}]}]
+```
+</details>
