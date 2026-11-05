@@ -1,4 +1,5 @@
 api: https://media-rockstargames-com.akamaized.net/VI/downloads
+string: /VI/:locale/launch-gallery
 string: /VI/:locale/only-in-leonida
 string: /marketing/status
 string: /marketing/update
@@ -89,6 +90,7 @@ string: kalaga/libx264/1920.mp4
 string: kalaga/libx264/2160.mp4
 string: kalaga/libx264/450.mp4
 string: kalaga/libx264/768.mp4
+string: launch-gallery
 string: leonida-keys
 string: leonida-keys/libsvtav1/1280.mp4
 string: leonida-keys/libsvtav1/1920.mp4
@@ -136,6 +138,7 @@ string: port-gellhorn/libx264/2160.mp4
 string: port-gellhorn/libx264/450.mp4
 string: port-gellhorn/libx264/768.mp4
 string: pre-order now
+string: sentry.release
 string: ultimate-edition
 string: ultimate-edition/libsvtav1/1280.mp4
 string: ultimate-edition/libsvtav1/1920.mp4

@@ -3823,3 +3823,130 @@ Rockstar has removed the public launch‑trailer page and swapped it for a “pr
 - }}]}],["$","$L85",null,{"children":[["$","$L86",null,{"children":"Watch the Grand Theft Auto VI Launch Trailer"}],["$","$L87",null,{"children":"October 15, 2026"}]]}]]}]}]
 ```
 </details>
+
+## 05 Nov 2026 at 15:00 UTC
+
+**Found in:** home routes changed, new clues in site code, home text changed, media text changed, media counts increased, new data-layer strings (in code, not yet visible), new media posted
+
+**🚀 New “Launch Gallery” is on the horizon!**
+
+**What changed**
+- A brand‑new route **/VI/launch‑gallery** was added to the site’s navigation (now listed alongside “media” and “music”).
+- The homepage text now promotes **“Screenshots – The Launch Gallery”** with a call‑to‑action to “View All” and “Download and share official videos, screenshots, and more.”
+- A fresh Newswire entry reads **“Explore the Grand Theft Auto VI Launch Gallery – November 5, 2026.”**
+- The Media page now lists **138 screenshots** (up from 99) and breaks them out into new groups:
+  - **Jason and Lucia – 14** images  
+  - **Lucia Caminos – 12** images  
+  - **Vice City – 27** images
+- Five new image assets matching those groups have been uploaded (e.g., `Jason_and_Lucia_14`, `Vice_City_27`).
+
+**What it likely means**
+Rockstar is prepping a dedicated **Launch Gallery** page where fans can browse and download a larger batch of official screenshots and possibly video clips ahead of the game’s release.
+
+**Could signal:** _(confidence: high)_
+- The gallery is expected to go live **around Nov 5 2026**, giving the community a fresh visual look at the game roughly two weeks before the scheduled November 19 launch. Keep an eye on the site’s navigation bar and the Newswire for the official link.
+
+<details><summary>raw findings</summary>
+
+**home routes changed**
+```
+--- home/routes (before)
++++ home/routes (after)
+@@ -1,3 +1,4 @@
+ /VI/
++/VI/launch-gallery
+ /VI/media
+ /VI/music
+```
+**new clues in site code**
+```
+- string: /VI/:locale/launch-gallery
+- string: launch-gallery
+- string: sentry.release
+```
+**home text changed**
+```
+--- home/text (before)
++++ home/text (after)
+@@ -45,12 +45,16 @@
+ Listen to the Official Score and Soundtrack, plus select in-game radio stations.
+ Explore More
++Screenshots
++The Launch Gallery
++Get a stunning look inside Leonida with a collection of new screenshots.
++View All
++Downloads
++Media & Artwork
++Download and share official videos, screenshots, and more.
++See All
+ People & Places
+ Only in Leonida
+ Vice City, USA. The darkest side of the sunniest place in America.
+ Explore More
+-Downloads
+-Media & Artwork
+-Download and share official videos, screenshots, and more.
+-See All
+ Shop
+ View All
+@@ -66,10 +70,10 @@
+ View all
+ Newswire posts
++Explore the Grand Theft Auto VI Launch Gallery
++November 5, 2026
+ Grand Theft Auto VI Pre-Load Begins on November 10
+ November 3, 2026
+ Grand Theft Auto VI: Original Score by Justice
+ October 29, 2026
+-Watch the Grand Theft Auto VI Launch Trailer
+-October 15, 2026
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**media text changed**
+```
+--- media/text (before)
++++ media/text (after)
+@@ -38,18 +38,18 @@
+ 9 Clips in a single zip file
+ Screenshots
+-99
++138
+ Download All
+-99 Screenshots in a single zip file
++138 Screenshots in a single zip file
+ See All
+-99 Screenshots
+-99 Screenshots
+-Jason Duval 07
++138 Screenshots
++138 Screenshots
++Jason and Lucia 14
+ 1 size
+-Lucia Caminos 09
++Lucia Caminos 12
+ 1 size
+-Vice City 11
++Vice City 27
+ 1 size
+ Download All
+-99 Screenshots in a single zip file
++138 Screenshots in a single zip file
+ Ultimate Edition Benefits
+ 51
+```
+**media counts increased**
+```
+- screenshots: 99 -> 138
+```
+**new data-layer strings (in code, not yet visible)**
+```
+- 1e5:["$","$L1e6",null,{}]
+- children":"1:31"}],"$undefined",["$","$L1db",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L1dc",null,{}]]}],["$","$L1dd",null,{"children":[["$","$L1de",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L1df",null,{"children":"December 4, 2023"}]]}]]}]
+- }}]}],["$","$L86",null,{"children":[["$","$L87",null,{"children":"Grand Theft Auto VI: Original Score by Justice"}],["$","$L88",null,{"children":"October 29, 2026"}]]}]]}]}]
+```
+**new media posted**
+```
+- 5 new image(s) → images channel: Jason_and_Lucia_14, Lucia_Caminos_12, Vice_City_27, screenshotsDesktop, screenshotsMobile
+```
+</details>

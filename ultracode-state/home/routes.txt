@@ -1,4 +1,5 @@
 /VI/
+/VI/launch-gallery
 /VI/media
 /VI/music
 /VI/only-in-leonida

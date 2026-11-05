@@ -68,6 +68,7 @@ Jason_Lucia_Lock_And_Load_portrait|/_next/static/media/Jason_Lucia_Lock_And_Load
 Jason_Lucia_Lock_And_Load_square|/_next/static/media/Jason_Lucia_Lock_And_Load_square.04ut.a_s8vsi_.jpg
 Jason_Lucia_Lock_And_Load_tablet|/_next/static/media/Jason_Lucia_Lock_And_Load_tablet.0wvpvig400.um.jpg
 Jason_Lucia_Lock_And_Load_ultrawide|/_next/static/media/Jason_Lucia_Lock_And_Load_ultrawide.03-p3fc2s8owz.jpg
+Jason_and_Lucia_14|/_next/static/media/Jason_and_Lucia_14.10e7v.06pcm_t.jpg
 Jason_and_Lucia_Robbery_landscape|/_next/static/media/Jason_and_Lucia_Robbery_landscape.09c8a~do21h4p.jpg
 Jason_and_Lucia_Robbery_phone|/_next/static/media/Jason_and_Lucia_Robbery_phone.17u-34gj0wjex.jpg
 Jason_and_Lucia_Robbery_portrait|/_next/static/media/Jason_and_Lucia_Robbery_portrait.0fb~e1-td8xog.jpg
@@ -86,6 +87,7 @@ Lucia_Caminos_04|/_next/static/media/Lucia_Caminos_04.04kb_~4ubn3wn.jpg
 Lucia_Caminos_05|/_next/static/media/Lucia_Caminos_05.0i5b7k6a7_w6p.jpg
 Lucia_Caminos_06|/_next/static/media/Lucia_Caminos_06.0fxbjfk0jakb3.jpg
 Lucia_Caminos_09|/_next/static/media/Lucia_Caminos_09.0pd.ppokmi8-n.jpg
+Lucia_Caminos_12|/_next/static/media/Lucia_Caminos_12.0saq9ns-~xj03.jpg
 Lucia_Caminos_Video_Clip|/_next/static/media/Lucia_Caminos_Video_Clip.0g8.3fx84ixw..mp4
 Mount_Kalaga_National_Park_01|/_next/static/media/Mount_Kalaga_National_Park_01.0v5fl0f83hjv_.jpg
 Mount_Kalaga_National_Park_02|/_next/static/media/Mount_Kalaga_National_Park_02.0f24dhopdprvx.jpg
@@ -188,6 +190,7 @@ Vice_City_07|/_next/static/media/Vice_City_07.0b3mhak4k78oh.jpg
 Vice_City_08|/_next/static/media/Vice_City_08.0bbg_xp4hqdvz.jpg
 Vice_City_09|/_next/static/media/Vice_City_09.0~ng.c8ack3fp.jpg
 Vice_City_11|/_next/static/media/Vice_City_11.09paum3g942sc.jpg
+Vice_City_27|/_next/static/media/Vice_City_27.0d2e~w_r93hmh.jpg
 Vice_City_Postcard_landscape|/_next/static/media/Vice_City_Postcard_landscape.0v2njmlk2n-qm.jpg
 Vice_City_Postcard_phone|/_next/static/media/Vice_City_Postcard_phone.0s0gk7s4jw1l7.jpg
 Vice_City_Postcard_portrait|/_next/static/media/Vice_City_Postcard_portrait.0k63actg~87yd.jpg
@@ -222,6 +225,8 @@ overlay|/_next/static/media/overlay.0~6i~d5p-g-ho.png
 poster|/_next/static/media/poster.17wlh6xi7ljz9.jpg
 poster_full|/_next/static/media/poster_full.0az_iud2g3y4j.jpg
 poster_logo|/_next/static/media/poster_logo.0m-7c805zusl7.png
+screenshotsDesktop|/_next/static/media/screenshotsDesktop.0q9.0q677hl7h.jpg
+screenshotsMobile|/_next/static/media/screenshotsMobile.01nsldjqbta4u.jpg
 shard0|/_next/static/media/shard0.0_vm6ya9-h67x.png
 shard1|/_next/static/media/shard1.14.-n-5n.4nws.png
 shard2|/_next/static/media/shard2.0n4e6vntuoxgf.png
