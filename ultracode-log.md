@@ -3950,3 +3950,35 @@ Rockstar is prepping a dedicated **Launch Gallery** page where fans can browse a
 - 5 new image(s) → images channel: Jason_and_Lucia_14, Lucia_Caminos_12, Vice_City_27, screenshotsDesktop, screenshotsMobile
 ```
 </details>
+
+## 09 Nov 2026 at 14:00 UTC
+
+**Found in:** new data-layer strings (in code, not yet visible)
+
+**🚀 New hidden date shows up for a GTA VI music release**
+
+**What changed**
+- The site’s JavaScript now contains a hidden string: **“Grand Theft Auto VI: Original Score by Justice”** followed by the date **October 29 2026**.  
+- The same code also references **“Grand Theft Auto VI Trailer 1”** with a date of **December 4 2023** (likely a leftover placeholder).  
+- No new public pages, media assets, or navigation links appeared in this scan.
+
+**What it likely means**
+Rockstar appears to be staging a dedicated page or announcement for the official GTA VI soundtrack, slated for **October 29 2026**—roughly three weeks before the game’s scheduled launch on November 19.
+
+**Could signal:** _(confidence: medium)_
+- A **soundtrack release** (digital/physical) on Oct 29, possibly with a streaming preview or pre‑order bundle.  
+- The timing suggests it’s part of the final pre‑launch promotional push, but we haven’t seen any concrete sales links yet.  
+
+*If anything else pops up (new media, a /VI/score page, or a trailer drop), we’ll let you know!*
+
+<details><summary>raw findings</summary>
+
+**new data-layer strings (in code, not yet visible)**
+```
+- 117:["$","$L118",null,{}]
+- 1e4:["$","$L1e5",null,{}]
+- children":"1:31"}],"$undefined",["$","$L10d",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L10e",null,{}]]}],["$","$L10f",null,{"children":[["$","$L110",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L111",null,{"children":"December 4, 2023"}]]}]]}]
+- children":"1:31"}],"$undefined",["$","$L1da",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L1db",null,{}]]}],["$","$L1dc",null,{"children":[["$","$L1dd",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L1de",null,{"children":"December 4, 2023"}]]}]]}]
+- }}]}],["$","$L85",null,{"children":[["$","$L86",null,{"children":"Grand Theft Auto VI: Original Score by Justice"}],["$","$L87",null,{"children":"October 29, 2026"}]]}]]}]}]
+```
+</details>
