@@ -43,6 +43,7 @@ GTAVI_FOB_UltimateEdition_Mobile_zh_tw|/_next/static/media/GTAVI_FOB_UltimateEdi
 GTAVI_Launch_Trailer_poster|/_next/static/media/GTAVI_Launch_Trailer_poster.0_q-sdrgufc.s.jpg
 GTAVI_Merch_PromoCard|/_next/static/media/GTAVI_Merch_PromoCard.0_k5n2lk~h9h~.jpg
 GTAVI_Official_Cover_Art_Landscape|/_next/static/media/GTAVI_Official_Cover_Art_Landscape.03y6bcce9e2jr.jpg
+GTAVI_Pre_Load|/_next/static/media/GTAVI_Pre_Load.0h87nx-881hca.jpg
 GTAVI_Soundtrack_Newswire|/_next/static/media/GTAVI_Soundtrack_Newswire.01z2azm37u9oe.jpg
 GTAVI_Trailer1_poster|/_next/static/media/GTAVI_Trailer1_poster.12x2gvspcm_3m.jpg
 GTAVI_Trailer2_poster|/_next/static/media/GTAVI_Trailer2_poster.0cosv-uzbpt91.jpg
@@ -68,6 +69,12 @@ Jason_Lucia_Lock_And_Load_portrait|/_next/static/media/Jason_Lucia_Lock_And_Load
 Jason_Lucia_Lock_And_Load_square|/_next/static/media/Jason_Lucia_Lock_And_Load_square.04ut.a_s8vsi_.jpg
 Jason_Lucia_Lock_And_Load_tablet|/_next/static/media/Jason_Lucia_Lock_And_Load_tablet.0wvpvig400.um.jpg
 Jason_Lucia_Lock_And_Load_ultrawide|/_next/static/media/Jason_Lucia_Lock_And_Load_ultrawide.03-p3fc2s8owz.jpg
+Jason_Lucia_Rooftop_landscape|/_next/static/media/Jason_Lucia_Rooftop_landscape.0c6p5do~-8~7..jpg
+Jason_Lucia_Rooftop_phone|/_next/static/media/Jason_Lucia_Rooftop_phone.0xvj_ahfbhpyd.jpg
+Jason_Lucia_Rooftop_portrait|/_next/static/media/Jason_Lucia_Rooftop_portrait.0zqtzhla4_kel.jpg
+Jason_Lucia_Rooftop_square|/_next/static/media/Jason_Lucia_Rooftop_square.0yf02qi.qi6~2.jpg
+Jason_Lucia_Rooftop_tablet|/_next/static/media/Jason_Lucia_Rooftop_tablet.12~ssnz5l78-h.jpg
+Jason_Lucia_Rooftop_ultrawide|/_next/static/media/Jason_Lucia_Rooftop_ultrawide.16ihdjb5jjs.w.jpg
 Jason_and_Lucia_14|/_next/static/media/Jason_and_Lucia_14.10e7v.06pcm_t.jpg
 Jason_and_Lucia_Robbery_landscape|/_next/static/media/Jason_and_Lucia_Robbery_landscape.09c8a~do21h4p.jpg
 Jason_and_Lucia_Robbery_phone|/_next/static/media/Jason_and_Lucia_Robbery_phone.17u-34gj0wjex.jpg
@@ -200,6 +207,7 @@ Vice_City_Postcard_ultrawide|/_next/static/media/Vice_City_Postcard_ultrawide.13
 Vintage_Vice_City_Pack_Bg|/_next/static/media/Vintage_Vice_City_Pack_Bg.0sr9f_qpgzybu.jpg
 ak3ak31a49a221|/_next/static/media/ak3ak31a49a221.01qomdzfhfg58.jpg
 an-extended-look|/_next/static/media/an-extended-look.0ijbsha5fo1te.jpg
+an-extended-look-mobile|/_next/static/media/an-extended-look-mobile.0f0-3vo3w9u26.jpg
 background|/_next/static/media/background.0.~5i.gsehcb3.png
 collectorsMobile|/_next/static/media/collectorsMobile.09~60xnm5q~pr.png
 desktop|/_next/static/media/desktop.0zwg6wdya.x1t.jpg
@@ -225,6 +233,8 @@ overlay|/_next/static/media/overlay.0~6i~d5p-g-ho.png
 poster|/_next/static/media/poster.17wlh6xi7ljz9.jpg
 poster_full|/_next/static/media/poster_full.0az_iud2g3y4j.jpg
 poster_logo|/_next/static/media/poster_logo.0m-7c805zusl7.png
+pre-load|/_next/static/media/pre-load.0h87nx-881hca.jpg
+pre-load-mobile|/_next/static/media/pre-load-mobile.0w0e-.3-xgjgh.jpg
 screenshotsDesktop|/_next/static/media/screenshotsDesktop.0q9.0q677hl7h.jpg
 screenshotsMobile|/_next/static/media/screenshotsMobile.01nsldjqbta4u.jpg
 shard0|/_next/static/media/shard0.0_vm6ya9-h67x.png
@@ -245,6 +255,7 @@ ultimate_mobile_en_us|/_next/static/media/ultimate_mobile_en_us.03~7e7tlo4k4r.jp
 video:GTAVI_An_Extended_Look|https://media-rockstargames-com.akamaized.net/VI/downloads/videos/GTAVI_An_Extended_Look/GTAVI_An_Extended_Look.mp4
 video:GTAVI_Launch_Trailer|https://media-rockstargames-com.akamaized.net/VI/downloads/videos/GTAVI_Launch_Trailer/GTAVI_Launch_Trailer.mp4
 video:GTAVI_Official_Cover_Art_Landscape|https://media-rockstargames-com.akamaized.net/VI/downloads/videos/GTAVI_Official_Cover_Art_Landscape/GTAVI_Official_Cover_Art_Landscape.mp4
+video:GTAVI_Pre-Load_Now|https://media-rockstargames-com.akamaized.net/VI/downloads/videos/GTAVI_Pre-Load_Now/GTAVI_Pre-Load_Now.mp4
 video:GTAVI_Trailer_2|https://media-rockstargames-com.akamaized.net/VI/downloads/videos/GTAVI_Trailer_2/GTAVI_Trailer_2.mp4
 wm-Bag|/_next/static/media/wm-Bag.0u9s0s0gqklw9.png
 wm-Cap|/_next/static/media/wm-Cap.0ysk2b4egnoj_.png

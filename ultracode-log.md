@@ -3982,3 +3982,333 @@ Rockstar appears to be staging a dedicated page or announcement for the official
 - }}]}],["$","$L85",null,{"children":[["$","$L86",null,{"children":"Grand Theft Auto VI: Original Score by Justice"}],["$","$L87",null,{"children":"October 29, 2026"}]]}]]}]}]
 ```
 </details>
+
+## 10 Nov 2026 at 14:00 UTC
+
+**Found in:** home text changed, only-in-leonida text changed, media text changed, jason text changed, lucia text changed, ambrosia text changed, boobie text changed, brian text changed, cal text changed, drequan text changed, raul text changed, dimez text changed, vice-city text changed, port-gellhorn text changed, leonida-keys text changed, grassrivers text changed, kalaga text changed, media counts increased, new data-layer strings (in code, not yet visible), new media posted
+
+**🚀 “Pre‑Load Now” pops up across GTA VI site!**
+
+**What changed**
+- The home page, character pages (Jason, Lucia, etc.) and the “Only‑in‑Leonida” section all swapped the old banner **“Pre‑Load Begins – November 10”** for **“Pre‑Load Now”** and updated the surrounding copy.
+- The main navigation now shows a **“Play”** button next to the “Extended Look” and “Launch Trailer” items, hinting at an active playable build.
+- The media gallery added **one more video** (now 5 total) and **two new artwork/wallpaper files** (27 → 27), plus a batch of fresh images titled *Jason_Lucia_Rooftop* and several “pre‑load”‑named assets.
+- A news‑wire entry was added: **“Pre‑Load Grand Theft Auto VI Now – November 10, 2026”** (the same date that previously marked the start of the pre‑load).
+- Hidden code strings still reference the old “Grand Theft Auto VI Pre‑Load Begins on November 10” line, confirming the site’s pre‑load focus.
+
+**What it likely means**
+Rockstar has switched the pre‑load countdown to an active state, making the pre‑load version of GTA VI available now (or imminently) rather than waiting for the originally‑promised November 10 start.
+
+**Could signal:** _(confidence: medium)_
+- The pre‑load may have gone live early for a broader audience, possibly as a soft launch ahead of the full release on November 19. Expect the ability to download/play the pre‑load build within the next few days, especially on platforms that already support pre‑orders.
+
+<details><summary>raw findings</summary>
+
+**home text changed**
+```
+--- home/text (before)
++++ home/text (after)
+@@ -4,6 +4,5 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Begins
+-November 10
++Pre-Load Now
+ Coming
+ November 19, 2026
+@@ -23,8 +22,14 @@
+ Scroll for more content.
+ Watch
+-Launch Trailer
++Pre-Load Now
+ label
+ Watch
+ An Extended Look
++Play
++Watch
++An Extended Look
++Play
++Watch
++Launch Trailer
+ Watch
+ Trailer 2
+@@ -70,10 +75,10 @@
+ View all
+ Newswire posts
++Pre-Load Grand Theft Auto VI Now
++November 10, 2026
+ Explore the Grand Theft Auto VI Launch Gallery
+ November 5, 2026
+ Grand Theft Auto VI Pre-Load Begins on November 10
+ November 3, 2026
+-Grand Theft Auto VI: Original Score by Justice
+-October 29, 2026
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**only-in-leonida text changed**
+```
+--- only-in-leonida/text (before)
++++ only-in-leonida/text (after)
+@@ -5,6 +5,5 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Begins
+-November 10
++Pre-Load Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**media text changed**
+```
+--- media/text (before)
++++ media/text (after)
+@@ -12,13 +12,13 @@
+ Download and share trailers, imagery, and more.
+ Videos
+-4
++5
+ See All
+-4 Videos
+-4 Videos
++5 Videos
++5 Videos
++Grand Theft Auto VI: Pre-Load Now
++1 size
+ Grand Theft Auto VI Launch Trailer
+ 1 size
+ Grand Theft Auto VI: An Extended Look
+-1 size
+-Grand Theft Auto VI Trailer 2
+ 1 size
+ Clips
+@@ -83,18 +83,18 @@
+ 12 Vintage Vice City Pack in a single zip file
+ Artwork & Wallpapers
+-25
++27
+ Download All
+-25 Artwork & Wallpapers in a single zip file
++27 Artwork & Wallpapers in a single zip file
+ See All
+-25 Artwork and Wallpapers
+-25 Artwork and Wallpapers
++27 Artwork and Wallpapers
++27 Artwork and Wallpapers
++Jason and Lucia Rooftop
++6 sizes
+ Jason and Lucia Lock and Load
+ 6 sizes
+ The Album Cover Art
+ 3 sizes
+-Official Cover Art
+-6 sizes
+ Download All
+-25 Artwork & Wallpapers in a single zip file
++27 Artwork & Wallpapers in a single zip file
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**jason text changed**
+```
+--- jason/text (before)
++++ jason/text (after)
+@@ -5,6 +5,5 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Begins
+-November 10
++Pre-Load Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**lucia text changed**
+```
+--- lucia/text (before)
++++ lucia/text (after)
+@@ -5,6 +5,5 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Begins
+-November 10
++Pre-Load Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**ambrosia text changed**
+```
+--- ambrosia/text (before)
++++ ambrosia/text (after)
+@@ -5,6 +5,5 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Begins
+-November 10
++Pre-Load Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**boobie text changed**
+```
+--- boobie/text (before)
++++ boobie/text (after)
+@@ -5,6 +5,5 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Begins
+-November 10
++Pre-Load Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**brian text changed**
+```
+--- brian/text (before)
++++ brian/text (after)
+@@ -5,6 +5,5 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Begins
+-November 10
++Pre-Load Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**cal text changed**
+```
+--- cal/text (before)
++++ cal/text (after)
+@@ -5,6 +5,5 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Begins
+-November 10
++Pre-Load Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**drequan text changed**
+```
+--- drequan/text (before)
++++ drequan/text (after)
+@@ -5,6 +5,5 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Begins
+-November 10
++Pre-Load Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**raul text changed**
+```
+--- raul/text (before)
++++ raul/text (after)
+@@ -5,6 +5,5 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Begins
+-November 10
++Pre-Load Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**dimez text changed**
+```
+--- dimez/text (before)
++++ dimez/text (after)
+@@ -5,6 +5,5 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Begins
+-November 10
++Pre-Load Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**vice-city text changed**
+```
+--- vice-city/text (before)
++++ vice-city/text (after)
+@@ -5,6 +5,5 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Begins
+-November 10
++Pre-Load Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**port-gellhorn text changed**
+```
+--- port-gellhorn/text (before)
++++ port-gellhorn/text (after)
+@@ -5,6 +5,5 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Begins
+-November 10
++Pre-Load Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**leonida-keys text changed**
+```
+--- leonida-keys/text (before)
++++ leonida-keys/text (after)
+@@ -5,6 +5,5 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Begins
+-November 10
++Pre-Load Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**grassrivers text changed**
+```
+--- grassrivers/text (before)
++++ grassrivers/text (after)
+@@ -5,6 +5,5 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Begins
+-November 10
++Pre-Load Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**kalaga text changed**
+```
+--- kalaga/text (before)
++++ kalaga/text (after)
+@@ -5,6 +5,5 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Begins
+-November 10
++Pre-Load Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**media counts increased**
+```
+- videos: 4 -> 5
+- artwork wallpapers: 25 -> 27
+```
+**new data-layer strings (in code, not yet visible)**
+```
+- 112:["$","$L117",null,{}]
+- 1e1:["$","$L1e6",null,{}]
+- children":"1:31"}],"$undefined",["$","$L10b",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L113",null,{}]]}],["$","$L114",null,{"children":[["$","$L115",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L116",null,{"children":"December 4, 2023"}]]}]]}]
+- children":"1:31"}],"$undefined",["$","$L1da",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L1e2",null,{}]]}],["$","$L1e3",null,{"children":[["$","$L1e4",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L1e5",null,{"children":"December 4, 2023"}]]}]]}]
+- src":"$1b2:props:videos:trailer-1:thumbnail","alt":"Grand Theft Auto VI Trailer 1"}],"$undefined",["$","$L27d",null,{"children":"1:31"}]]}],["$","$L27e",null,{"children":[["$","$L27f",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L280",null,{"children":"December 4, 2023"}]]}]]}]}]}]]}]
+- src":"$39:props:videos:trailer-1:thumbnail","alt":"Grand Theft Auto VI Trailer 1"}],"$undefined",["$","$L105",null,{"children":"1:31"}]]}],["$","$L106",null,{"children":[["$","$L107",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L108",null,{"children":"December 4, 2023"}]]}]]}]}]}]]}]
+- src":"$c0:props:videos:trailer-1:thumbnail","alt":"Grand Theft Auto VI Trailer 1"}],"$undefined",["$","$L179",null,{"children":"1:31"}]]}],["$","$L17a",null,{"children":[["$","$L17b",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L17c",null,{"children":"December 4, 2023"}]]}]]}]}
+```
+**new media posted**
+```
+- 10 new image(s) → images channel: GTAVI_Pre_Load, Jason_Lucia_Rooftop_landscape, Jason_Lucia_Rooftop_phone, Jason_Lucia_Rooftop_portrait, Jason_Lucia_Rooftop_square, Jason_Lucia_Rooftop_tablet, Jason_Lucia_Rooftop_ultrawide, an-extended-look-mobile, pre-load, pre-load-mobile
+- 1 new video(s) → videos channel: video:GTAVI_Pre-Load_Now
+```
+</details>
