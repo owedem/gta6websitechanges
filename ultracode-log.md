@@ -4312,3 +4312,283 @@ Rockstar has switched the pre‑load countdown to an active state, making the pr
 - 1 new video(s) → videos channel: video:GTAVI_Pre-Load_Now
 ```
 </details>
+
+## 18 Nov 2026 at 15:00 UTC
+
+**Found in:** home text changed, only-in-leonida text changed, editions text changed, jason text changed, lucia text changed, ambrosia text changed, boobie text changed, brian text changed, cal text changed, drequan text changed, raul text changed, dimez text changed, vice-city text changed, port-gellhorn text changed, leonida-keys text changed, grassrivers text changed, kalaga text changed, new data-layer strings (in code, not yet visible), new media posted
+
+**🚨 “Last Chance” appears across GTA VI site**
+
+**What changed**
+- The home page no longer says “Pre‑Load Now” – it now reads **“Last Chance for Pre‑Order Bonuses”** and the button label swapped to “Launch Trailer”.
+- The exact same “Last Chance for Pre‑Order Bonuses” line was added to dozens of sub‑pages (Only‑in‑Leonida, Jason, Lucia, Ambrosia, Boobie, Brian, Cal, Drequan, Raul, Dimez, Vice‑City, Port‑Gellhorn, Leonida‑Keys, Grassrivers, Kalaga, etc.).
+- On the Editions page the tag **“PRE‑ORDER BONUS”** was replaced with **“Limited‑time bonus”** for the Vintage Vice City Pack and the free GTA+ month.
+- Hidden code strings now contain **“October 15, 2026”** (appearing three times), **“November 3, 2026”**, and a note **“Grand Theft Auto VI Pre‑Load Begins on November 10”**.
+- A brand‑new image was uploaded to the media channel named **launch‑trailer‑mobile** (likely the mobile thumbnail for a trailer).
+
+**What it likely means**
+Rockstar is swapping the “Pre‑Load” messaging for a “Last Chance” warning, suggesting the pre‑load window and the window to claim pre‑order bonuses are winding down. The internal dates (Oct 15 and early‑Nov) hint at an upcoming schedule shift, and the fresh trailer thumbnail points to a new video being prepared for release soon.
+
+**Could signal:** _(confidence: medium)_
+- The final opportunity to grab pre‑order bonuses may close around **mid‑October 2026**, after which the game will move from pre‑load to full launch mode.  
+- A new trailer (or “extended look”) could drop shortly after the pre‑load ends, possibly in the first week of November, aligning with the “Pre‑Load Begins on November 10” note.  
+
+Stay tuned for any official announcements – this looks like the last push before the game goes live!
+
+<details><summary>raw findings</summary>
+
+**home text changed**
+```
+--- home/text (before)
++++ home/text (after)
+@@ -4,5 +4,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Now
++Last Chance for
++Pre-Order Bonuses
+ Coming
+ November 19, 2026
+@@ -22,5 +23,5 @@
+ Scroll for more content.
+ Watch
+-Pre-Load Now
++Launch Trailer
+ label
+ Watch
+@@ -31,5 +32,5 @@
+ Play
+ Watch
+-Launch Trailer
++Pre-Load Now
+ Watch
+ Trailer 2
+```
+**only-in-leonida text changed**
+```
+--- only-in-leonida/text (before)
++++ only-in-leonida/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Now
++Last Chance for
++Pre-Order Bonuses
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**editions text changed**
+```
+--- editions/text (before)
++++ editions/text (after)
+@@ -20,7 +20,7 @@
+ Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+ Vintage Vice City Pack
+-PRE-ORDER BONUS
++Limited-time bonus
+ Free Month of GTA+
+-PRE-ORDER BONUS
++Limited-time bonus
+ ’95 Grotti Cheetah
+ Hawk & Little Morgan Revolvers
+```
+**jason text changed**
+```
+--- jason/text (before)
++++ jason/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Now
++Last Chance for
++Pre-Order Bonuses
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**lucia text changed**
+```
+--- lucia/text (before)
++++ lucia/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Now
++Last Chance for
++Pre-Order Bonuses
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**ambrosia text changed**
+```
+--- ambrosia/text (before)
++++ ambrosia/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Now
++Last Chance for
++Pre-Order Bonuses
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**boobie text changed**
+```
+--- boobie/text (before)
++++ boobie/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Now
++Last Chance for
++Pre-Order Bonuses
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**brian text changed**
+```
+--- brian/text (before)
++++ brian/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Now
++Last Chance for
++Pre-Order Bonuses
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**cal text changed**
+```
+--- cal/text (before)
++++ cal/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Now
++Last Chance for
++Pre-Order Bonuses
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**drequan text changed**
+```
+--- drequan/text (before)
++++ drequan/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Now
++Last Chance for
++Pre-Order Bonuses
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**raul text changed**
+```
+--- raul/text (before)
++++ raul/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Now
++Last Chance for
++Pre-Order Bonuses
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**dimez text changed**
+```
+--- dimez/text (before)
++++ dimez/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Now
++Last Chance for
++Pre-Order Bonuses
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**vice-city text changed**
+```
+--- vice-city/text (before)
++++ vice-city/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Now
++Last Chance for
++Pre-Order Bonuses
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**port-gellhorn text changed**
+```
+--- port-gellhorn/text (before)
++++ port-gellhorn/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Now
++Last Chance for
++Pre-Order Bonuses
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**leonida-keys text changed**
+```
+--- leonida-keys/text (before)
++++ leonida-keys/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Now
++Last Chance for
++Pre-Order Bonuses
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**grassrivers text changed**
+```
+--- grassrivers/text (before)
++++ grassrivers/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Now
++Last Chance for
++Pre-Order Bonuses
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**kalaga text changed**
+```
+--- kalaga/text (before)
++++ kalaga/text (after)
+@@ -5,5 +5,6 @@
+ Pre-Order Now
+ Expand Navigation Menu
+-Pre-Load Now
++Last Chance for
++Pre-Order Bonuses
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+```
+**new data-layer strings (in code, not yet visible)**
+```
+- $","$L6d",null,{"children":"October 15, 2026"}]]}]]}]
+- $","$Lf4",null,{"children":"October 15, 2026"}]]}]]}]
+- 112:["$","$L10a","an-extended-look",{"video":"an-extended-look","children":[["$","$L10b",null,{"children":[["$","$L10c",null,{"src":"$e6:props:videos:an-extended-look:thumbnail","alt":"Grand Theft Auto VI: An Extended Look"
+- 115:["$","$L11a",null,{}]
+- 1e0:["$","$L1d8","an-extended-look",{"video":"an-extended-look","children":[["$","$L1d9",null,{"children":[["$","$L1da",null,{"src":"$1b4:props:videos:an-extended-look:thumbnail","alt":"Grand Theft Auto VI: An Extended Loo
+- 1e3:["$","$L1e8",null,{}]
+- 66:["$","$L5e","an-extended-look",{"video":"an-extended-look","children":[["$","$L5f",null,{"children":[["$","$L60",null,{"src":"$3a:props:videos:an-extended-look:thumbnail","alt":"Grand Theft Auto VI: An Extended Look"}],["$","$L61",null,{"chi
+- children":"1:31"}],"$undefined",["$","$L10e",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L116",null,{}]]}],["$","$L117",null,{"children":[["$","$L118",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L119",null,{"children":"December 4, 2023"}]]}]]}]
+- children":"1:31"}],"$undefined",["$","$L1dc",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L1e4",null,{}]]}],["$","$L1e5",null,{"children":[["$","$L1e6",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L1e7",null,{"children":"December 4, 2023"}]]}]]}]
+- ed:["$","$Le5","an-extended-look",{"video":"an-extended-look","children":[["$","$L
+```
+**new media posted**
+```
+- 1 new image(s) → images channel: launch-trailer-mobile
+```
+</details>

@@ -218,6 +218,7 @@ hero|/_next/static/media/hero.0q5-tr6h86ai7.jpg
 intro|/_next/static/media/intro.081gaz4~3wox-.png
 intro-mobile|/_next/static/media/intro-mobile.0.97ufm766d4x.png
 launch-trailer|/_next/static/media/launch-trailer.0_q-sdrgufc.s.jpg
+launch-trailer-mobile|/_next/static/media/launch-trailer-mobile.11.007xolt5y2.jpg
 logo_gta|/_next/static/media/logo_gta.0_~y3s2ni8fbj.png
 logo_vi|/_next/static/media/logo_vi.02gnpy7k4ozcz.png
 mediaDesktop|/_next/static/media/mediaDesktop.11iioep6d3wsf.jpg

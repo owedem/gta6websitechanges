@@ -137,7 +137,6 @@ string: port-gellhorn/libx264/1920.mp4
 string: port-gellhorn/libx264/2160.mp4
 string: port-gellhorn/libx264/450.mp4
 string: port-gellhorn/libx264/768.mp4
-string: pre-order now
 string: sentry.release
 string: ultimate-edition
 string: ultimate-edition/libsvtav1/1280.mp4
