@@ -21,6 +21,7 @@ Cal_Hampton_01|/_next/static/media/Cal_Hampton_01.0xlil231_osh4.jpg
 Cal_Hampton_02|/_next/static/media/Cal_Hampton_02.05r2t_mck65fe.jpg
 Cal_Hampton_03|/_next/static/media/Cal_Hampton_03.0.q68~pt1to9z.jpg
 Cal_Hampton_04|/_next/static/media/Cal_Hampton_04.0-78dep86yx2q.jpg
+Cover_Art_Poster|/_next/static/media/Cover_Art_Poster.05g75soif2t00.jpg
 DreQuan_Priest_01|/_next/static/media/DreQuan_Priest_01.0_0~wi-ipdj35.jpg
 DreQuan_Priest_02|/_next/static/media/DreQuan_Priest_02.02u69e~nkk3eo.jpg
 DreQuan_Priest_03|/_next/static/media/DreQuan_Priest_03.0zbl4i_x_1biu.jpg
@@ -43,6 +44,7 @@ GTAVI_FOB_UltimateEdition_Mobile_zh_tw|/_next/static/media/GTAVI_FOB_UltimateEdi
 GTAVI_Launch_Trailer_poster|/_next/static/media/GTAVI_Launch_Trailer_poster.0_q-sdrgufc.s.jpg
 GTAVI_Merch_PromoCard|/_next/static/media/GTAVI_Merch_PromoCard.0_k5n2lk~h9h~.jpg
 GTAVI_Official_Cover_Art_Landscape|/_next/static/media/GTAVI_Official_Cover_Art_Landscape.03y6bcce9e2jr.jpg
+GTAVI_Out_Now|/_next/static/media/GTAVI_Out_Now.0h87nx-881hca.jpg
 GTAVI_Pre_Load|/_next/static/media/GTAVI_Pre_Load.0h87nx-881hca.jpg
 GTAVI_Soundtrack_Newswire|/_next/static/media/GTAVI_Soundtrack_Newswire.01z2azm37u9oe.jpg
 GTAVI_Trailer1_poster|/_next/static/media/GTAVI_Trailer1_poster.12x2gvspcm_3m.jpg
@@ -87,6 +89,7 @@ Leonida_Keys_02|/_next/static/media/Leonida_Keys_02.0~ptk-53gl0lq.jpg
 Leonida_Keys_03|/_next/static/media/Leonida_Keys_03.0v_3~-9ceyixc.jpg
 Leonida_Keys_04|/_next/static/media/Leonida_Keys_04.0hce1rw1s8pd9.jpg
 Leonida_Keys_05|/_next/static/media/Leonida_Keys_05.0yerhvjhto-h..jpg
+Leonida_Map_Poster|/_next/static/media/Leonida_Map_Poster.08ir77j-.26ny.jpg
 Lucia_Caminos_01|/_next/static/media/Lucia_Caminos_01.0a7yqvewctkfp.jpg
 Lucia_Caminos_02|/_next/static/media/Lucia_Caminos_02.16n.5umvlu_48.jpg
 Lucia_Caminos_03|/_next/static/media/Lucia_Caminos_03.14xgd2y_ymmeg.jpg
@@ -214,6 +217,9 @@ desktop|/_next/static/media/desktop.0zwg6wdya.x1t.jpg
 extended-look|/_next/static/media/extended-look.0f0-3vo3w9u26.jpg
 featured|/_next/static/media/featured.0y5yxwenpsgc3.jpg
 featured-mobile|/_next/static/media/featured-mobile.14ok.safz3arg.jpg
+gtaplusDesktop|/_next/static/media/gtaplusDesktop.0tq_of6u58s3a.jpg
+gtaplusLogo|/_next/static/media/gtaplusLogo.097ff-.vwhcgz.png
+gtaplusMobile|/_next/static/media/gtaplusMobile.0avqv00~gwp03.jpg
 hero|/_next/static/media/hero.0q5-tr6h86ai7.jpg
 intro|/_next/static/media/intro.081gaz4~3wox-.png
 intro-mobile|/_next/static/media/intro-mobile.0.97ufm766d4x.png
@@ -221,6 +227,8 @@ launch-trailer|/_next/static/media/launch-trailer.0_q-sdrgufc.s.jpg
 launch-trailer-mobile|/_next/static/media/launch-trailer-mobile.11.007xolt5y2.jpg
 logo_gta|/_next/static/media/logo_gta.0_~y3s2ni8fbj.png
 logo_vi|/_next/static/media/logo_vi.02gnpy7k4ozcz.png
+mapPromoCard|/_next/static/media/mapPromoCard.0gcwsrkum~6o_.jpg
+mapPromoCardMobile|/_next/static/media/mapPromoCardMobile.10u5jrd23dmdq.jpg
 mediaDesktop|/_next/static/media/mediaDesktop.11iioep6d3wsf.jpg
 mediaMobile|/_next/static/media/mediaMobile.0p_yfitphljim.jpg
 meta|/_next/static/media/meta.0t8ty~nlmxq2s.jpg
@@ -256,6 +264,7 @@ ultimate_mobile_en_us|/_next/static/media/ultimate_mobile_en_us.03~7e7tlo4k4r.jp
 video:GTAVI_An_Extended_Look|https://media-rockstargames-com.akamaized.net/VI/downloads/videos/GTAVI_An_Extended_Look/GTAVI_An_Extended_Look.mp4
 video:GTAVI_Launch_Trailer|https://media-rockstargames-com.akamaized.net/VI/downloads/videos/GTAVI_Launch_Trailer/GTAVI_Launch_Trailer.mp4
 video:GTAVI_Official_Cover_Art_Landscape|https://media-rockstargames-com.akamaized.net/VI/downloads/videos/GTAVI_Official_Cover_Art_Landscape/GTAVI_Official_Cover_Art_Landscape.mp4
+video:GTAVI_Out_Now|https://media-rockstargames-com.akamaized.net/VI/downloads/videos/GTAVI_Out_Now/GTAVI_Out_Now.mp4
 video:GTAVI_Pre-Load_Now|https://media-rockstargames-com.akamaized.net/VI/downloads/videos/GTAVI_Pre-Load_Now/GTAVI_Pre-Load_Now.mp4
 video:GTAVI_Trailer_2|https://media-rockstargames-com.akamaized.net/VI/downloads/videos/GTAVI_Trailer_2/GTAVI_Trailer_2.mp4
 wm-Bag|/_next/static/media/wm-Bag.0u9s0s0gqklw9.png

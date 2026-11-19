@@ -4592,3 +4592,671 @@ Stay tuned for any official announcements – this looks like the last push befo
 - 1 new image(s) → images channel: launch-trailer-mobile
 ```
 </details>
+
+## 19 Nov 2026 at 14:05 UTC
+
+**Found in:** home routes changed, new clues in site code, new pages live, home text changed, only-in-leonida text changed, media text changed, editions text changed, jason text changed, lucia text changed, ambrosia text changed, boobie text changed, brian text changed, cal text changed, drequan text changed, raul text changed, dimez text changed, vice-city text changed, port-gellhorn text changed, leonida-keys text changed, grassrivers text changed, kalaga text changed, media counts increased, new data-layer strings (in code, not yet visible), new media posted
+
+**🚀 GTA VI is officially “Out Now” on the Rockstar site!**
+
+**What changed**
+- The main navigation now includes a brand‑new **/VI/gta-plus** link (and the hidden route “/VI/:locale/gta-plus” shows up in the code).  
+- Two fresh pages are live: **/VI/credits** and **/VI/gta-plus** (both previously 404).  
+- Every page that used to tease “Pre‑Order” now reads **“Buy Now / Out Now / Now Available”**, with the banner “Grand Theft Auto VI Now Available – November 19, 2026”.  
+- Character and location pages (Jason, Lucia, Ambrosia, etc.) all swapped “Coming November 19 2026” for **“Now Available”**.  
+- The Media section now offers **“Out Now”** videos and a new **Leonida map & cover‑art poster** download, plus the artwork‑wallpaper count went from 27 → 28.  
+- New visual assets have been uploaded (cover‑art poster, map promo cards, GTA Plus branding) and a brand‑new **“GTAVI Out Now” video** appears in the media library.  
+
+**What it likely means**
+Rockstar has switched the site from a pre‑order focus to a post‑launch one, confirming that GTA VI is now publicly purchasable and the launch assets are being rolled out. The addition of a **gta‑plus** page suggests a new subscription‑style service or post‑launch content bundle.
+
+**Could signal:** _(confidence: high)_
+- GTA VI is officially live worldwide (or at least the site is treating it as such), and Rockstar is preparing a **GTA Plus** offering—likely a post‑launch pass, season‑content bundle, or subscription that will roll out soon after launch. The new credits page also hints at full‑game content being finalized. Expect more details on GTA Plus in the coming days.
+
+<details><summary>raw findings</summary>
+
+**home routes changed**
+```
+--- home/routes (before)
++++ home/routes (after)
+@@ -1,3 +1,4 @@
+ /VI/
++/VI/gta-plus
+ /VI/launch-gallery
+ /VI/media
+```
+**new clues in site code**
+```
+- string: /VI/:locale/gta-plus
+- string: gta-plus
+```
+**new pages live**
+```
+- https://www.rockstargames.com/VI/credits
+- https://www.rockstargames.com/VI/gta-plus
+```
+**home text changed**
+```
+--- home/text (before)
++++ home/text (after)
+@@ -2,14 +2,14 @@
+ Skip to Main Content
+ Homepage
+-Pre-Order Now
++Buy Now
+ Expand Navigation Menu
+-Last Chance for
+-Pre-Order Bonuses
+-Coming
+-November 19, 2026
+-Coming
+-November 19, 2026
+-Pre-Order Now
+-Pre-Order Now
++Grand Theft Auto VI
++Out Now
++Now Available
++Welcome to Leonida
++Now Available
++Welcome to Leonida
++Buy Now
++Buy Now
+ PlayStation 5
+ Xbox Series X|S
+@@ -18,5 +18,5 @@
+ PlayStation 5
+ Xbox Series X|S
+-Pre-Order Now
++Buy Now
+ Plays Best On
+ PlayStation 5
+@@ -32,5 +32,5 @@
+ Play
+ Watch
+-Pre-Load Now
++Out Now
+ Watch
+ Trailer 2
+@@ -40,8 +40,8 @@
+ An exclusive collection of items threaded across all aspects of Jason and Lucia’s story.
+ Learn More
+-Pre-order Bonuses
++Early purchase bonus
+ Vintage
+ Vice City Pack
+-Pre-order to get unique benefits that flash back to when the neon burned brightest.
++Purchase early to get unique benefits that flash back to when the neon burned brightest.
+ Learn More
+ Vice City, USA.
+@@ -63,4 +63,6 @@
+ Vice City, USA. The darkest side of the sunniest place in America.
+ Explore More
++Members on console get optional benefits for Jason and Lucia.
++Explore Benefits
+ Shop
+ View All
+@@ -76,10 +78,10 @@
+ View all
+ Newswire posts
++Grand Theft Auto VI Now Available
++November 19, 2026
+ Pre-Load Grand Theft Auto VI Now
+ November 10, 2026
+ Explore the Grand Theft Auto VI Launch Gallery
+ November 5, 2026
+-Grand Theft Auto VI Pre-Load Begins on November 10
+-November 3, 2026
+ For more on PlayStation benefits, 
+```
+**only-in-leonida text changed**
+```
+--- only-in-leonida/text (before)
++++ only-in-leonida/text (after)
+@@ -3,8 +3,8 @@
+ Homepage
+ Only in Leonida
+-Pre-Order Now
++Buy Now
+ Expand Navigation Menu
+-Last Chance for
+-Pre-Order Bonuses
++Grand Theft Auto VI
++Out Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+@@ -121,7 +121,6 @@
+ Brian’s letting Jason live rent-free at one of his properties — so long as he helps with local shakedowns, and stops by for Lori’s sangria once in a while.
+ Explore Mount Kalaga
+-Coming
+-November 19
+-2026
++Now
++Available
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**media text changed**
+```
+--- media/text (before)
++++ media/text (after)
+@@ -3,5 +3,5 @@
+ Homepage
+ Media
+-Pre-Order Now
++Buy Now
+ Expand Navigation Menu
+ Featured
+@@ -9,6 +9,8 @@
+ Screenshots
+ Artwork
+-Explore Vice City and Beyond
+-Download and share trailers, imagery, and more.
++Artwork
++Leonida Map & Cover Art Poster
++Get print-ready formats of the official game map and cover art poster.
++View Options
+ Videos
+ 5
+@@ -16,10 +18,10 @@
+ 5 Videos
+ 5 Videos
+-Grand Theft Auto VI: Pre-Load Now
+-1 size
++Grand Theft Auto VI: Out Now
++1 variant
+ Grand Theft Auto VI Launch Trailer
+-1 size
++1 variant
+ Grand Theft Auto VI: An Extended Look
+-1 size
++1 variant
+ Clips
+ 9
+@@ -30,9 +32,9 @@
+ 9 Clips
+ Official Cover Art Animation
+-1 size
++1 variant
+ Jason Duval Video Clip
+-1 size
++1 variant
+ Lucia Caminos Video Clip
+-1 size
++1 variant
+ Download All
+ 9 Clips in a single zip file
+@@ -45,9 +47,9 @@
+ 138 Screenshots
+ Jason and Lucia 14
+-1 size
++1 variant
+ Lucia Caminos 12
+-1 size
++1 variant
+ Vice City 27
+-1 size
++1 variant
+ Download All
+ 138 Screenshots in a single zip file
+@@ -60,9 +62,9 @@
+ 51 Ultimate Edition Screenshots
+ Ultimate Edition 02
+-1 size
++1 variant
+ ’95 Grotti Cheetah 01
+-1 size
++1 variant
+ Hawk & Little Morgan Revolvers 01
+-1 size
++1 variant
+ Download All
+ 51 Ultimate Edition Benefits in a single zip file
+@@ -75,26 +77,26 @@
+ 12 Vintage Vice City Screenshots
+ Vintage Vice City Pack 01
+-1 size
++1 variant
+ ’55 Vapid Stanier 01
+-1 size
++1 variant
+ Vintage Vice City Outfits and Hairstyles 03
+-1 size
++1 variant
+```
+**editions text changed**
+```
+--- editions/text (before)
++++ editions/text (after)
+@@ -2,12 +2,14 @@
+ Skip to Main Content
+ Homepage
+-Pre-Order Now
++Buy Now
+ Expand Navigation Menu
+ Close Edition Comparison drawer
+ VI Logo
+-Pre-order
++Buy
++Editions
++Add-Ons
+ Choose Your Edition
+-Scroll edition tabs left
+-Scroll editions tabs right
++Scroll Edition tabs left
++Scroll Edition tabs right
+ Ultimate Edition
+ Digital
+@@ -15,5 +17,5 @@
+ Digital or Code in Box
+ An exclusive collection of items threaded across all aspects of Jason and Lucia’s story.
+-Get the standard edition of Grand Theft Auto VI along with pre-order bonuses.
++Get the standard edition of Grand Theft Auto VI.
+ This Edition Includes
+ Grand Theft Auto VI
+@@ -39,5 +41,5 @@
+ PTT Youngin$ Illegal Goods Store
+ Classic Car Collection
+-Pre-Order Now
++Buy Now
+ Grand Theft Auto VI
+ Go to previous benefit slide
+```
+**jason text changed**
+```
+--- jason/text (before)
++++ jason/text (after)
+@@ -3,8 +3,8 @@
+ Homepage
+ Only in Leonida
+-Pre-Order Now
++Buy Now
+ Expand Navigation Menu
+-Last Chance for
+-Pre-Order Bonuses
++Grand Theft Auto VI
++Out Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+@@ -121,7 +121,6 @@
+ Brian’s letting Jason live rent-free at one of his properties — so long as he helps with local shakedowns, and stops by for Lori’s sangria once in a while.
+ Explore Mount Kalaga
+-Coming
+-November 19
+-2026
++Now
++Available
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**lucia text changed**
+```
+--- lucia/text (before)
++++ lucia/text (after)
+@@ -3,8 +3,8 @@
+ Homepage
+ Only in Leonida
+-Pre-Order Now
++Buy Now
+ Expand Navigation Menu
+-Last Chance for
+-Pre-Order Bonuses
++Grand Theft Auto VI
++Out Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+@@ -121,7 +121,6 @@
+ Brian’s letting Jason live rent-free at one of his properties — so long as he helps with local shakedowns, and stops by for Lori’s sangria once in a while.
+ Explore Mount Kalaga
+-Coming
+-November 19
+-2026
++Now
++Available
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**ambrosia text changed**
+```
+--- ambrosia/text (before)
++++ ambrosia/text (after)
+@@ -3,8 +3,8 @@
+ Homepage
+ Only in Leonida
+-Pre-Order Now
++Buy Now
+ Expand Navigation Menu
+-Last Chance for
+-Pre-Order Bonuses
++Grand Theft Auto VI
++Out Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+@@ -121,7 +121,6 @@
+ Brian’s letting Jason live rent-free at one of his properties — so long as he helps with local shakedowns, and stops by for Lori’s sangria once in a while.
+ Explore Mount Kalaga
+-Coming
+-November 19
+-2026
++Now
++Available
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**boobie text changed**
+```
+--- boobie/text (before)
++++ boobie/text (after)
+@@ -3,8 +3,8 @@
+ Homepage
+ Only in Leonida
+-Pre-Order Now
++Buy Now
+ Expand Navigation Menu
+-Last Chance for
+-Pre-Order Bonuses
++Grand Theft Auto VI
++Out Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+@@ -121,7 +121,6 @@
+ Brian’s letting Jason live rent-free at one of his properties — so long as he helps with local shakedowns, and stops by for Lori’s sangria once in a while.
+ Explore Mount Kalaga
+-Coming
+-November 19
+-2026
++Now
++Available
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**brian text changed**
+```
+--- brian/text (before)
++++ brian/text (after)
+@@ -3,8 +3,8 @@
+ Homepage
+ Only in Leonida
+-Pre-Order Now
++Buy Now
+ Expand Navigation Menu
+-Last Chance for
+-Pre-Order Bonuses
++Grand Theft Auto VI
++Out Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+@@ -121,7 +121,6 @@
+ Brian’s letting Jason live rent-free at one of his properties — so long as he helps with local shakedowns, and stops by for Lori’s sangria once in a while.
+ Explore Mount Kalaga
+-Coming
+-November 19
+-2026
++Now
++Available
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**cal text changed**
+```
+--- cal/text (before)
++++ cal/text (after)
+@@ -3,8 +3,8 @@
+ Homepage
+ Only in Leonida
+-Pre-Order Now
++Buy Now
+ Expand Navigation Menu
+-Last Chance for
+-Pre-Order Bonuses
++Grand Theft Auto VI
++Out Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+@@ -121,7 +121,6 @@
+ Brian’s letting Jason live rent-free at one of his properties — so long as he helps with local shakedowns, and stops by for Lori’s sangria once in a while.
+ Explore Mount Kalaga
+-Coming
+-November 19
+-2026
++Now
++Available
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**drequan text changed**
+```
+--- drequan/text (before)
++++ drequan/text (after)
+@@ -3,8 +3,8 @@
+ Homepage
+ Only in Leonida
+-Pre-Order Now
++Buy Now
+ Expand Navigation Menu
+-Last Chance for
+-Pre-Order Bonuses
++Grand Theft Auto VI
++Out Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+@@ -121,7 +121,6 @@
+ Brian’s letting Jason live rent-free at one of his properties — so long as he helps with local shakedowns, and stops by for Lori’s sangria once in a while.
+ Explore Mount Kalaga
+-Coming
+-November 19
+-2026
++Now
++Available
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**raul text changed**
+```
+--- raul/text (before)
++++ raul/text (after)
+@@ -3,8 +3,8 @@
+ Homepage
+ Only in Leonida
+-Pre-Order Now
++Buy Now
+ Expand Navigation Menu
+-Last Chance for
+-Pre-Order Bonuses
++Grand Theft Auto VI
++Out Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+@@ -121,7 +121,6 @@
+ Brian’s letting Jason live rent-free at one of his properties — so long as he helps with local shakedowns, and stops by for Lori’s sangria once in a while.
+ Explore Mount Kalaga
+-Coming
+-November 19
+-2026
++Now
++Available
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**dimez text changed**
+```
+--- dimez/text (before)
++++ dimez/text (after)
+@@ -3,8 +3,8 @@
+ Homepage
+ Only in Leonida
+-Pre-Order Now
++Buy Now
+ Expand Navigation Menu
+-Last Chance for
+-Pre-Order Bonuses
++Grand Theft Auto VI
++Out Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+@@ -121,7 +121,6 @@
+ Brian’s letting Jason live rent-free at one of his properties — so long as he helps with local shakedowns, and stops by for Lori’s sangria once in a while.
+ Explore Mount Kalaga
+-Coming
+-November 19
+-2026
++Now
++Available
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**vice-city text changed**
+```
+--- vice-city/text (before)
++++ vice-city/text (after)
+@@ -3,8 +3,8 @@
+ Homepage
+ Only in Leonida
+-Pre-Order Now
++Buy Now
+ Expand Navigation Menu
+-Last Chance for
+-Pre-Order Bonuses
++Grand Theft Auto VI
++Out Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+@@ -121,7 +121,6 @@
+ Brian’s letting Jason live rent-free at one of his properties — so long as he helps with local shakedowns, and stops by for Lori’s sangria once in a while.
+ Explore Mount Kalaga
+-Coming
+-November 19
+-2026
++Now
++Available
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**port-gellhorn text changed**
+```
+--- port-gellhorn/text (before)
++++ port-gellhorn/text (after)
+@@ -3,8 +3,8 @@
+ Homepage
+ Only in Leonida
+-Pre-Order Now
++Buy Now
+ Expand Navigation Menu
+-Last Chance for
+-Pre-Order Bonuses
++Grand Theft Auto VI
++Out Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+@@ -121,7 +121,6 @@
+ Brian’s letting Jason live rent-free at one of his properties — so long as he helps with local shakedowns, and stops by for Lori’s sangria once in a while.
+ Explore Mount Kalaga
+-Coming
+-November 19
+-2026
++Now
++Available
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**leonida-keys text changed**
+```
+--- leonida-keys/text (before)
++++ leonida-keys/text (after)
+@@ -3,8 +3,8 @@
+ Homepage
+ Only in Leonida
+-Pre-Order Now
++Buy Now
+ Expand Navigation Menu
+-Last Chance for
+-Pre-Order Bonuses
++Grand Theft Auto VI
++Out Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+@@ -121,7 +121,6 @@
+ Brian’s letting Jason live rent-free at one of his properties — so long as he helps with local shakedowns, and stops by for Lori’s sangria once in a while.
+ Explore Mount Kalaga
+-Coming
+-November 19
+-2026
++Now
++Available
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**grassrivers text changed**
+```
+--- grassrivers/text (before)
++++ grassrivers/text (after)
+@@ -3,8 +3,8 @@
+ Homepage
+ Only in Leonida
+-Pre-Order Now
++Buy Now
+ Expand Navigation Menu
+-Last Chance for
+-Pre-Order Bonuses
++Grand Theft Auto VI
++Out Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+@@ -121,7 +121,6 @@
+ Brian’s letting Jason live rent-free at one of his properties — so long as he helps with local shakedowns, and stops by for Lori’s sangria once in a while.
+ Explore Mount Kalaga
+-Coming
+-November 19
+-2026
++Now
++Available
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**kalaga text changed**
+```
+--- kalaga/text (before)
++++ kalaga/text (after)
+@@ -3,8 +3,8 @@
+ Homepage
+ Only in Leonida
+-Pre-Order Now
++Buy Now
+ Expand Navigation Menu
+-Last Chance for
+-Pre-Order Bonuses
++Grand Theft Auto VI
++Out Now
+ When the sun fades and the neon glows, everyone has something to gain — and more to lose.
+ Jason Duval
+@@ -121,7 +121,6 @@
+ Brian’s letting Jason live rent-free at one of his properties — so long as he helps with local shakedowns, and stops by for Lori’s sangria once in a while.
+ Explore Mount Kalaga
+-Coming
+-November 19
+-2026
++Now
++Available
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**media counts increased**
+```
+- artwork wallpapers: 27 -> 28
+```
+**new data-layer strings (in code, not yet visible)**
+```
+- 121:["$","$L123",null,{}]
+- 127:["$","$L129",null,{}]
+- 1f3:["$","$L1f5",null,{}]
+- children":"1:31"}],"$undefined",["$","$L118",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L119",null,{}]]}],["$","$L11a",null,{"children":[["$","$L11b",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L122",null,{"children":"December 4, 2023"}]]}]]}]
+- children":"1:31"}],"$undefined",["$","$L11e",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L11f",null,{}]]}],["$","$L120",null,{"children":[["$","$L121",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L128",null,{"children":"December 4, 2023"}]]}]]}]
+- children":"1:31"}],"$undefined",["$","$L1ea",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L1eb",null,{}]]}],["$","$L1ec",null,{"children":[["$","$L1ed",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L1f4",null,{"children":"December 4, 2023"}]]}]]}]
+- src":"$1c2:props:videos:trailer-1:thumbnail","alt":"Grand Theft Auto VI Trailer 1"}],"$undefined",["$","$L2a4",null,{"children":"1:31"}]]}],["$","$L2a5",null,{"children":[["$","$L2a6",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L2a7",null,{"children":"December 4, 2023"}]]}]]}]}]}]]}]
+- src":"$45:props:videos:trailer-1:thumbnail","alt":"Grand Theft Auto VI Trailer 1"}],"$undefined",["$","$L128",null,{"children":"1:31"}]]}],["$","$L129",null,{"children":[["$","$L12a",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L12b",null,{"children":"December 4, 2023"}]]}]]
+```
+**new media posted**
+```
+- 8 new image(s) → images channel: Cover_Art_Poster, GTAVI_Out_Now, Leonida_Map_Poster, gtaplusDesktop, gtaplusLogo, gtaplusMobile, mapPromoCard, mapPromoCardMobile
+- 1 new video(s) → videos channel: video:GTAVI_Out_Now
+```
+</details>

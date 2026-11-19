@@ -1,4 +1,5 @@
 api: https://media-rockstargames-com.akamaized.net/VI/downloads
+string: /VI/:locale/gta-plus
 string: /VI/:locale/launch-gallery
 string: /VI/:locale/only-in-leonida
 string: /marketing/status
@@ -57,6 +58,7 @@ string: grassrivers/libx264/1920.mp4
 string: grassrivers/libx264/2160.mp4
 string: grassrivers/libx264/450.mp4
 string: grassrivers/libx264/768.mp4
+string: gta-plus
 string: intro-jason
 string: intro-lucia
 string: jason-intro

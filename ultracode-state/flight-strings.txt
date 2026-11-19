@@ -1,17 +1,11 @@
-$","$L6d",null,{"children":"October 15, 2026"}]]}]]}]
-66:["$","$L5e","an-extended-look",{"video":"an-extended-look","children":[["$","$L5f",null,{"children":[["$","$L60",null,{"src":"$3a:props:videos:an-extended-look:thumbnail","alt":"Grand Theft Auto VI: An Extended Look"}],["$","$L61",null,{"chi
-$","$Lf4",null,{"children":"October 15, 2026"}]]}]]}]
-ed:["$","$Le5","an-extended-look",{"video":"an-extended-look","children":[["$","$Le6",null,{"children":[["$","$Le7",null,{"src":"$c1:props:videos:an-extended-look:thumbnail","alt":"Grand Theft Auto VI: An Extended Look"}],["$","$Le8",null,{"chi
-children":"1:31"}],"$undefined",["$","$L10e",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L116",null,{}]]}],["$","$L117",null,{"children":[["$","$L118",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L119",null,{"children":"December 4, 2023"}]]}]]}]
-115:["$","$L11a",null,{}]
-children":"1:31"}],"$undefined",["$","$L1dc",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L1e4",null,{}]]}],["$","$L1e5",null,{"children":[["$","$L1e6",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L1e7",null,{"children":"December 4, 2023"}]]}]]}]
-1e3:["$","$L1e8",null,{}]
-src":"$1b4:props:videos:trailer-1:thumbnail","alt":"Grand Theft Auto VI Trailer 1"}],"$undefined",["$","$L27f",null,{"children":"1:31"}]]}],["$","$L280",null,{"children":[["$","$L281",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L282",null,{"children":"December 4, 2023"}]]}]]}]}]}]]}]
-src":"$3a:props:videos:trailer-1:thumbnail","alt":"Grand Theft Auto VI Trailer 1"}],"$undefined",["$","$L106",null,{"children":"1:31"}]]}],["$","$L107",null,{"children":[["$","$L108",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L109",null,{"children":"December 4, 2023"}]]}]]}]}]}]]}]
-src":"$c1:props:videos:trailer-1:thumbnail","alt":"Grand Theft Auto VI Trailer 1"}],"$undefined",["$","$L17a",null,{"children":"1:31"}]]}],["$","$L17b",null,{"children":[["$","$L17c",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L17d",null,{"children":"December 4, 2023"}]]}]]}]}]}]]}]
-src":"$e6:props:videos:trailer-1:thumbnail","alt":"Grand Theft Auto VI Trailer 1"}],"$undefined",["$","$L1b1",null,{"children":"1:31"}]]}],["$","$L1b2",null,{"children":[["$","$L1b3",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L1b4",null,{"children":"December 4, 2023"}]]}]]}]}]}]]}]
-}],["$","$L119",null,{"children":"October 15, 2026"}]]}]]}]
-112:["$","$L10a","an-extended-look",{"video":"an-extended-look","children":[["$","$L10b",null,{"children":[["$","$L10c",null,{"src":"$e6:props:videos:an-extended-look:thumbnail","alt":"Grand Theft Auto VI: An Extended Look"
-}],["$","$L1e7",null,{"children":"October 15, 2026"}]]}]]}]
-1e0:["$","$L1d8","an-extended-look",{"video":"an-extended-look","children":[["$","$L1d9",null,{"children":[["$","$L1da",null,{"src":"$1b4:props:videos:an-extended-look:thumbnail","alt":"Grand Theft Auto VI: An Extended Loo
-}}]}],["$","$L86",null,{"children":[["$","$L87",null,{"children":"Grand Theft Auto VI Pre-Load Begins on November 10"}],["$","$L88",null,{"children":"November 3, 2026"}]]}]]}]}]
+children":"1:31"}],"$undefined",["$","$L118",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L119",null,{}]]}],["$","$L11a",null,{"children":[["$","$L11b",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L122",null,{"children":"December 4, 2023"}]]}]]}]
+121:["$","$L123",null,{}]
+children":"1:31"}],"$undefined",["$","$L11e",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L11f",null,{}]]}],["$","$L120",null,{"children":[["$","$L121",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L128",null,{"children":"December 4, 2023"}]]}]]}]
+127:["$","$L129",null,{}]
+children":"1:31"}],"$undefined",["$","$L1ea",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L1eb",null,{}]]}],["$","$L1ec",null,{"children":[["$","$L1ed",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L1f4",null,{"children":"December 4, 2023"}]]}]]}]
+1f3:["$","$L1f5",null,{}]
+src":"$1c2:props:videos:trailer-1:thumbnail","alt":"Grand Theft Auto VI Trailer 1"}],"$undefined",["$","$L2a4",null,{"children":"1:31"}]]}],["$","$L2a5",null,{"children":[["$","$L2a6",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L2a7",null,{"children":"December 4, 2023"}]]}]]}]}]}]]}]
+src":"$45:props:videos:trailer-1:thumbnail","alt":"Grand Theft Auto VI Trailer 1"}],"$undefined",["$","$L128",null,{"children":"1:31"}]]}],["$","$L129",null,{"children":[["$","$L12a",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L12b",null,{"children":"December 4, 2023"}]]}]]}]}]}]]}]
+src":"$f0:props:videos:trailer-1:thumbnail","alt":"Grand Theft Auto VI Trailer 1"}],"$undefined",["$","$L1d3",null,{"children":"1:31"}]]}],["$","$L1d4",null,{"children":[["$","$L1d5",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L1d6",null,{"children":"December 4, 2023"}]]}]]}]}]}]]}]
+src":"$f6:props:videos:trailer-1:thumbnail","alt":"Grand Theft Auto VI Trailer 1"}],"$undefined",["$","$L1d3",null,{"children":"1:31"}]]}],["$","$L1d4",null,{"children":[["$","$L1d5",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L1d6",null,{"children":"December 4, 2023"}]]}]]}]}]}]]}]
+}}]}],["$","$L93",null,{"children":[["$","$L94",null,{"children":"Explore the Grand Theft Auto VI Launch Gallery"}],["$","$L95",null,{"children":"November 5, 2026"}]]}]]}]}]
