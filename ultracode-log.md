@@ -5260,3 +5260,63 @@ Rockstar has switched the site from a pre‑order focus to a post‑launch one, 
 - 1 new video(s) → videos channel: video:GTAVI_Out_Now
 ```
 </details>
+
+## 20 Nov 2026 at 14:00 UTC
+
+**Found in:** home text changed, editions text changed, new data-layer strings (in code, not yet visible)
+
+**🕹️ New “Digital Add‑On” wording appears on the GTA VI homepage**  
+
+**What changed:**  
+- The home page now calls the former “Early purchase bonus” a **“Digital Add‑On.”**  
+- The call‑to‑action was tweaked from *“Purchase early to get unique benefits…”* to *“Purchase this add‑on to get unique benefits…”* – the wording now reads like a separate, optional item you can buy now.  
+- On the Editions page the **“Vintage Vice City Pack”** and the **“Free Month of GTA+”** lines were removed from the text block, leaving only the car and weapon items.
+
+**What it likely means:**  
+Rockstar appears to be shifting the Vintage Vice City Pack (and possibly the GTA+ month) out of the Ultimate Edition bundle and presenting it as a stand‑alone digital add‑on that can be purchased independently.
+
+**Could signal:** _(confidence: medium)_  
+A new, optional **Vintage Vice City Pack add‑on** (or similar DLC) may go live soon, likely before the official launch window. It could be a way for Rockstar to monetize the bonus content separately now that pre‑orders are already live. Keep an eye on the store page in the next few days for a purchasable add‑on listing.
+
+<details><summary>raw findings</summary>
+
+**home text changed**
+```
+--- home/text (before)
++++ home/text (after)
+@@ -40,8 +40,8 @@
+ An exclusive collection of items threaded across all aspects of Jason and Lucia’s story.
+ Learn More
+-Early purchase bonus
++Digital Add-On
+ Vintage
+ Vice City Pack
+-Purchase early to get unique benefits that flash back to when the neon burned brightest.
++Purchase this add-on to get unique benefits that flash back to when the neon burned brightest.
+ Learn More
+ Vice City, USA.
+```
+**editions text changed**
+```
+--- editions/text (before)
++++ editions/text (after)
+@@ -21,8 +21,4 @@
+ Grand Theft Auto VI
+ Jason and Lucia have always known the deck is stacked against them. But when an easy score goes wrong, they find themselves on the darkest side of the sunniest place in America, in the middle of a criminal conspiracy stretching across the state of Leonida — forced to rely on each other more than ever if they want to make it out alive.
+-Vintage Vice City Pack
+-Limited-time bonus
+-Free Month of GTA+
+-Limited-time bonus
+ ’95 Grotti Cheetah
+ Hawk & Little Morgan Revolvers
+```
+**new data-layer strings (in code, not yet visible)**
+```
+- 118:["$","$L11a",null,{}]
+- children":"1:31"}],"$undefined",["$","$L10f",null,{"hideWhen":"idle","children":"Now Playing"}],["$","$L110",null,{}]]}],["$","$L111",null,{"children":[["$","$L112",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L119",null,{"children":"December 4, 2023"}]]}]]}]
+- src":"$1c2:props:videos:trailer-1:thumbnail","alt":"Grand Theft Auto VI Trailer 1"}],"$undefined",["$","$L29a",null,{"children":"1:31"}]]}],["$","$L29b",null,{"children":[["$","$L29c",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L29d",null,{"children":"December 4, 2023"}]]}]]}]}]}]]}]
+- src":"$45:props:videos:trailer-1:thumbnail","alt":"Grand Theft Auto VI Trailer 1"}],"$undefined",["$","$L11e",null,{"children":"1:31"}]]}],["$","$L11f",null,{"children":[["$","$L120",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L121",null,{"children":"December 4, 2023"}]]}]]}]}]}]]}]
+- src":"$e7:props:videos:trailer-1:thumbnail","alt":"Grand Theft Auto VI Trailer 1"}],"$undefined",["$","$L1b7",null,{"children":"1:31"}]]}],["$","$L1b8",null,{"children":[["$","$L1b9",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L1ba",null,{"children":"December 4, 2023"}]]}]]}]}]}]]}]
+- src":"$f0:props:videos:trailer-1:thumbnail","alt":"Grand Theft Auto VI Trailer 1"}],"$undefined",["$","$L1c9",null,{"children":"1:31"}]]}],["$","$L1ca",null,{"children":[["$","$L1cb",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L1cc",null,{"children":"December 4, 2023"}]]}]]}]}]}]
+```
+</details>
