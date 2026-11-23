@@ -5320,3 +5320,134 @@ A new, optional **Vintage Vice City Pack add‑on** (or similar DLC) may go live
 - src":"$f0:props:videos:trailer-1:thumbnail","alt":"Grand Theft Auto VI Trailer 1"}],"$undefined",["$","$L1c9",null,{"children":"1:31"}]]}],["$","$L1ca",null,{"children":[["$","$L1cb",null,{"children":"Grand Theft Auto VI Trailer 1"}],["$","$L1cc",null,{"children":"December 4, 2023"}]]}]]}]}]}]
 ```
 </details>
+
+## 23 Nov 2026 at 14:05 UTC
+
+**Found in:** home text changed, media text changed, new data-layer strings (in code, not yet visible)
+
+**🗞️ New “Deluxe Album” entry appears on the GTA VI homepage**
+
+**What changed**
+- The home page now lists **“Grand Theft Auto VI: The Album (Deluxe Edition)”** with a date of **November 23 2026** (previously there was no album entry).
+- The line **“Explore the Grand Theft Auto VI Launch Gallery”** was removed from the home page.
+- In the media section the wording for downloadable assets switched from “variant” to “size” (a UI tweak, no new content).
+- A hidden data‑layer string in the site’s JavaScript still references the pre‑load message **“Pre‑Load Grand Theft Auto VI Now” – November 10 2026**, which matches the already‑known pre‑load window.
+
+**What it likely means**
+- Rockstar has added a dedicated page entry for a **Deluxe Edition album** that will become available **four days after the game’s launch** (Nov 23).  
+- The removal of the “Launch Gallery” link suggests the gallery may be moving to a different section or being refreshed.
+
+**Could signal:** _(confidence: medium)_
+- A **soundtrack/album release** (possibly with extra tracks or behind‑the‑scenes material) timed for **Nov 23 2026**, shortly after the game’s official launch on Nov 19.  
+- Expect a new media page or download link to appear in the coming days, likely tied to the “Deluxe Edition” bundle.  
+
+*No changes indicate a shift in the game’s release date or new pre‑order info.*
+
+<details><summary>raw findings</summary>
+
+**home text changed**
+```
+--- home/text (before)
++++ home/text (after)
+@@ -78,10 +78,10 @@
+ View all
+ Newswire posts
++Grand Theft Auto VI: The Album (Deluxe Edition)
++November 23, 2026
+ Grand Theft Auto VI Now Available
+ November 19, 2026
+ Pre-Load Grand Theft Auto VI Now
+ November 10, 2026
+-Explore the Grand Theft Auto VI Launch Gallery
+-November 5, 2026
+ For more on PlayStation benefits, see
+ playstation.com/GTAVIfeatures
+```
+**media text changed**
+```
+--- media/text (before)
++++ media/text (after)
+@@ -19,9 +19,9 @@
+ 5 Videos
+ Grand Theft Auto VI: Out Now
+-1 variant
++1 size
+ Grand Theft Auto VI Launch Trailer
+-1 variant
++1 size
+ Grand Theft Auto VI: An Extended Look
+-1 variant
++1 size
+ Clips
+ 9
+@@ -32,9 +32,9 @@
+ 9 Clips
+ Official Cover Art Animation
+-1 variant
++1 size
+ Jason Duval Video Clip
+-1 variant
++1 size
+ Lucia Caminos Video Clip
+-1 variant
++1 size
+ Download All
+ 9 Clips in a single zip file
+@@ -47,9 +47,9 @@
+ 138 Screenshots
+ Jason and Lucia 14
+-1 variant
++1 size
+ Lucia Caminos 12
+-1 variant
++1 size
+ Vice City 27
+-1 variant
++1 size
+ Download All
+ 138 Screenshots in a single zip file
+@@ -62,9 +62,9 @@
+ 51 Ultimate Edition Screenshots
+ Ultimate Edition 02
+-1 variant
++1 size
+ ’95 Grotti Cheetah 01
+-1 variant
++1 size
+ Hawk & Little Morgan Revolvers 01
+-1 variant
++1 size
+ Download All
+ 51 Ultimate Edition Benefits in a single zip file
+@@ -77,9 +77,9 @@
+ 12 Vintage Vice City Screenshots
+ Vintage Vice City Pack 01
+-1 variant
++1 size
+ ’55 Vapid Stanier 01
+-1 variant
++1 size
+ Vintage Vice City Outfits and Hairstyles 03
+-1 variant
++1 size
+ Download All
+ 12 Vintage Vice City Pack in a single zip file
+@@ -92,9 +92,9 @@
+ 28 Artwork and Wallpapers
+ Jason and Lucia Rooftop
+-6 variants
++6 sizes
+ Jason and Lucia Lock and Load
+-6 variants
++6 sizes
+ The Album Cover Art
+-3 variants
++3 sizes
+ Download All
+ 28 Artwork & Wallpapers in a single zip file
+```
+**new data-layer strings (in code, not yet visible)**
+```
+- }}]}],["$","$L93",null,{"children":[["$","$L94",null,{"children":"Pre-Load Grand Theft Auto VI Now"}],["$","$L95",null,{"children":"November 10, 2026"}]]}]]}]}]
+```
+</details>
